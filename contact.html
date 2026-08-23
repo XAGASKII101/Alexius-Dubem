@@ -4,9 +4,15 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Contact Alexius Dubem — Direct contact channel for project inquiries and engineering roles.">
-  <title>Contact — Alexius Dubem</title>
   
+  <title>Contact — Alexius Dubem | Software Developer</title>
+  <meta name="description" content="Initiate direct contact with Alexius Dubem. Available for full-stack software development, contract engineering, and technical advisory. Guaranteed 24-hr response SLA.">
+  <link rel="canonical" href="https://github.com/XAGASKII101/Alexius-Dubem/contact.html">
+
+  <meta property="og:title" content="Contact Alexius Dubem — Software Developer & Systems Engineer">
+  <meta property="og:description" content="Direct contact channel for project inquiries and engineering roles.">
+  <meta property="og:image" content="me.jpg">
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
@@ -17,90 +23,98 @@
 
 <body>
   <div class="container">
-    <nav>
-      <div class="logo">
-        <a href="index.html">
-          Alexius Dubem
-          <span class="logo-badge">DEV</span>
-        </a>
-      </div>
-      <ul class="nav-links">
-        <li><a href="about.html">About</a></li>
-        <li><a href="index.html#expertise">Expertise</a></li>
-        <li><a href="index.html#approach">Approach</a></li>
-        <li><a href="index.html#experience">Experience</a></li>
-        <li><a href="thoughts.html">Thoughts</a></li>
-        <li><a href="contact.html" class="active">Contact</a></li>
-      </ul>
-      <div class="status-pill">
-        <span class="dot"></span>
-        AVAILABLE FOR WORK
-      </div>
-    </nav>
+    <header>
+      <nav aria-label="Main Navigation">
+        <div class="logo">
+          <a href="index.html">
+            Alexius Dubem
+            <span class="logo-badge">DEV</span>
+          </a>
+        </div>
+        <ul class="nav-links">
+          <li><a href="about.html">About</a></li>
+          <li><a href="index.html#expertise">Expertise</a></li>
+          <li><a href="index.html#approach">Approach</a></li>
+          <li><a href="index.html#experience">Experience</a></li>
+          <li><a href="thoughts.html">Thoughts</a></li>
+          <li><a href="contact.html" class="active">Contact</a></li>
+        </ul>
+        <div class="status-pill">
+          <span class="dot"></span>
+          AVAILABLE FOR WORK
+        </div>
+      </nav>
+    </header>
 
-    <!-- Mobile Bottom Floating Dock with Font Awesome Icons -->
-    <div class="bottom-dock">
-      <a href="index.html" class="dock-item">
+    <nav class="bottom-dock" aria-label="Mobile Navigation Dock">
+      <a href="index.html" class="dock-item" aria-label="Home">
         <i class="fa-solid fa-house"></i>
         <span>Home</span>
       </a>
-      <a href="about.html" class="dock-item">
+      <a href="about.html" class="dock-item" aria-label="About">
         <i class="fa-solid fa-user"></i>
         <span>About</span>
       </a>
-      <a href="index.html#expertise" class="dock-item">
+      <a href="index.html#expertise" class="dock-item" aria-label="Services">
         <i class="fa-solid fa-bolt-lightning"></i>
         <span>Expertise</span>
       </a>
-      <a href="thoughts.html" class="dock-item">
+      <a href="thoughts.html" class="dock-item" aria-label="Thoughts">
         <i class="fa-solid fa-pen-nib"></i>
         <span>Thoughts</span>
       </a>
-      <a href="contact.html" class="dock-item dock-cta active">
+      <a href="contact.html" class="dock-item dock-cta active" aria-label="Contact">
         <i class="fa-solid fa-envelope"></i>
         <span>Contact</span>
       </a>
-    </div>
+    </nav>
 
-    <div class="page-header" data-animate>
-      <div class="mono-meta"><i class="fa-solid fa-paper-plane"></i> INITIATE CONTACT</div>
-      <h1>Let's build something <span style="color:var(--accent);">great</span>.</h1>
-      <p>Whether you have a product to launch, a backend to scale, or an engineering role — send a direct message.</p>
-    </div>
-
-    <div class="contact-grid" data-animate>
-      <div class="contact-meta">
-        <h3>// DIRECT CHANNELS</h3>
-        <a href="mailto:alexiusdubem7@gmail.com"><i class="fa-solid fa-envelope" style="color:var(--accent);"></i> alexiusdubem7@gmail.com</a>
-        <a href="https://wa.me/2348107516059" target="_blank"><i class="fa-brands fa-whatsapp" style="color:var(--accent);"></i> WhatsApp: +234 810 751 6059</a>
-        <a href="https://ng.linkedin.com/in/alexius-dubem" target="_blank"><i class="fa-brands fa-linkedin-in" style="color:var(--accent);"></i> linkedin.com/in/alexiusdubem</a>
-        <a href="https://github.com/AlexiusDubem" target="_blank"><i class="fa-brands fa-github" style="color:var(--accent);"></i> github.com/alexiusdubem</a>
-
-        <p style="color: var(--text-muted); font-size: 13.5px; margin-top: 32px; line-height: 1.6;">
-          Response window: 24 hours. A brief summary of your tech stack or project scope helps kickstart technical alignment.
-        </p>
+    <main>
+      <div class="page-header" data-animate>
+        <div class="mono-meta"><i class="fa-solid fa-paper-plane"></i> INITIATE CONTACT</div>
+        <h1>Let's build something <span style="color:var(--accent);">great</span>.</h1>
+        <p>Whether you have a product to launch, a backend to scale, or an engineering role — send a direct message.</p>
       </div>
 
-      <form action="#" method="post" onsubmit="event.preventDefault(); alert('Message dispatched! Connect this to your preferred email API endpoint.');">
-        <div class="form-field">
-          <label for="name">FULL NAME</label>
-          <input type="text" id="name" name="name" required placeholder="Jane Doe">
+      <div class="contact-grid" data-animate>
+        <div class="contact-meta">
+          <h3>// DIRECT CHANNELS</h3>
+          <a href="mailto:alexiusdubem7@gmail.com"><i class="fa-solid fa-envelope" style="color:var(--accent);"></i> alexiusdubem7@gmail.com</a>
+          <a href="https://wa.me/2348107516059" target="_blank"><i class="fa-brands fa-whatsapp" style="color:var(--accent);"></i> WhatsApp: +234 810 751 6059</a>
+          <a href="https://ng.linkedin.com/in/alexius-dubem" target="_blank"><i class="fa-brands fa-linkedin-in" style="color:var(--accent);"></i> linkedin.com/in/alexiusdubem</a>
+          <a href="https://github.com/AlexiusDubem" target="_blank"><i class="fa-brands fa-github" style="color:var(--accent);"></i> github.com/alexiusdubem</a>
+
+          <div style="margin-top: 32px; padding: 20px; background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-sm);">
+            <p style="color: var(--text); font-family: var(--font-mono); font-size: 12px; font-weight: 700; margin-bottom: 6px;">
+              <i class="fa-solid fa-shield-halved" style="color:var(--accent);"></i> 24-HOUR RESPONSE GUARANTEE
+            </p>
+            <p style="color: var(--text-muted); font-size: 13px; line-height: 1.55;">
+              All inquiries receive a direct response within 24 hours. Confidentiality assured.
+            </p>
+          </div>
         </div>
-        <div class="form-field">
-          <label for="email">EMAIL ADDRESS</label>
-          <input type="email" id="email" name="email" required placeholder="jane@example.com">
-        </div>
-        <div class="form-field">
-          <label for="subject">SUBJECT</label>
-          <input type="text" id="subject" name="subject" placeholder="Project Inquiry / Role">
-        </div>
-        <div class="form-field">
-          <label for="message">MESSAGE SCOPE</label>
-          <textarea id="message" name="message" required placeholder="Outline what you are building..."></textarea>
-        </div>
-        <button type="submit">SEND MESSAGE <i class="fa-solid fa-arrow-right"></i></button>
-      </form>
-    </div>
+
+        <form action="#" method="post" onsubmit="event.preventDefault(); alert('Message dispatched! Connect this to your preferred email API endpoint.');" aria-label="Contact Form">
+          <div class="form-field">
+            <label for="name">FULL NAME</label>
+            <input type="text" id="name" name="name" required placeholder="Jane Doe">
+          </div>
+          <div class="form-field">
+            <label for="email">EMAIL ADDRESS</label>
+            <input type="email" id="email" name="email" required placeholder="jane@example.com">
+          </div>
+          <div class="form-field">
+            <label for="subject">SUBJECT</label>
+            <input type="text" id="subject" name="subject" placeholder="Project Inquiry / Role">
+          </div>
+          <div class="form-field">
+            <label for="message">MESSAGE SCOPE</label>
+            <textarea id="message" name="message" required placeholder="Outline what you are building..."></textarea>
+          </div>
+          <button type="submit">SEND MESSAGE <i class="fa-solid fa-arrow-right"></i></button>
+        </form>
+      </div>
+    </main>
 
     <footer>
       <div>© 2026 ALEXIUS DUBEM // ALL RIGHTS RESERVED</div>

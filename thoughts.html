@@ -4,9 +4,15 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Engineering Thoughts & Architecture Notes by Alexius Dubem.">
-  <title>Thoughts — Alexius Dubem</title>
   
+  <title>Thoughts & Technical Writing — Alexius Dubem</title>
+  <meta name="description" content="Technical essays and architecture notes by Alexius Dubem on software engineering, system design, and pragmatic technology choices.">
+  <link rel="canonical" href="https://github.com/XAGASKII101/Alexius-Dubem/thoughts.html">
+
+  <meta property="og:title" content="Thoughts & Technical Writing — Alexius Dubem">
+  <meta property="og:description" content="Technical essays and architecture notes on software engineering and system design.">
+  <meta property="og:image" content="me.jpg">
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
@@ -17,82 +23,91 @@
 
 <body>
   <div class="container">
-    <nav>
-      <div class="logo">
-        <a href="index.html">
-          Alexius Dubem
-          <span class="logo-badge">DEV</span>
-        </a>
-      </div>
-      <ul class="nav-links">
-        <li><a href="about.html">About</a></li>
-        <li><a href="index.html#expertise">Expertise</a></li>
-        <li><a href="index.html#approach">Approach</a></li>
-        <li><a href="index.html#experience">Experience</a></li>
-        <li><a href="thoughts.html" class="active">Thoughts</a></li>
-        <li><a href="contact.html">Contact</a></li>
-      </ul>
-      <div class="status-pill">
-        <span class="dot"></span>
-        AVAILABLE FOR WORK
-      </div>
-    </nav>
+    <header>
+      <nav aria-label="Main Navigation">
+        <div class="logo">
+          <a href="index.html">
+            Alexius Dubem
+            <span class="logo-badge">DEV</span>
+          </a>
+        </div>
+        <ul class="nav-links">
+          <li><a href="about.html">About</a></li>
+          <li><a href="index.html#expertise">Expertise</a></li>
+          <li><a href="index.html#approach">Approach</a></li>
+          <li><a href="index.html#experience">Experience</a></li>
+          <li><a href="thoughts.html" class="active">Thoughts</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+        <div class="status-pill">
+          <span class="dot"></span>
+          AVAILABLE FOR WORK
+        </div>
+      </nav>
+    </header>
 
-    <!-- Mobile Bottom Floating Dock with Font Awesome Icons -->
-    <div class="bottom-dock">
-      <a href="index.html" class="dock-item">
+    <nav class="bottom-dock" aria-label="Mobile Navigation Dock">
+      <a href="index.html" class="dock-item" aria-label="Home">
         <i class="fa-solid fa-house"></i>
         <span>Home</span>
       </a>
-      <a href="about.html" class="dock-item">
+      <a href="about.html" class="dock-item" aria-label="About">
         <i class="fa-solid fa-user"></i>
         <span>About</span>
       </a>
-      <a href="index.html#expertise" class="dock-item">
+      <a href="index.html#expertise" class="dock-item" aria-label="Services">
         <i class="fa-solid fa-bolt-lightning"></i>
         <span>Expertise</span>
       </a>
-      <a href="thoughts.html" class="dock-item active">
+      <a href="thoughts.html" class="dock-item active" aria-label="Thoughts">
         <i class="fa-solid fa-pen-nib"></i>
         <span>Thoughts</span>
       </a>
-      <a href="contact.html" class="dock-item dock-cta">
+      <a href="contact.html" class="dock-item dock-cta" aria-label="Contact">
         <i class="fa-solid fa-envelope"></i>
         <span>Contact</span>
       </a>
-    </div>
+    </nav>
 
-    <div class="page-header" data-animate>
-      <div class="mono-meta"><i class="fa-solid fa-pen-nib"></i> TECHNICAL WRITING</div>
-      <h1>Thoughts & Architecture Notes.</h1>
-      <p>Occasional essays on software engineering, system design, and building maintainable products.</p>
-    </div>
+    <main>
+      <div class="page-header" data-animate>
+        <div class="mono-meta"><i class="fa-solid fa-pen-nib"></i> TECHNICAL WRITING</div>
+        <h1>Thoughts & Architecture Notes.</h1>
+        <p>Occasional essays on software engineering, system design, and building maintainable products.</p>
+      </div>
 
-    <div class="posts-list" data-animate>
-      <a href="#" class="post-row">
-        <div class="post-date">AUG 2026</div>
-        <div>
-          <div class="post-title">Why Clean Architecture Accelerates Engineering Teams</div>
-          <p class="post-desc">Decoupling business logic from infrastructure frameworks ensures systems remain testable and resilient as scale demands grow.</p>
-        </div>
-      </a>
+      <div class="posts-list" data-animate>
+        <article>
+          <a href="#" class="post-row">
+            <div class="post-date">AUG 2026</div>
+            <div>
+              <h2 class="post-title">Why Clean Architecture Accelerates Engineering Teams</h2>
+              <p class="post-desc">Decoupling business logic from infrastructure frameworks ensures systems remain testable and resilient as scale demands grow.</p>
+            </div>
+          </a>
+        </article>
 
-      <a href="#" class="post-row">
-        <div class="post-date">JUL 2026</div>
-        <div>
-          <div class="post-title">Shipping Code is a Primary Technical Metric</div>
-          <p class="post-desc">Perfect unreleased code carries zero value. A practical approach to balancing rigorous code quality with product delivery velocity.</p>
-        </div>
-      </a>
+        <article>
+          <a href="#" class="post-row">
+            <div class="post-date">JUL 2026</div>
+            <div>
+              <h2 class="post-title">Shipping Code is a Primary Technical Metric</h2>
+              <p class="post-desc">Perfect unreleased code carries zero value. A practical approach to balancing rigorous code quality with product delivery velocity.</p>
+            </div>
+          </a>
+        </article>
 
-      <a href="#" class="post-row">
-        <div class="post-date">JUN 2026</div>
-        <div>
-          <div class="post-title">Pragmatic Tech Choices Over Unproven Hype</div>
-          <p class="post-excerpt" style="color:var(--text-muted);">Why battle-tested technologies are almost always the optimal foundation when engineering reliable production software.</p>
-        </div>
-      </a>
-    </div>
+        <article>
+          <a href="#" class="post-row">
+            <div class="post-date">JUN 2026</div>
+            <div>
+              <h2 class="post-title">Pragmatic Tech Choices Over Unproven Hype</h2>
+              <p class="post-desc">Why battle-tested technologies are almost always the optimal foundation when engineering reliable production software.</p>
+            </div>
+          </a>
+        </article>
+      </div>
+    </main>
 
     <footer>
       <div>© 2026 ALEXIUS DUBEM // ALL RIGHTS RESERVED</div>

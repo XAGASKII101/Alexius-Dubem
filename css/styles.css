@@ -1,6 +1,6 @@
 /* =========================================
    ALEXIUS DUBEM — EDITORIAL DEVELOPER PORTFOLIO
-   High-Craft Theme + Advanced Animations & Interactive FX
+   High-Craft Theme + Animations + SEO & Trust Signals
    ========================================= */
 
 /* ---------- DESIGN TOKENS ---------- */
@@ -61,7 +61,6 @@ body {
   position: relative;
 }
 
-/* Background Particle Canvas */
 #particle-canvas {
   position: fixed;
   inset: 0;
@@ -72,7 +71,6 @@ body {
   opacity: 0.6;
 }
 
-/* Architectural vertical grid background lines */
 body::before {
   content: "";
   position: fixed;
@@ -122,7 +120,6 @@ body::before {
   transition: transform 0.15s var(--ease), width 0.3s var(--ease), height 0.3s var(--ease), border-color 0.3s var(--ease);
 }
 
-/* Active Hover Cursor States */
 body.cursor-hover .cursor-dot {
   width: 12px;
   height: 12px;
@@ -378,7 +375,6 @@ nav {
   background: var(--accent);
 }
 
-/* Typewriter role switching cursor */
 .typewriter-cursor {
   display: inline-block;
   width: 8px;
@@ -443,7 +439,6 @@ nav {
   overflow: hidden;
 }
 
-/* Shimmer Reflection Sweep on Buttons */
 .btn-solid::before {
   content: "";
   position: absolute;
@@ -490,7 +485,6 @@ nav {
   transform: translateY(-3px);
 }
 
-/* Photo Box Frame */
 .hero-photo-box {
   position: relative;
   display: inline-block;
@@ -594,6 +588,7 @@ section {
 .approach-card,
 .about-sidebar,
 .connect-panel,
+.testimonial-card,
 form {
   position: relative;
   overflow: hidden;
@@ -601,11 +596,11 @@ form {
   will-change: transform;
 }
 
-/* Radial Cursor Spotlight Overlay */
 .service-card::before,
 .approach-card::before,
 .about-sidebar::before,
 .connect-panel::before,
+.testimonial-card::before,
 form::before {
   content: "";
   position: absolute;
@@ -625,11 +620,11 @@ form::before {
 .approach-card:hover::before,
 .about-sidebar:hover::before,
 .connect-panel:hover::before,
+.testimonial-card:hover::before,
 form:hover::before {
   opacity: 1;
 }
 
-/* Services Grid */
 .services-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -691,7 +686,6 @@ form:hover::before {
   z-index: 2;
 }
 
-/* Approach Grid */
 .approach-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -741,6 +735,99 @@ form:hover::before {
   line-height: 1.55;
   position: relative;
   z-index: 2;
+}
+
+/* ---------- SOCIAL PROOF & TESTIMONIALS ---------- */
+.testimonials-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+}
+
+.testimonial-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 36px 32px;
+  transition: all var(--transition);
+}
+
+.testimonial-card:hover {
+  border-color: var(--border-active);
+  background: var(--bg-card-hover);
+  box-shadow: var(--shadow-card);
+}
+
+.testimonial-quote {
+  font-size: 15px;
+  color: var(--text);
+  line-height: 1.65;
+  margin-bottom: 24px;
+  font-style: italic;
+  position: relative;
+  z-index: 2;
+}
+
+.testimonial-author {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  position: relative;
+  z-index: 2;
+}
+
+.author-avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--bg-soft);
+  border: 1px solid var(--accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-mono);
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--accent);
+}
+
+.author-meta h4 {
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.author-meta p {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+/* ---------- TRUST BADGES GRID ---------- */
+.trust-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-around;
+  gap: 20px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 24px 32px;
+  margin-bottom: 48px;
+}
+
+.trust-badge-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.trust-badge-item i {
+  color: var(--accent);
+  font-size: 16px;
 }
 
 /* Tech Matrix Tags */
@@ -1161,7 +1248,8 @@ button[type="submit"]:hover {
 
   .services-grid,
   .approach-grid,
-  .stats-grid {
+  .stats-grid,
+  .testimonials-grid {
     grid-template-columns: repeat(2, 1fr);
   }
 
@@ -1180,7 +1268,8 @@ button[type="submit"]:hover {
 
   .services-grid,
   .approach-grid,
-  .stats-grid {
+  .stats-grid,
+  .testimonials-grid {
     grid-template-columns: 1fr;
   }
 
@@ -1195,6 +1284,12 @@ button[type="submit"]:hover {
 
   .connect-panel {
     padding: 32px 24px;
+  }
+
+  .trust-bar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 14px;
   }
 }
 
