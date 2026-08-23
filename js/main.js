@@ -1,12 +1,44 @@
 /* =========================================
    ALEXIUS DUBEM — Next-Gen Interactive JS Engine
-   Custom Cursor, Particle Canvas, 3D Card Tilt, Spotlight Glow, Typewriter & Stat Counters
+   Custom Cursor, Particle Canvas, 3D Card Tilt, Spotlight Glow, Typewriter, Stat Counters & Mobile Drawer Nav
    ========================================= */
 
 document.addEventListener('DOMContentLoaded', () => {
 
   /* ----------------------------------------------------
-     1. CUSTOM MAGNETIC CURSOR & HOVER STATES
+     1. MOBILE NAVIGATION DRAWER TOGGLE
+     ---------------------------------------------------- */
+  const navToggle = document.querySelector('.mobile-nav-toggle');
+  const drawer = document.querySelector('.mobile-drawer');
+  const drawerClose = document.querySelector('.drawer-close');
+
+  if (navToggle && drawer) {
+    function openDrawer() {
+      drawer.classList.add('is-open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeDrawer() {
+      drawer.classList.remove('is-open');
+      document.body.style.overflow = '';
+    }
+
+    navToggle.addEventListener('click', openDrawer);
+    if (drawerClose) drawerClose.addEventListener('click', closeDrawer);
+
+    drawer.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', closeDrawer);
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && drawer.classList.contains('is-open')) {
+        closeDrawer();
+      }
+    });
+  }
+
+  /* ----------------------------------------------------
+     2. CUSTOM MAGNETIC CURSOR & HOVER STATES
      ---------------------------------------------------- */
   const cursorDot = document.createElement('div');
   cursorDot.className = 'cursor-dot';
@@ -34,17 +66,16 @@ document.addEventListener('DOMContentLoaded', () => {
   }
   requestAnimationFrame(renderCursorRing);
 
-  // Add hover enlargement on interactive elements
-  const hoverTargets = 'a, button, input, textarea, .service-card, .approach-card, .tech-tag, .btn-solid, .btn-outline, .dock-item';
+  const hoverTargets = 'a, button, input, textarea, .service-card, .approach-card, .tech-tag, .btn-solid, .btn-outline, .mobile-nav-toggle';
   document.querySelectorAll(hoverTargets).forEach(el => {
     el.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
     el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
   });
 
   /* ----------------------------------------------------
-     2. RADIAL CURSOR SPOTLIGHT GLOW ON CARDS
+     3. RADIAL CURSOR SPOTLIGHT GLOW ON CARDS
      ---------------------------------------------------- */
-  const spotlightCards = document.querySelectorAll('.service-card, .approach-card, .about-sidebar, .connect-panel, form');
+  const spotlightCards = document.querySelectorAll('.service-card, .approach-card, .about-sidebar, .connect-panel, .testimonial-card, form');
   spotlightCards.forEach(card => {
     card.addEventListener('mousemove', (e) => {
       const rect = card.getBoundingClientRect();
@@ -56,12 +87,12 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   /* ----------------------------------------------------
-     3. 3D GYROSCOPIC CARD PERSPECTIVE TILT
+     4. 3D GYROSCOPIC CARD PERSPECTIVE TILT
      ---------------------------------------------------- */
   const tiltCards = document.querySelectorAll('.service-card, .approach-card, .hero-photo-box');
   tiltCards.forEach(card => {
     card.addEventListener('mousemove', (e) => {
-      if (window.innerWidth <= 900) return; // Disable tilt on mobile touch screens
+      if (window.innerWidth <= 900) return;
       const rect = card.getBoundingClientRect();
       const x = e.clientX - rect.left;
       const y = e.clientY - rect.top;
@@ -78,7 +109,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   /* ----------------------------------------------------
-     4. INTERACTIVE BACKGROUND PARTICLE MATRIX CANVAS
+     5. INTERACTIVE BACKGROUND PARTICLE MATRIX CANVAS
      ---------------------------------------------------- */
   const canvas = document.createElement('canvas');
   canvas.id = 'particle-canvas';
@@ -122,7 +153,6 @@ document.addEventListener('DOMContentLoaded', () => {
       ctx.fillStyle = 'rgba(255, 51, 34, 0.4)';
       ctx.fill();
 
-      // Connect particles close to mouse cursor
       const dxMouse = mouseX - p.x;
       const dyMouse = mouseY - p.y;
       const distMouse = Math.sqrt(dxMouse * dxMouse + dyMouse * dyMouse);
@@ -135,7 +165,6 @@ document.addEventListener('DOMContentLoaded', () => {
         ctx.stroke();
       }
 
-      // Connect nearby particles
       for (let j = i + 1; j < particles.length; j++) {
         const p2 = particles[j];
         const dx = p.x - p2.x;
@@ -158,7 +187,7 @@ document.addEventListener('DOMContentLoaded', () => {
   requestAnimationFrame(drawParticles);
 
   /* ----------------------------------------------------
-     5. TYPEWRITER HERO ROLE SWITCHER
+     6. TYPEWRITER HERO ROLE SWITCHER
      ---------------------------------------------------- */
   const typewriterTarget = document.querySelector('.typewriter-role');
   if (typewriterTarget) {
@@ -187,7 +216,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
 
       if (!isDeleting && charIndex === currentRole.length) {
-        speed = 2200; // Pause at full word
+        speed = 2200;
         isDeleting = true;
       } else if (isDeleting && charIndex === 0) {
         isDeleting = false;
@@ -201,7 +230,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   /* ----------------------------------------------------
-     6. ANIMATED NUMBER COUNTER OBSERVER
+     7. ANIMATED NUMBER COUNTER OBSERVER
      ---------------------------------------------------- */
   const counterEls = document.querySelectorAll('[data-counter]');
 
@@ -218,7 +247,7 @@ document.addEventListener('DOMContentLoaded', () => {
           function updateCounter(currentTime) {
             const elapsed = currentTime - startTime;
             const progress = Math.min(elapsed / duration, 1);
-            const easeProgress = 1 - Math.pow(1 - progress, 3); // Ease out cubic
+            const easeProgress = 1 - Math.pow(1 - progress, 3);
             const currentNum = easeProgress * targetNum;
 
             el.textContent = isFloat ? currentNum.toFixed(1) : Math.floor(currentNum);
@@ -240,7 +269,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   /* ----------------------------------------------------
-     7. SCROLL REVEAL OBSERVER
+     8. SCROLL REVEAL OBSERVER
      ---------------------------------------------------- */
   const animateEls = document.querySelectorAll('[data-animate]');
   if (animateEls.length > 0 && 'IntersectionObserver' in window) {
@@ -261,36 +290,13 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   /* ----------------------------------------------------
-     8. SMART MOBILE DOCK SCROLL HIDE/SHOW
-     ---------------------------------------------------- */
-  let lastScrollY = window.scrollY;
-  const bottomDock = document.querySelector('.bottom-dock');
-
-  if (bottomDock) {
-    window.addEventListener('scroll', () => {
-      const currentScrollY = window.scrollY;
-      if (currentScrollY > lastScrollY && currentScrollY > 150) {
-        bottomDock.style.transform = 'translate(-50%, 140%)';
-      } else {
-        bottomDock.style.transform = 'translate(-50%, 0)';
-      }
-      lastScrollY = currentScrollY;
-    }, { passive: true });
-  }
-
-  /* ----------------------------------------------------
      9. ACTIVE PAGE HIGHLIGHTING
      ---------------------------------------------------- */
   const currentPath = window.location.pathname.split('/').pop() || 'index.html';
-  document.querySelectorAll('.nav-links a').forEach(link => {
+  document.querySelectorAll('.nav-links a, .drawer-nav a').forEach(link => {
     const href = link.getAttribute('href');
-    if (href && !href.includes('#') && href === currentPath) link.classList.add('active');
-  });
-
-  document.querySelectorAll('.dock-item').forEach(item => {
-    const href = item.getAttribute('href');
     if (href && !href.includes('#') && (href === currentPath || (currentPath === '' && href === 'index.html'))) {
-      item.classList.add('active');
+      link.classList.add('active');
     }
   });
 

@@ -22,8 +22,9 @@
 </head>
 
 <body>
-  <div class="container">
-    <header>
+  <!-- Header Top Bar Navigation -->
+  <header>
+    <div class="container">
       <nav aria-label="Main Navigation">
         <div class="logo">
           <a href="index.html">
@@ -43,32 +44,66 @@
           <span class="dot"></span>
           AVAILABLE FOR WORK
         </div>
+        <button class="mobile-nav-toggle" aria-label="Open Navigation Menu">
+          <i class="fa-solid fa-bars-staggered"></i>
+        </button>
       </nav>
-    </header>
+    </div>
+  </header>
 
-    <nav class="bottom-dock" aria-label="Mobile Navigation Dock">
-      <a href="index.html" class="dock-item" aria-label="Home">
-        <i class="fa-solid fa-house"></i>
-        <span>Home</span>
-      </a>
-      <a href="about.html" class="dock-item" aria-label="About">
-        <i class="fa-solid fa-user"></i>
+  <!-- Mobile Full-Width Sliding Drawer Navigation -->
+  <div class="mobile-drawer" aria-label="Mobile Navigation Overlay">
+    <div class="drawer-header">
+      <div class="logo">
+        <a href="index.html">
+          Alexius Dubem
+          <span class="logo-badge">DEV</span>
+        </a>
+      </div>
+      <button class="drawer-close" aria-label="Close Menu">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+    </div>
+
+    <div class="drawer-nav">
+      <a href="about.html">
         <span>About</span>
+        <span class="mono-num">01 /</span>
       </a>
-      <a href="index.html#expertise" class="dock-item" aria-label="Services">
-        <i class="fa-solid fa-bolt-lightning"></i>
+      <a href="index.html#expertise">
         <span>Expertise</span>
+        <span class="mono-num">02 /</span>
       </a>
-      <a href="thoughts.html" class="dock-item active" aria-label="Thoughts">
-        <i class="fa-solid fa-pen-nib"></i>
+      <a href="index.html#approach">
+        <span>Approach</span>
+        <span class="mono-num">03 /</span>
+      </a>
+      <a href="index.html#experience">
+        <span>Experience</span>
+        <span class="mono-num">04 /</span>
+      </a>
+      <a href="thoughts.html" class="active">
         <span>Thoughts</span>
+        <span class="mono-num">05 /</span>
       </a>
-      <a href="contact.html" class="dock-item dock-cta" aria-label="Contact">
-        <i class="fa-solid fa-envelope"></i>
+      <a href="contact.html">
         <span>Contact</span>
+        <span class="mono-num">06 /</span>
       </a>
-    </nav>
+    </div>
 
+    <div class="drawer-footer">
+      <a href="contact.html" class="btn-solid" style="width: 100%; justify-content: center;">
+        Start Project <i class="fa-solid fa-arrow-right"></i>
+      </a>
+      <div class="status-pill" style="width: fit-content; margin: 0 auto;">
+        <span class="dot"></span>
+        AVAILABLE FOR WORK
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
     <main>
       <div class="page-header" data-animate>
         <div class="mono-meta"><i class="fa-solid fa-pen-nib"></i> TECHNICAL WRITING</div>
