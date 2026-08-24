@@ -150,7 +150,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       ctx.beginPath();
       ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-      ctx.fillStyle = 'rgba(255, 51, 34, 0.4)';
+      ctx.fillStyle = 'rgba(230, 57, 43, 0.45)';
       ctx.fill();
 
       const dxMouse = mouseX - p.x;
@@ -160,7 +160,7 @@ document.addEventListener('DOMContentLoaded', () => {
         ctx.beginPath();
         ctx.moveTo(p.x, p.y);
         ctx.lineTo(mouseX, mouseY);
-        ctx.strokeStyle = `rgba(255, 51, 34, ${0.25 * (1 - distMouse / 140)})`;
+        ctx.strokeStyle = `rgba(230, 57, 43, ${0.28 * (1 - distMouse / 140)})`;
         ctx.lineWidth = 0.6;
         ctx.stroke();
       }
@@ -175,7 +175,7 @@ document.addEventListener('DOMContentLoaded', () => {
           ctx.beginPath();
           ctx.moveTo(p.x, p.y);
           ctx.lineTo(p2.x, p2.y);
-          ctx.strokeStyle = `rgba(255, 255, 255, ${0.08 * (1 - dist / 120)})`;
+          ctx.strokeStyle = `rgba(20, 20, 20, ${0.06 * (1 - dist / 120)})`;
           ctx.lineWidth = 0.5;
           ctx.stroke();
         }
