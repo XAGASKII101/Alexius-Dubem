@@ -443,6 +443,25 @@
             <p>Code Quality</p>
           </div>
         </div>
+      <!-- THOUGHTS & X POSTS FEED SECTION -->
+      <section id="thoughts" data-animate aria-label="Latest Thoughts & X Feed" style="margin-bottom: 96px;">
+        <div class="section-head">
+          <span class="font-hand rotate-left">Essays & X Posts</span>
+          <h2 class="sec-title">Thoughts & Notes</h2>
+          <p class="sec-desc">Articles, technical notes, and updates shared live from <a href="https://x.com/Xagaskii" target="_blank" style="color:var(--accent); text-decoration:none;">@Xagaskii</a>.</p>
+        </div>
+
+        <div class="filter-tabs-wrapper">
+          <div class="filter-tabs">
+            <button class="notes-filter-btn active" data-filter="all">All Feed</button>
+            <button class="notes-filter-btn" data-filter="article">Long Essays</button>
+            <button class="notes-filter-btn" data-filter="x-post">X Posts (@Xagaskii)</button>
+          </div>
+        </div>
+
+        <div class="notes-feed-list">
+          <!-- Rendered live by js/notes-engine.js -->
+        </div>
       </section>
 
       <!-- 08 DOTTAA CONTACT PANEL -->
@@ -514,6 +533,7 @@
     </footer>
   </div>
 
+  <script type="module" src="js/notes-engine.js"></script>
   <script src="js/main.js"></script>
 </body>
 

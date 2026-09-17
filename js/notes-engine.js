@@ -1,6 +1,7 @@
 /* =========================================
    ALEXIUS DUBEM — FIREBASE FIRESTORE REAL-TIME NOTES & X ENGINE
    Real-Time Cloud Firestore Sync for Articles & X (@Xagaskii) Embeds
+   With Instant Local Storage Caching & Multi-Query Fallback
    ========================================= */
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
@@ -16,7 +17,7 @@ import {
   serverTimestamp 
 } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-// Firebase App Configuration provided by user
+// Firebase App Configuration
 const firebaseConfig = {
   apiKey: "AIzaSyCR8BkJKfxS5TMigOmlZ0BDWHz-jFCok7Q",
   authDomain: "alexius-portfolio.firebaseapp.com",
@@ -42,59 +43,109 @@ class FirestoreNotesEngine {
     this.setupModalHandlers();
   }
 
-  // Real-time Firestore Sync for all visitors
+  // Real-time Firestore Sync with instant local fallback
   listenToRealtimePosts() {
-    const q = query(postsCollection, orderBy("timestamp", "desc"));
-    
-    onSnapshot(q, (snapshot) => {
-      this.posts = [];
-      snapshot.forEach((doc) => {
-        const data = doc.data();
-        this.posts.push({
-          id: doc.id,
-          ...data
+    try {
+      const q = query(postsCollection, orderBy("timestamp", "desc"));
+      
+      onSnapshot(q, (snapshot) => {
+        this.posts = [];
+        snapshot.forEach((docSnap) => {
+          const data = docSnap.data();
+          this.posts.push({
+            id: docSnap.id,
+            ...data
+          });
+        });
+
+        this.mergeLocalPosts();
+        if (this.posts.length === 0) {
+          this.loadFallbackPosts();
+        } else {
+          this.renderFeeds();
+          this.notifyAdminUI();
+        }
+      }, (error) => {
+        console.warn("Firestore ordered query failed, trying un-ordered query:", error);
+        
+        // Fallback query without orderBy
+        onSnapshot(postsCollection, (snap) => {
+          this.posts = [];
+          snap.forEach(docSnap => {
+            this.posts.push({ id: docSnap.id, ...docSnap.data() });
+          });
+          
+          this.posts.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+          this.mergeLocalPosts();
+          
+          if (this.posts.length === 0) {
+            this.loadFallbackPosts();
+          } else {
+            this.renderFeeds();
+            this.notifyAdminUI();
+          }
+        }, (err2) => {
+          console.error("Firestore un-ordered query error, loading fallback JSON:", err2);
+          this.loadFallbackPosts();
         });
       });
-
-      this.renderFeeds();
-      this.notifyAdminUI();
-    }, (error) => {
-      console.error("Firestore listener error, falling back to local posts:", error);
+    } catch (err) {
+      console.error("Error initializing listener:", err);
       this.loadFallbackPosts();
-    });
+    }
+  }
+
+  mergeLocalPosts() {
+    try {
+      const localStr = localStorage.getItem('alexius_local_posts');
+      if (localStr) {
+        const localPosts = JSON.parse(localStr);
+        localPosts.forEach(lp => {
+          if (!this.posts.some(p => p.id === lp.id || p.title === lp.title)) {
+            this.posts.unshift(lp);
+          }
+        });
+      }
+    } catch(e) {}
   }
 
   async loadFallbackPosts() {
     try {
-      const res = await fetch('/posts.json');
+      const res = await fetch('posts.json');
       if (res.ok) {
-        this.posts = await res.json();
+        const jsonPosts = await res.json();
+        this.posts = jsonPosts;
+        this.mergeLocalPosts();
         this.renderFeeds();
       }
     } catch (e) {
       console.error('Fallback fetch error:', e);
+      this.mergeLocalPosts();
+      this.renderFeeds();
     }
   }
 
   renderFeeds() {
-    const feedContainer = document.querySelector('.notes-feed-list');
-    if (!feedContainer) return;
+    const feedContainers = document.querySelectorAll('.notes-feed-list');
+    if (!feedContainers.length) return;
 
-    feedContainer.innerHTML = '';
+    feedContainers.forEach(feedContainer => {
+      feedContainer.innerHTML = '';
 
-    if (this.posts.length === 0) {
-      feedContainer.innerHTML = `<p style="color: var(--text-muted); text-align: center; padding: 40px 0;">No notes or X posts published yet.</p>`;
-      return;
-    }
-
-    this.posts.forEach(post => {
-      if (post.type === 'article') {
-        const articleEl = this.createArticleElement(post);
-        feedContainer.appendChild(articleEl);
-      } else if (post.type === 'x-post') {
-        const xPostEl = this.createXPostElement(post);
-        feedContainer.appendChild(xPostEl);
+      if (this.posts.length === 0) {
+        feedContainer.innerHTML = `<p style="color: var(--text-muted); text-align: center; padding: 40px 0;">No notes or X posts published yet.</p>`;
+        return;
       }
+
+      this.posts.forEach(post => {
+        if (post.type === 'article') {
+          const articleEl = this.createArticleElement(post);
+          feedContainer.appendChild(articleEl);
+        } else if (post.type === 'x-post') {
+          const xPostEl = this.createXPostElement(post);
+          feedContainer.appendChild(xPostEl);
+        }
+      });
     });
 
     this.setupFilterTabs();
@@ -270,8 +321,10 @@ class FirestoreNotesEngine {
   async addArticle(title, excerpt, content, tagsStr) {
     const tags = tagsStr ? tagsStr.split(',').map(s => s.trim()).filter(Boolean) : ['Engineering'];
     const now = new Date();
+    const generatedId = 'art_' + Date.now();
     
     const articleDoc = {
+      id: generatedId,
       type: 'article',
       title,
       excerpt,
@@ -279,16 +332,29 @@ class FirestoreNotesEngine {
       date: now.toLocaleDateString('en-US', { month: 'short', year: 'numeric' }).toUpperCase(),
       readTime: Math.max(2, Math.ceil(content.split(' ').length / 150)) + ' min read',
       tags,
+      createdAt: Date.now(),
       timestamp: serverTimestamp()
     };
 
-    await addDoc(postsCollection, articleDoc);
+    this.saveToLocalCache(articleDoc);
+
+    try {
+      await addDoc(postsCollection, articleDoc);
+    } catch(e) {
+      console.warn("Firestore addDoc error (saved to local cache):", e);
+    }
+
+    this.mergeLocalPosts();
+    this.renderFeeds();
+    this.notifyAdminUI();
   }
 
   async addXPost(content, tweetUrl, likes = 148, reposts = 24) {
     const now = new Date();
+    const generatedId = 'xpost_' + Date.now();
     
     const xPostDoc = {
+      id: generatedId,
       type: 'x-post',
       authorName: 'Alexius Dubem',
       authorHandle: '@Xagaskii',
@@ -302,15 +368,48 @@ class FirestoreNotesEngine {
       likes: parseInt(likes) || 148,
       views: '1.8K',
       tweetUrl: tweetUrl || 'https://x.com/Xagaskii',
+      createdAt: Date.now(),
       timestamp: serverTimestamp()
     };
 
-    await addDoc(postsCollection, xPostDoc);
+    this.saveToLocalCache(xPostDoc);
+
+    try {
+      await addDoc(postsCollection, xPostDoc);
+    } catch(e) {
+      console.warn("Firestore addDoc error (saved to local cache):", e);
+    }
+
+    this.mergeLocalPosts();
+    this.renderFeeds();
+    this.notifyAdminUI();
+  }
+
+  saveToLocalCache(postDoc) {
+    try {
+      const existing = JSON.parse(localStorage.getItem('alexius_local_posts') || '[]');
+      existing.unshift(postDoc);
+      localStorage.setItem('alexius_local_posts', JSON.stringify(existing));
+    } catch(e) {}
   }
 
   async deletePost(postId) {
-    const postRef = doc(db, "posts", postId);
-    await deleteDoc(postRef);
+    // Remove from local cache
+    try {
+      let existing = JSON.parse(localStorage.getItem('alexius_local_posts') || '[]');
+      existing = existing.filter(p => p.id !== postId);
+      localStorage.setItem('alexius_local_posts', JSON.stringify(existing));
+    } catch(e){}
+
+    this.posts = this.posts.filter(p => p.id !== postId);
+    this.renderFeeds();
+
+    try {
+      const postRef = doc(db, "posts", postId);
+      await deleteDoc(postRef);
+    } catch(e) {
+      console.warn("Firestore deleteDoc error:", e);
+    }
   }
 
   notifyAdminUI() {
