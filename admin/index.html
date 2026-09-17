@@ -14,6 +14,185 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   
   <link rel="stylesheet" href="/css/styles.css">
+
+  <style>
+    /* Admin-specific extras not in main styles.css */
+    body { padding-bottom: 40px; }
+
+    .admin-pin-wrap {
+      min-height: 80vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 20px;
+    }
+
+    .admin-pin-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 40px 36px;
+      text-align: center;
+      max-width: 420px;
+      width: 100%;
+    }
+
+    .admin-pin-card .font-hand {
+      font-size: 1.5rem;
+      margin-bottom: 6px;
+      display: block;
+    }
+
+    .admin-pin-card h2 {
+      font-family: var(--font-display);
+      font-size: 26px;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      color: var(--text);
+      margin-bottom: 8px;
+    }
+
+    .admin-pin-card p {
+      color: var(--text-muted);
+      font-size: 13.5px;
+      margin-bottom: 28px;
+    }
+
+    .admin-pin-card input {
+      width: 100%;
+      background: var(--bg-soft);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      color: var(--text);
+      font-family: var(--font-display);
+      font-size: 22px;
+      font-weight: 700;
+      padding: 14px 16px;
+      text-align: center;
+      letter-spacing: 0.3em;
+      outline: none;
+      transition: all var(--transition);
+      margin-bottom: 16px;
+    }
+
+    .admin-pin-card input:focus {
+      border-color: var(--border-active);
+      box-shadow: 0 0 0 3px rgba(200, 255, 0, 0.08);
+    }
+
+    .admin-publish-section {
+      max-width: 680px;
+    }
+
+    .tab-section-title {
+      font-family: var(--font-mono);
+      font-size: 10.5px;
+      font-weight: 600;
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 20px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    #admin-posts-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .edit-modal-panel {
+      position: fixed;
+      inset: 0;
+      z-index: 9100;
+      display: none;
+    }
+
+    .edit-modal-panel.is-open { display: block; }
+
+    .edit-modal-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0.7);
+      backdrop-filter: blur(6px);
+    }
+
+    .edit-modal-card {
+      position: absolute;
+      right: 0; top: 0; bottom: 0;
+      width: 100%;
+      max-width: 560px;
+      background: var(--bg-card);
+      border-left: 1px solid var(--border);
+      overflow-y: auto;
+      padding: 36px 32px 60px;
+      animation: slideInRight 0.32s var(--ease);
+    }
+
+    @keyframes slideInRight {
+      from { transform: translateX(50px); opacity: 0; }
+      to   { transform: translateX(0); opacity: 1; }
+    }
+
+    .edit-modal-close {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 34px; height: 34px;
+      border-radius: 50%;
+      background: var(--bg-soft);
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      cursor: pointer;
+      font-size: 14px;
+      transition: all var(--transition);
+      margin-bottom: 24px;
+      float: right;
+    }
+
+    .edit-modal-close:hover {
+      background: rgba(255,51,34,0.12);
+      border-color: rgba(255,51,34,0.3);
+      color: #ff3322;
+    }
+
+    .edit-modal-title {
+      font-family: var(--font-display);
+      font-size: 22px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: var(--text);
+      margin-bottom: 6px;
+      clear: both;
+    }
+
+    .edit-modal-subtitle {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 24px;
+    }
+
+    @media (max-width: 600px) {
+      .edit-modal-card {
+        top: auto; left: 0;
+        border-left: none;
+        border-top: 1px solid var(--border);
+        border-radius: 20px 20px 0 0;
+        animation: slideInBottom 0.32s var(--ease);
+        padding: 24px 20px 80px;
+        max-width: 100%;
+        max-height: 90vh;
+      }
+      @keyframes slideInBottom {
+        from { transform: translateY(40px); opacity: 0; }
+        to   { transform: translateY(0); opacity: 1; }
+      }
+    }
+  </style>
 </head>
 
 <body>
@@ -50,14 +229,14 @@
     <i class="fa-solid fa-moon icon-moon"></i>
   </button>
 
-  <!-- MOBILE FLOATING BOTTOM CAPSULE DOCK WITH LABELS -->
+  <!-- MOBILE FLOATING BOTTOM CAPSULE DOCK -->
   <nav class="mobile-floating-dock" aria-label="Mobile Bottom Navigation">
     <div class="mobile-dock-inner">
-      <a href="/#home" class="mobile-dock-item" aria-label="Home">
+      <a href="/" class="mobile-dock-item" aria-label="Home">
         <i class="fa-solid fa-house"></i>
         <span class="dock-label">Home</span>
       </a>
-      <a href="/#projects" class="mobile-dock-item" aria-label="Projects">
+      <a href="/#projects" class="mobile-dock-item" aria-label="Work">
         <i class="fa-solid fa-layer-group"></i>
         <span class="dock-label">Work</span>
       </a>
@@ -77,84 +256,97 @@
   </nav>
 
   <div class="container">
-    <main style="padding-top: 20px;">
-      
-      <!-- PIN AUTHENTICATION OVERLAY -->
-      <div id="admin-auth-view" class="admin-card" style="text-align: center; max-width: 440px;">
-        <span class="font-hand rotate-left">Restricted access</span>
-        <h2 class="sec-title" style="margin-top: 6px; font-size: 26px;">Creator Admin Studio</h2>
-        <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 24px;">Enter your PIN to manage notes & X posts live.</p>
-        
-        <form onsubmit="event.preventDefault(); window.checkAdminPin();">
-          <div class="form-group">
-            <input type="password" id="admin-pin-input" placeholder="Enter PIN (Default: 1010)" required style="text-align: center; font-size: 18px; letter-spacing: 0.2em;">
-          </div>
-          <button type="submit" class="btn-solid" style="width: 100%;">Unlock Studio</button>
-        </form>
+    <main style="padding-top: 10px; padding-bottom: 60px;">
+
+      <!-- PIN AUTHENTICATION -->
+      <div id="admin-auth-view" class="admin-pin-wrap">
+        <div class="admin-pin-card">
+          <span class="font-hand rotate-left">Restricted access</span>
+          <h2>Creator Studio</h2>
+          <p>Enter your PIN to manage posts live across the site.</p>
+          <form onsubmit="event.preventDefault(); checkAdminPin();">
+            <input type="password" id="admin-pin-input" placeholder="· · · ·" required autocomplete="current-password">
+            <button type="submit" class="btn-solid" style="width: 100%;">
+              Unlock Studio <i class="fa-solid fa-lock-open"></i>
+            </button>
+          </form>
+        </div>
       </div>
 
-      <!-- MAIN ADMIN DASHBOARD (HIDDEN UNTIL AUTHENTICATED) -->
-      <div id="admin-dashboard-view" class="admin-card" style="display: none;">
-        <div class="admin-header">
+      <!-- MAIN ADMIN DASHBOARD -->
+      <div id="admin-dashboard-view" style="display: none;">
+
+        <!-- Header -->
+        <div class="admin-card admin-header">
           <div>
-            <span class="font-hand rotate-left">Firebase Realtime Connected</span>
-            <h2 class="sec-title" style="font-size: 28px;">Admin Studio</h2>
+            <span class="font-hand rotate-left" style="font-size:1.2rem; margin-bottom: 4px; display:block;">Firebase realtime connected</span>
+            <h2 style="font-family:var(--font-display); font-size:28px; font-weight:800; letter-spacing:-0.03em; color:var(--text);">Admin Studio</h2>
           </div>
-          <div style="font-family: var(--font-mono); font-size: 12px; color: var(--accent); background: var(--accent-soft); padding: 6px 14px; border-radius: var(--radius-pill); border: 1px solid var(--accent-glow);">
+          <div class="admin-status-pill">
             <i class="fa-solid fa-bolt"></i> Firestore Active
           </div>
         </div>
 
-        <!-- DASHBOARD TABS -->
+        <!-- TAB NAV -->
         <div class="admin-tabs">
-          <button class="admin-tab-btn active" onclick="window.switchAdminTab('article')"><i class="fa-solid fa-pen-nib"></i> Publish Article</button>
-          <button class="admin-tab-btn" onclick="window.switchAdminTab('x-post')"><i class="fa-brands fa-x-twitter"></i> Share X Post (@Xagaskii)</button>
-          <button class="admin-tab-btn" onclick="window.switchAdminTab('manage')"><i class="fa-solid fa-list-check"></i> Manage Posts</button>
+          <button class="admin-tab-btn active" onclick="switchAdminTab('article', this)">
+            <i class="fa-solid fa-pen-nib"></i> Publish Article
+          </button>
+          <button class="admin-tab-btn" onclick="switchAdminTab('x-post', this)">
+            <i class="fa-brands fa-x-twitter"></i> Share X Post
+          </button>
+          <button class="admin-tab-btn" onclick="switchAdminTab('manage', this)">
+            <i class="fa-solid fa-list-check"></i> Manage Posts
+          </button>
         </div>
 
-        <!-- FORM 1: PUBLISH ARTICLE -->
-        <div id="admin-tab-article">
-          <form onsubmit="event.preventDefault(); window.submitArticle();">
+        <!-- FORM 1: ARTICLE -->
+        <div id="admin-tab-article" class="admin-card admin-publish-section">
+          <div class="tab-section-title"><i class="fa-solid fa-pen-nib"></i> &nbsp;New Article</div>
+          <form onsubmit="event.preventDefault(); submitArticle();">
             <div class="form-group">
               <label>Article Title</label>
               <input type="text" id="art-title" placeholder="e.g. Why Clean Architecture Accelerates Engineering Teams" required>
             </div>
             <div class="form-group">
               <label>Short Excerpt</label>
-              <input type="text" id="art-excerpt" placeholder="Brief 1-2 sentence summary..." required>
+              <input type="text" id="art-excerpt" placeholder="Brief 1–2 sentence summary..." required>
             </div>
             <div class="form-group">
-              <label>Cover Image URL (Optional)</label>
-              <input type="url" id="art-cover" placeholder="https://images.unsplash.com/... or https://domain.com/cover.jpg">
+              <label>Cover Image URL <span style="font-weight:400; text-transform:none; letter-spacing:0;">(Optional)</span></label>
+              <input type="url" id="art-cover" placeholder="https://images.unsplash.com/...">
             </div>
             <div class="form-group">
-              <label>Full Content (Markdown / Text)</label>
-              <textarea id="art-content" placeholder="Write your full essay here..." required style="min-height: 160px;"></textarea>
+              <label>Full Content</label>
+              <textarea id="art-content" placeholder="Write your full essay here..." required style="min-height: 180px;"></textarea>
             </div>
             <div class="form-group">
-              <label>Tags (Comma Separated)</label>
+              <label>Tags <span style="font-weight:400; text-transform:none; letter-spacing:0;">(comma separated)</span></label>
               <input type="text" id="art-tags" placeholder="Architecture, System Design, Best Practices">
             </div>
-            <button type="submit" id="btn-pub-art" class="btn-solid" style="width: 100%;">Publish Live to Site</button>
+            <button type="submit" id="btn-pub-art" class="btn-solid" style="width: 100%; margin-top: 6px;">
+              <i class="fa-solid fa-paper-plane"></i> Publish Live to Site
+            </button>
           </form>
         </div>
 
-        <!-- FORM 2: SHARE X POST -->
-        <div id="admin-tab-x-post" style="display: none;">
-          <form onsubmit="event.preventDefault(); window.submitXPost();">
+        <!-- FORM 2: X POST -->
+        <div id="admin-tab-x-post" class="admin-card admin-publish-section" style="display: none;">
+          <div class="tab-section-title"><i class="fa-brands fa-x-twitter"></i> &nbsp;New X Post Card</div>
+          <form onsubmit="event.preventDefault(); submitXPost();">
             <div class="form-group">
               <label>X Post Content (@Xagaskii)</label>
-              <textarea id="x-content" placeholder="Type or paste your X post text here..." required style="min-height: 120px;"></textarea>
+              <textarea id="x-content" placeholder="Paste your X post text here exactly — line breaks will be preserved..." required style="min-height: 140px;"></textarea>
             </div>
             <div class="form-group">
-              <label>Attached Image / Media URL (Optional)</label>
-              <input type="url" id="x-image" placeholder="https://pbs.twimg.com/media/... or https://domain.com/photo.jpg">
+              <label>Attached Image URL <span style="font-weight:400; text-transform:none; letter-spacing:0;">(Optional)</span></label>
+              <input type="url" id="x-image" placeholder="https://pbs.twimg.com/media/...">
             </div>
             <div class="form-group">
-              <label>Original X Post Link (Optional)</label>
+              <label>Original X Post Link <span style="font-weight:400; text-transform:none; letter-spacing:0;">(Optional)</span></label>
               <input type="url" id="x-url" placeholder="https://x.com/Xagaskii/status/123456789">
             </div>
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
               <div class="form-group">
                 <label>Likes Count</label>
                 <input type="number" id="x-likes" value="148">
@@ -164,32 +356,44 @@
                 <input type="number" id="x-reposts" value="24">
               </div>
             </div>
-            <button type="submit" id="btn-pub-x" class="btn-solid" style="width: 100%; background: #1d9bf0; color: #fff;">Publish X Card Live</button>
+            <button type="submit" id="btn-pub-x" class="btn-solid" style="width: 100%; margin-top: 6px; background: #1d9bf0; color: #fff; box-shadow: 0 6px 24px rgba(29,155,240,0.25);">
+              <i class="fa-brands fa-x-twitter"></i> Publish X Card Live
+            </button>
           </form>
         </div>
 
-        <!-- FORM 3: MANAGE EXISTING POSTS -->
-        <div id="admin-tab-manage" style="display: none;">
-          <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 20px;">Manage published notes & X posts in your Firestore database. Deleting here removes them immediately across all site visitors.</p>
-          <div id="admin-posts-list" style="display: flex; flex-direction: column; gap: 16px;">
-            <!-- Rendered by JS -->
+        <!-- FORM 3: MANAGE -->
+        <div id="admin-tab-manage" class="admin-card" style="display: none;">
+          <div class="tab-section-title"><i class="fa-solid fa-list-check"></i> &nbsp;Manage Posts</div>
+          <p style="color: var(--text-muted); font-size: 13px; margin-bottom: 20px;">
+            All published posts from Firestore. Changes here are live immediately across all visitors.
+          </p>
+          <div id="admin-posts-list">
+            <p style="color:var(--text-dim); text-align:center; padding:20px 0; font-size:13px;">
+              <i class="fa-solid fa-spinner fa-spin"></i> Loading posts...
+            </p>
           </div>
         </div>
 
-      </div>
+      </div><!-- /admin-dashboard-view -->
 
     </main>
 
     <footer>
       <div>© 2026 ALEXIUS DUBEM // CREATOR STUDIO</div>
-      <div>
-        ENGINEERED WITH PRECISION <span class="accent-dot"></span>
-      </div>
+      <div>ENGINEERED WITH PRECISION <span class="accent-dot"></span></div>
     </footer>
   </div>
 
-  <script type="module" src="../js/notes-engine.js"></script>
-  <script src="../js/main.js"></script>
+  <!-- EDIT MODAL PANEL -->
+  <div id="admin-edit-modal" class="edit-modal-panel">
+    <div class="edit-modal-overlay" onclick="closeEditModal()"></div>
+    <div class="edit-modal-card" id="edit-modal-content"></div>
+  </div>
+
+  <script type="module" src="/js/notes-engine.js"></script>
+  <script src="/js/main.js"></script>
+
   <script>
     const ADMIN_PIN = "1010";
 
@@ -198,211 +402,280 @@
       if (pin === ADMIN_PIN || pin === "admin") {
         document.getElementById('admin-auth-view').style.display = 'none';
         document.getElementById('admin-dashboard-view').style.display = 'block';
-        window.renderManageList();
+        // Wait for engine to be ready, then render manage list
+        waitForEngine(() => renderManageList());
       } else {
-        alert('Incorrect Admin PIN!');
+        const input = document.getElementById('admin-pin-input');
+        input.style.borderColor = 'rgba(255,51,34,0.5)';
+        input.style.background = 'rgba(255,51,34,0.06)';
+        setTimeout(() => {
+          input.style.borderColor = '';
+          input.style.background = '';
+        }, 1200);
       }
     }
 
-    function switchAdminTab(tab) {
+    function waitForEngine(cb, attempts = 0) {
+      if (window.notesEngine && window.notesEngine.posts !== undefined) {
+        cb();
+      } else if (attempts < 20) {
+        setTimeout(() => waitForEngine(cb, attempts + 1), 300);
+      }
+    }
+
+    function switchAdminTab(tab, btnEl) {
       document.querySelectorAll('.admin-tab-btn').forEach(btn => btn.classList.remove('active'));
-      event.target.classList.add('active');
+      if (btnEl) btnEl.classList.add('active');
 
-      document.getElementById('admin-tab-article').style.display = tab === 'article' ? 'block' : 'none';
-      document.getElementById('admin-tab-x-post').style.display = tab === 'x-post' ? 'block' : 'none';
-      document.getElementById('admin-tab-manage').style.display = tab === 'manage' ? 'block' : 'none';
+      document.getElementById('admin-tab-article').style.display  = tab === 'article' ? 'block' : 'none';
+      document.getElementById('admin-tab-x-post').style.display   = tab === 'x-post'  ? 'block' : 'none';
+      document.getElementById('admin-tab-manage').style.display   = tab === 'manage'  ? 'block' : 'none';
 
-      if (tab === 'manage') window.renderManageList();
+      if (tab === 'manage') waitForEngine(() => renderManageList());
     }
 
     async function submitArticle() {
       const btn = document.getElementById('btn-pub-art');
-      btn.textContent = "Publishing to Firestore...";
+      btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Publishing...';
       btn.disabled = true;
 
-      const title = document.getElementById('art-title').value;
-      const excerpt = document.getElementById('art-excerpt').value;
-      const content = document.getElementById('art-content').value;
-      const tags = document.getElementById('art-tags').value;
-      const coverImage = document.getElementById('art-cover') ? document.getElementById('art-cover').value : '';
+      const title      = document.getElementById('art-title').value.trim();
+      const excerpt    = document.getElementById('art-excerpt').value.trim();
+      const content    = document.getElementById('art-content').value;
+      const tags       = document.getElementById('art-tags').value.trim();
+      const coverImage = document.getElementById('art-cover').value.trim();
 
       try {
+        await waitForEngineAsync();
         await window.notesEngine.addArticle(title, excerpt, content, tags, coverImage);
-        alert('✨ Article note published live to Firestore!');
-        document.getElementById('art-title').value = '';
+        showBanner('✨ Article published live!', 'success');
+        document.getElementById('art-title').value   = '';
         document.getElementById('art-excerpt').value = '';
         document.getElementById('art-content').value = '';
-        document.getElementById('art-tags').value = '';
-        if (document.getElementById('art-cover')) document.getElementById('art-cover').value = '';
+        document.getElementById('art-tags').value    = '';
+        document.getElementById('art-cover').value   = '';
       } catch (err) {
-        alert('Error publishing to Firestore: ' + err.message);
+        showBanner('Error: ' + err.message, 'error');
       } finally {
-        btn.textContent = "Publish Live to Site";
+        btn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Publish Live to Site';
         btn.disabled = false;
       }
     }
 
     async function submitXPost() {
       const btn = document.getElementById('btn-pub-x');
-      btn.textContent = "Publishing X Card...";
+      btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Publishing...';
       btn.disabled = true;
 
-      const content = document.getElementById('x-content').value;
-      const url = document.getElementById('x-url').value;
-      const likes = document.getElementById('x-likes').value;
-      const reposts = document.getElementById('x-reposts').value;
-      const imageUrl = document.getElementById('x-image') ? document.getElementById('x-image').value : '';
+      const content  = document.getElementById('x-content').value;
+      const url      = document.getElementById('x-url').value.trim();
+      const likes    = document.getElementById('x-likes').value;
+      const reposts  = document.getElementById('x-reposts').value;
+      const imageUrl = document.getElementById('x-image').value.trim();
 
       try {
+        await waitForEngineAsync();
         await window.notesEngine.addXPost(content, url, likes, reposts, imageUrl);
-        alert('✨ X Post Card published live to Firestore!');
+        showBanner('✨ X Post card published live!', 'success');
         document.getElementById('x-content').value = '';
-        document.getElementById('x-url').value = '';
-        if (document.getElementById('x-image')) document.getElementById('x-image').value = '';
+        document.getElementById('x-url').value     = '';
+        document.getElementById('x-image').value   = '';
+        document.getElementById('x-likes').value   = '148';
+        document.getElementById('x-reposts').value = '24';
       } catch (err) {
-        alert('Error publishing X Card: ' + err.message);
+        showBanner('Error: ' + err.message, 'error');
       } finally {
-        btn.textContent = "Publish X Card Live";
+        btn.innerHTML = '<i class="fa-brands fa-x-twitter"></i> Publish X Card Live';
         btn.disabled = false;
       }
     }
 
+    function waitForEngineAsync() {
+      return new Promise((resolve, reject) => {
+        let attempts = 0;
+        const check = () => {
+          if (window.notesEngine) return resolve();
+          if (attempts++ > 20) return reject(new Error('Notes engine not loaded'));
+          setTimeout(check, 300);
+        };
+        check();
+      });
+    }
+
     window.renderManageList = function() {
       const container = document.getElementById('admin-posts-list');
-      if (!container || !window.notesEngine) return;
+      if (!container) return;
 
-      container.innerHTML = '';
+      if (!window.notesEngine || !window.notesEngine.posts) {
+        container.innerHTML = '<p style="color:var(--text-dim);text-align:center;padding:20px 0;font-size:13px;"><i class="fa-solid fa-spinner fa-spin"></i> Loading from Firestore...</p>';
+        setTimeout(() => window.renderManageList(), 500);
+        return;
+      }
+
       const posts = window.notesEngine.posts;
+      container.innerHTML = '';
 
       if (!posts.length) {
-        container.innerHTML = '<p style="color:var(--text-muted); text-align:center; padding:20px 0;">No posts available in Firestore.</p>';
+        container.innerHTML = '<p style="color:var(--text-dim); text-align:center; padding:30px 0; font-size:13px;">No posts published yet.</p>';
         return;
       }
 
       posts.forEach(p => {
+        const displayTitle = p.title || (p.content ? p.content.substring(0, 60) + '…' : 'X Post');
         const item = document.createElement('div');
-        item.style.cssText = 'display:flex; justify-content:space-between; align-items:center; padding:16px; background:var(--bg-soft); border:1px solid var(--border); border-radius:var(--radius-sm); gap:12px; flex-wrap:wrap;';
-        const displayTitle = p.title || (p.content ? p.content.substring(0, 45) + '...' : 'X Post');
+        item.className = 'admin-manage-item';
         item.innerHTML = `
-          <div style="flex:1; min-width:200px;">
-            <span style="font-family:var(--font-mono); font-size:11px; color:var(--accent); text-transform:uppercase;">[${p.type}]</span>
-            <strong style="margin-left:8px; font-size:15px; color:var(--text);">${displayTitle}</strong>
+          <div class="admin-manage-info">
+            <div class="admin-manage-type">[${p.type}]</div>
+            <div class="admin-manage-title">${displayTitle}</div>
           </div>
-          <div style="display:flex; gap:8px;">
-            <button onclick="window.openEditModal('${p.id}')" style="background:var(--accent-soft); border:1px solid var(--border); color:var(--text); padding:6px 14px; border-radius:var(--radius-pill); cursor:pointer; font-weight:600; font-size:12px;"><i class="fa-solid fa-pen-to-square" style="color:var(--accent);"></i> Edit</button>
-            <button onclick="window.deletePostLive('${p.id}')" style="background:rgba(255,51,34,0.15); border:1px solid rgba(255,51,34,0.3); color:#ff3322; padding:6px 14px; border-radius:var(--radius-pill); cursor:pointer; font-weight:600; font-size:12px;"><i class="fa-solid fa-trash"></i> Delete</button>
+          <div class="admin-manage-actions">
+            <button class="btn-edit-post" onclick="openEditModal('${p.id}')">
+              <i class="fa-solid fa-pen-to-square"></i> Edit
+            </button>
+            <button class="btn-delete-post" onclick="deletePostLive('${p.id}')">
+              <i class="fa-solid fa-trash"></i> Delete
+            </button>
           </div>
         `;
         container.appendChild(item);
       });
-    }
+    };
 
     window.deletePostLive = async function(id) {
-      if (confirm('Are you sure you want to delete this post live from Firestore?')) {
+      if (!confirm('Delete this post permanently from Firestore?')) return;
+      try {
         await window.notesEngine.deletePost(id);
-        alert('✨ Deleted live from Firestore!');
+        showBanner('Post deleted.', 'success');
+      } catch(e) {
+        showBanner('Error deleting: ' + e.message, 'error');
       }
-    }
+    };
 
     window.openEditModal = function(id) {
       const post = window.notesEngine.posts.find(p => p.id === id);
       if (!post) return;
-
-      let modal = document.getElementById('admin-edit-modal');
-      if (!modal) {
-        modal = document.createElement('div');
-        modal.id = 'admin-edit-modal';
-        modal.className = 'article-reader-modal';
-        document.body.appendChild(modal);
-      }
 
       let formHTML = '';
       if (post.type === 'article') {
         formHTML = `
           <div class="form-group">
             <label>Article Title</label>
-            <input type="text" id="edit-title" value="${post.title || ''}" required>
+            <input type="text" id="edit-title" value="${escapeAttr(post.title || '')}" required>
           </div>
           <div class="form-group">
             <label>Short Excerpt</label>
-            <input type="text" id="edit-excerpt" value="${post.excerpt || ''}" required>
+            <input type="text" id="edit-excerpt" value="${escapeAttr(post.excerpt || '')}" required>
           </div>
           <div class="form-group">
             <label>Cover Image URL (Optional)</label>
-            <input type="url" id="edit-cover" value="${post.coverImage || ''}">
+            <input type="url" id="edit-cover" value="${escapeAttr(post.coverImage || '')}">
           </div>
           <div class="form-group">
             <label>Full Content</label>
-            <textarea id="edit-content" required style="min-height: 140px;">${post.content || ''}</textarea>
+            <textarea id="edit-content" required style="min-height:160px;">${escapeHTML(post.content || '')}</textarea>
           </div>
         `;
       } else {
         formHTML = `
           <div class="form-group">
             <label>X Post Content</label>
-            <textarea id="edit-content" required style="min-height: 120px;">${post.content || ''}</textarea>
+            <textarea id="edit-content" required style="min-height:130px;">${escapeHTML(post.content || '')}</textarea>
           </div>
           <div class="form-group">
-            <label>Attached Image / Media URL (Optional)</label>
-            <input type="url" id="edit-image" value="${post.imageUrl || ''}">
+            <label>Attached Image URL (Optional)</label>
+            <input type="url" id="edit-image" value="${escapeAttr(post.imageUrl || '')}">
           </div>
           <div class="form-group">
             <label>Tweet Link (Optional)</label>
-            <input type="url" id="edit-url" value="${post.tweetUrl || ''}">
+            <input type="url" id="edit-url" value="${escapeAttr(post.tweetUrl || '')}">
           </div>
         `;
       }
 
-      modal.innerHTML = `
-        <div class="reader-modal-overlay" onclick="window.closeEditModal()"></div>
-        <div class="reader-modal-card" style="max-width: 600px;">
-          <button class="reader-modal-close" onclick="window.closeEditModal()"><i class="fa-solid fa-xmark"></i></button>
-          <h2 class="sec-title" style="font-size: 22px; margin-bottom: 20px;">Edit [${post.type}]</h2>
-          <form onsubmit="event.preventDefault(); window.submitUpdatePost('${post.id}', '${post.type}');">
-            ${formHTML}
-            <button type="submit" class="btn-solid" style="width:100%; margin-top:10px;">Save Live Changes</button>
-          </form>
-        </div>
+      const modalContent = document.getElementById('edit-modal-content');
+      modalContent.innerHTML = `
+        <button class="edit-modal-close" onclick="closeEditModal()"><i class="fa-solid fa-xmark"></i></button>
+        <div class="edit-modal-title">Edit Post</div>
+        <div class="edit-modal-subtitle">[${post.type}] · ID: ${post.id.substring(0, 12)}…</div>
+        <form onsubmit="event.preventDefault(); submitUpdatePost('${post.id}', '${post.type}');">
+          ${formHTML}
+          <button type="submit" class="btn-solid" style="width:100%; margin-top:6px;">
+            <i class="fa-solid fa-floppy-disk"></i> Save Live Changes
+          </button>
+        </form>
       `;
 
-      modal.classList.add('is-open');
-    }
+      document.getElementById('admin-edit-modal').classList.add('is-open');
+    };
 
     window.closeEditModal = function() {
-      const modal = document.getElementById('admin-edit-modal');
-      if (modal) modal.classList.remove('is-open');
-    }
+      document.getElementById('admin-edit-modal').classList.remove('is-open');
+    };
 
     window.submitUpdatePost = async function(id, type) {
       let updatedFields = {};
       if (type === 'article') {
         updatedFields = {
-          title: document.getElementById('edit-title').value,
-          excerpt: document.getElementById('edit-excerpt').value,
-          coverImage: document.getElementById('edit-cover').value,
-          content: document.getElementById('edit-content').value,
+          title:      document.getElementById('edit-title').value.trim(),
+          excerpt:    document.getElementById('edit-excerpt').value.trim(),
+          coverImage: document.getElementById('edit-cover').value.trim(),
+          content:    document.getElementById('edit-content').value,
         };
       } else {
         updatedFields = {
-          content: document.getElementById('edit-content').value,
-          imageUrl: document.getElementById('edit-image').value,
-          tweetUrl: document.getElementById('edit-url').value,
+          content:  document.getElementById('edit-content').value,
+          imageUrl: document.getElementById('edit-image').value.trim(),
+          tweetUrl: document.getElementById('edit-url').value.trim(),
         };
       }
 
-      await window.notesEngine.updatePost(id, updatedFields);
-      window.closeEditModal();
-      alert('✨ Post updated live across all visitors!');
+      try {
+        await window.notesEngine.updatePost(id, updatedFields);
+        closeEditModal();
+        showBanner('✨ Post updated live!', 'success');
+      } catch(e) {
+        showBanner('Error: ' + e.message, 'error');
+      }
+    };
+
+    // Escape helpers to prevent XSS in form values
+    function escapeAttr(str) {
+      return str.replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+    }
+    function escapeHTML(str) {
+      const d = document.createElement('div');
+      d.textContent = str;
+      return d.innerHTML;
     }
 
-    window.checkAdminPin = checkAdminPin;
-    window.switchAdminTab = switchAdminTab;
-    window.submitArticle = submitArticle;
-    window.submitXPost = submitXPost;
+    // Banner notification
+    function showBanner(msg, type) {
+      let banner = document.getElementById('admin-banner');
+      if (!banner) {
+        banner = document.createElement('div');
+        banner.id = 'admin-banner';
+        banner.style.cssText = `
+          position:fixed; top:80px; left:50%; transform:translateX(-50%);
+          font-family:var(--font-display); font-size:13px; font-weight:700;
+          padding:11px 24px; border-radius:999px; z-index:99999;
+          opacity:0; transition:opacity 0.3s ease; pointer-events:none;
+          box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+        `;
+        document.body.appendChild(banner);
+      }
+      banner.textContent = msg;
+      banner.style.background = type === 'success' ? 'var(--accent)' : '#ff3322';
+      banner.style.color = type === 'success' ? 'var(--bg)' : '#fff';
+      banner.style.opacity = '1';
+      setTimeout(() => { banner.style.opacity = '0'; }, 3000);
+    }
+
+    // ESC closes edit modal
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') closeEditModal();
+    });
   </script>
 
-  <script type="module" src="/js/notes-engine.js"></script>
-  <script src="/js/main.js"></script>
 </body>
-
 </html>
