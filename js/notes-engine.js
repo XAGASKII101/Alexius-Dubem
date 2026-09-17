@@ -1,7 +1,7 @@
 /* =========================================
    ALEXIUS DUBEM — FIREBASE FIRESTORE REAL-TIME NOTES & X ENGINE
-   Articles with Cover Images, Unique Shareable URLs, WhatsApp Share,
-   Direct Slug Router & Clean X Cards ("Explore more on X")
+   Full CRUD Engine: Real-Time Sync, Article Cover Images, WhatsApp Share,
+   Unique Shareable URLs, Edit/Update & Delete Operations
    ========================================= */
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
@@ -9,6 +9,7 @@ import {
   getFirestore, 
   collection, 
   addDoc, 
+  updateDoc,
   deleteDoc, 
   doc, 
   onSnapshot, 
@@ -218,7 +219,6 @@ class FirestoreNotesEngine {
       mediaHTML = `<div class="x-post-media" style="margin-top: 14px; border-radius: 16px; overflow: hidden; border: 1px solid var(--border);"><img src="${post.imageUrl}" alt="Attached media" style="width: 100%; display: block; max-height: 420px; object-fit: cover;"></div>`;
     }
 
-    // "Explore more on X" link - defaults to user profile if no tweetUrl provided
     const xTargetUrl = (post.tweetUrl && post.tweetUrl.trim() !== '') 
       ? post.tweetUrl 
       : 'https://x.com/Xagaskii';
@@ -333,7 +333,6 @@ class FirestoreNotesEngine {
     const post = this.posts.find(p => p.id === postId);
     if (!post) return;
 
-    // Update URL query string without reloading page
     const slug = post.slug || this.generateSlug(post.title);
     const newUrl = `${window.location.pathname}?article=${slug}`;
     window.history.pushState({ articleId: postId }, '', newUrl);
@@ -394,7 +393,6 @@ class FirestoreNotesEngine {
     if (modal) {
       modal.classList.remove('is-open');
       document.body.style.overflow = '';
-      // Reset URL to base pathname
       window.history.pushState({}, '', window.location.pathname);
     }
   }
@@ -485,6 +483,32 @@ class FirestoreNotesEngine {
     this.notifyAdminUI();
   }
 
+  async updatePost(postId, updatedFields) {
+    const index = this.posts.findIndex(p => p.id === postId);
+    if (index !== -1) {
+      this.posts[index] = { ...this.posts[index], ...updatedFields };
+    }
+
+    try {
+      let existing = JSON.parse(localStorage.getItem('alexius_local_posts') || '[]');
+      const localIdx = existing.findIndex(p => p.id === postId);
+      if (localIdx !== -1) {
+        existing[localIdx] = { ...existing[localIdx], ...updatedFields };
+        localStorage.setItem('alexius_local_posts', JSON.stringify(existing));
+      }
+    } catch(e){}
+
+    this.renderFeeds();
+    this.notifyAdminUI();
+
+    try {
+      const postRef = doc(db, "posts", postId);
+      await updateDoc(postRef, updatedFields);
+    } catch(e) {
+      console.warn("Firestore updateDoc error:", e);
+    }
+  }
+
   saveToLocalCache(postDoc) {
     try {
       const existing = JSON.parse(localStorage.getItem('alexius_local_posts') || '[]');
@@ -502,6 +526,7 @@ class FirestoreNotesEngine {
 
     this.posts = this.posts.filter(p => p.id !== postId);
     this.renderFeeds();
+    this.notifyAdminUI();
 
     try {
       const postRef = doc(db, "posts", postId);
