@@ -1,44 +1,71 @@
 /* =========================================
-   ALEXIUS DUBEM — Next-Gen Interactive JS Engine
-   Custom Cursor, Particle Canvas, 3D Card Tilt, Spotlight Glow, Typewriter, Stat Counters & Mobile Drawer Nav
+   ALEXIUS DUBEM — DOTTAA-INSPIRED JS ENGINE
+   Pill Nav, Project Filter Switcher, Mobile Floating Dock & Micro-Interactions
    ========================================= */
 
 document.addEventListener('DOMContentLoaded', () => {
 
   /* ----------------------------------------------------
-     1. MOBILE NAVIGATION DRAWER TOGGLE
+     1. PROJECT CATEGORY FILTER SWITCHER
      ---------------------------------------------------- */
-  const navToggle = document.querySelector('.mobile-nav-toggle');
-  const drawer = document.querySelector('.mobile-drawer');
-  const drawerClose = document.querySelector('.drawer-close');
+  const filterBtns = document.querySelectorAll('.filter-btn');
+  const projectCards = document.querySelectorAll('.project-card');
 
-  if (navToggle && drawer) {
-    function openDrawer() {
-      drawer.classList.add('is-open');
-      document.body.style.overflow = 'hidden';
-    }
+  if (filterBtns.length > 0 && projectCards.length > 0) {
+    filterBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        filterBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
 
-    function closeDrawer() {
-      drawer.classList.remove('is-open');
-      document.body.style.overflow = '';
-    }
+        const filter = btn.getAttribute('data-filter');
 
-    navToggle.addEventListener('click', openDrawer);
-    if (drawerClose) drawerClose.addEventListener('click', closeDrawer);
-
-    drawer.querySelectorAll('a').forEach(link => {
-      link.addEventListener('click', closeDrawer);
-    });
-
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && drawer.classList.contains('is-open')) {
-        closeDrawer();
-      }
+        projectCards.forEach(card => {
+          const category = card.getAttribute('data-category');
+          if (filter === 'all' || category === filter) {
+            card.style.display = 'flex';
+            card.style.opacity = '1';
+            card.style.transform = 'translateY(0)';
+          } else {
+            card.style.display = 'none';
+          }
+        });
+      });
     });
   }
 
   /* ----------------------------------------------------
-     2. CUSTOM MAGNETIC CURSOR & HOVER STATES
+     2. MOBILE FLOATING DOCK ACTIVE OBSERVER
+     ---------------------------------------------------- */
+  const dockItems = document.querySelectorAll('.mobile-dock-item');
+  const sections = document.querySelectorAll('section[id]');
+
+  if (dockItems.length > 0 && sections.length > 0 && 'IntersectionObserver' in window) {
+    const observerOptions = {
+      root: null,
+      rootMargin: '-30% 0px -50% 0px',
+      threshold: 0
+    };
+
+    const sectionObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const id = entry.target.getAttribute('id');
+          dockItems.forEach(item => {
+            const href = item.getAttribute('href');
+            if (href && href.includes('#' + id)) {
+              dockItems.forEach(i => i.classList.remove('active'));
+              item.classList.add('active');
+            }
+          });
+        }
+      });
+    }, observerOptions);
+
+    sections.forEach(sec => sectionObserver.observe(sec));
+  }
+
+  /* ----------------------------------------------------
+     3. CUSTOM MAGNETIC CURSOR & HOVER STATES
      ---------------------------------------------------- */
   const cursorDot = document.createElement('div');
   cursorDot.className = 'cursor-dot';
@@ -66,16 +93,16 @@ document.addEventListener('DOMContentLoaded', () => {
   }
   requestAnimationFrame(renderCursorRing);
 
-  const hoverTargets = 'a, button, input, textarea, .service-card, .approach-card, .tech-tag, .btn-solid, .btn-outline, .mobile-nav-toggle';
+  const hoverTargets = 'a, button, input, textarea, .service-card, .approach-card, .tech-tag, .btn-solid, .btn-outline, .project-card, .contact-option-row';
   document.querySelectorAll(hoverTargets).forEach(el => {
     el.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
     el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
   });
 
   /* ----------------------------------------------------
-     3. RADIAL CURSOR SPOTLIGHT GLOW ON CARDS
+     4. RADIAL CURSOR SPOTLIGHT GLOW ON CARDS
      ---------------------------------------------------- */
-  const spotlightCards = document.querySelectorAll('.service-card, .approach-card, .about-sidebar, .connect-panel, .testimonial-card, form');
+  const spotlightCards = document.querySelectorAll('.service-card, .approach-card, .about-sidebar, .testimonial-card, .project-card, .contact-section-card');
   spotlightCards.forEach(card => {
     card.addEventListener('mousemove', (e) => {
       const rect = card.getBoundingClientRect();
@@ -83,28 +110,6 @@ document.addEventListener('DOMContentLoaded', () => {
       const y = e.clientY - rect.top;
       card.style.setProperty('--mouse-x', `${x}px`);
       card.style.setProperty('--mouse-y', `${y}px`);
-    });
-  });
-
-  /* ----------------------------------------------------
-     4. 3D GYROSCOPIC CARD PERSPECTIVE TILT
-     ---------------------------------------------------- */
-  const tiltCards = document.querySelectorAll('.service-card, .approach-card, .hero-photo-box');
-  tiltCards.forEach(card => {
-    card.addEventListener('mousemove', (e) => {
-      if (window.innerWidth <= 900) return;
-      const rect = card.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
-      const centerX = rect.width / 2;
-      const centerY = rect.height / 2;
-      const rotX = ((y - centerY) / centerY) * -8;
-      const rotY = ((x - centerX) / centerX) * 8;
-      card.style.transform = `perspective(1000px) rotateX(${rotX}deg) rotateY(${rotY}deg) scale3d(1.02, 1.02, 1.02)`;
-    });
-
-    card.addEventListener('mouseleave', () => {
-      card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)';
     });
   });
 
@@ -150,7 +155,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       ctx.beginPath();
       ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-      ctx.fillStyle = 'rgba(230, 57, 43, 0.45)';
+      ctx.fillStyle = 'rgba(200, 255, 0, 0.45)';
       ctx.fill();
 
       const dxMouse = mouseX - p.x;
@@ -160,7 +165,7 @@ document.addEventListener('DOMContentLoaded', () => {
         ctx.beginPath();
         ctx.moveTo(p.x, p.y);
         ctx.lineTo(mouseX, mouseY);
-        ctx.strokeStyle = `rgba(230, 57, 43, ${0.28 * (1 - distMouse / 140)})`;
+        ctx.strokeStyle = `rgba(200, 255, 0, ${0.28 * (1 - distMouse / 140)})`;
         ctx.lineWidth = 0.6;
         ctx.stroke();
       }
@@ -175,7 +180,7 @@ document.addEventListener('DOMContentLoaded', () => {
           ctx.beginPath();
           ctx.moveTo(p.x, p.y);
           ctx.lineTo(p2.x, p2.y);
-          ctx.strokeStyle = `rgba(20, 20, 20, ${0.06 * (1 - dist / 120)})`;
+          ctx.strokeStyle = `rgba(255, 255, 255, ${0.06 * (1 - dist / 120)})`;
           ctx.lineWidth = 0.5;
           ctx.stroke();
         }
@@ -293,7 +298,7 @@ document.addEventListener('DOMContentLoaded', () => {
      9. ACTIVE PAGE HIGHLIGHTING
      ---------------------------------------------------- */
   const currentPath = window.location.pathname.split('/').pop() || 'index.html';
-  document.querySelectorAll('.nav-links a, .drawer-nav a').forEach(link => {
+  document.querySelectorAll('.nav-links a, .mobile-dock-item').forEach(link => {
     const href = link.getAttribute('href');
     if (href && !href.includes('#') && (href === currentPath || (currentPath === '' && href === 'index.html'))) {
       link.classList.add('active');

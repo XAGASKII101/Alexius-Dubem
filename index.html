@@ -6,8 +6,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
   <!-- Primary Meta Tags -->
-  <title>Alexius Dubem — Software Developer & Systems Engineer</title>
-  <meta name="title" content="Alexius Dubem — Software Developer & Systems Engineer">
+  <title>Alexius Dubem — Full-Stack Developer & Systems Engineer</title>
+  <meta name="title" content="Alexius Dubem — Full-Stack Developer & Systems Engineer">
   <meta name="description" content="Alexius Dubem is a Full-Stack Software Developer & Systems Architect based in Nigeria specializing in TypeScript, React, Node.js, Python, System Architecture, and Web3.">
   <meta name="keywords" content="Alexius Dubem, Software Developer, Full-Stack Developer, Systems Architect, React Developer Nigeria, TypeScript Engineer, Web3 Developer">
   <meta name="robots" content="index, follow">
@@ -16,14 +16,14 @@
   <!-- Open Graph / Facebook -->
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://github.com/XAGASKII101/Alexius-Dubem/">
-  <meta property="og:title" content="Alexius Dubem — Software Developer & Systems Engineer">
+  <meta property="og:title" content="Alexius Dubem — Full-Stack Developer & Systems Engineer">
   <meta property="og:description" content="Building scalable digital systems — from clean user interfaces to high-throughput backends.">
   <meta property="og:image" content="me.jpg">
 
   <!-- Twitter Card -->
   <meta property="twitter:card" content="summary_large_image">
   <meta property="twitter:url" content="https://github.com/XAGASKII101/Alexius-Dubem/">
-  <meta property="twitter:title" content="Alexius Dubem — Software Developer & Systems Engineer">
+  <meta property="twitter:title" content="Alexius Dubem — Full-Stack Developer & Systems Engineer">
   <meta property="twitter:description" content="Building scalable digital systems — from clean user interfaces to high-throughput backends.">
   <meta property="twitter:image" content="me.jpg">
 
@@ -65,138 +65,94 @@
   }
   </script>
 
-  <!-- Google Fonts & Font Awesome 6 CDN -->
+  <!-- Google Fonts (Space Grotesk, Inter, JetBrains Mono, Caveat Handwritten) & Font Awesome 6 -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   
   <link rel="stylesheet" href="css/styles.css">
 </head>
 
 <body>
-  <!-- Header Top Bar Navigation -->
-  <header>
-    <div class="container">
-      <nav aria-label="Main Navigation">
-        <div class="logo">
-          <a href="index.html">
-            Alexius Dubem
-            <span class="logo-badge">DEV</span>
-          </a>
-        </div>
-        <ul class="nav-links">
-          <li><a href="about.html">About</a></li>
-          <li><a href="index.html#projects">Projects</a></li>
-          <li><a href="index.html#expertise">Expertise</a></li>
-          <li><a href="index.html#approach">Approach</a></li>
-          <li><a href="index.html#experience">Experience</a></li>
-          <li><a href="thoughts.html">Thoughts</a></li>
-          <li><a href="contact.html">Contact</a></li>
-        </ul>
-        <div class="status-pill">
-          <span class="dot"></span>
-          AVAILABLE FOR WORK
-        </div>
-        <button class="mobile-nav-toggle" aria-label="Open Navigation Menu">
-          <i class="fa-solid fa-bars-staggered"></i>
-        </button>
-      </nav>
-    </div>
-  </header>
 
-  <!-- Mobile Full-Width Sliding Drawer Navigation -->
-  <div class="mobile-drawer" aria-label="Mobile Navigation Overlay">
-    <div class="drawer-header">
+  <!-- DESKTOP TOP PILL HEADER NAVIGATION -->
+  <header>
+    <nav class="desktop-pill-nav" aria-label="Main Navigation">
       <div class="logo">
         <a href="index.html">
           Alexius Dubem
           <span class="logo-badge">DEV</span>
         </a>
       </div>
-      <button class="drawer-close" aria-label="Close Menu">
-        <i class="fa-solid fa-xmark"></i>
-      </button>
-    </div>
+      <ul class="nav-links">
+        <li><a href="about.html">About</a></li>
+        <li><a href="index.html#projects" class="active">Work</a></li>
+        <li><a href="index.html#expertise">Services</a></li>
+        <li><a href="index.html#approach">Process</a></li>
+        <li><a href="thoughts.html">Thoughts</a></li>
+      </ul>
+      <a href="contact.html" class="btn-say-hello">
+        Say hello <i class="fa-solid fa-arrow-up-right"></i>
+      </a>
+    </nav>
+  </header>
 
-    <div class="drawer-nav">
-      <a href="about.html">
-        <span>About</span>
-        <span class="mono-num">01 /</span>
+  <!-- MOBILE FLOATING BOTTOM CAPSULE DOCK -->
+  <nav class="mobile-floating-dock" aria-label="Mobile Bottom Navigation">
+    <div class="mobile-dock-inner">
+      <a href="index.html#home" class="mobile-dock-item active" aria-label="Home">
+        <i class="fa-solid fa-house"></i>
       </a>
-      <a href="index.html#projects">
-        <span>Projects</span>
-        <span class="mono-num">02 /</span>
+      <a href="index.html#projects" class="mobile-dock-item" aria-label="Projects">
+        <i class="fa-solid fa-layer-group"></i>
       </a>
-      <a href="index.html#expertise">
-        <span>Expertise</span>
-        <span class="mono-num">03 /</span>
+      <a href="about.html" class="mobile-dock-item" aria-label="About">
+        <i class="fa-solid fa-user"></i>
       </a>
-      <a href="index.html#approach">
-        <span>Approach</span>
-        <span class="mono-num">04 /</span>
-      </a>
-      <a href="index.html#experience">
-        <span>Experience</span>
-        <span class="mono-num">05 /</span>
-      </a>
-      <a href="thoughts.html">
-        <span>Thoughts</span>
-        <span class="mono-num">06 /</span>
-      </a>
-      <a href="contact.html">
-        <span>Contact</span>
-        <span class="mono-num">07 /</span>
+      <a href="contact.html" class="mobile-dock-item" aria-label="Contact">
+        <i class="fa-solid fa-envelope"></i>
       </a>
     </div>
-
-    <div class="drawer-footer">
-      <a href="contact.html" class="btn-solid" style="width: 100%; justify-content: center;">
-        Start Project <i class="fa-solid fa-arrow-right"></i>
-      </a>
-      <div class="status-pill" style="width: fit-content; margin: 0 auto;">
-        <span class="dot"></span>
-        AVAILABLE FOR WORK
-      </div>
-    </div>
-  </div>
+  </nav>
 
   <div class="container">
     <main>
       <!-- HERO SECTION -->
-      <section class="hero" data-animate aria-label="Introduction">
+      <section id="home" class="hero" data-animate aria-label="Introduction">
         <div>
-          <div class="mono-meta">
-            <i class="fa-solid fa-terminal"></i> <span class="typewriter-role">FULL-STACK DEVELOPER</span><span class="typewriter-cursor"></span>
+          <div class="avail-badge">
+            <span class="dot"></span>
+            Always available for select projects
           </div>
           <h1>
-            Building systems that <span class="accent-text">solve real problems</span>.
+            Engineering digital systems that <span class="accent-text">feel considered</span>.
           </h1>
           <p class="hero-subtitle">
-            I design, engineer, and ship high-performance software — from scalable backends to clean digital interfaces.
+            I design, architect, and ship high-craft software — from responsive user interfaces to high-throughput backends.
           </p>
           <div class="hero-cta-group">
             <a href="contact.html" class="btn-solid">
-              Start Project <i class="fa-solid fa-arrow-right"></i>
+              Start Project <i class="fa-solid fa-arrow-up-right"></i>
             </a>
-            <a href="about.html" class="btn-outline">
-              Read Overview <i class="fa-solid fa-file-lines"></i>
+            <a href="#projects" class="btn-outline">
+              View Work <i class="fa-solid fa-arrow-down"></i>
             </a>
+          </div>
+          <div class="handwritten-callout" style="justify-content: flex-start; margin-top: 18px;">
+            <span class="font-hand rotate-left">no fluff, just code.</span>
           </div>
         </div>
 
         <div style="display: flex; flex-direction: column; align-items: center; position: relative;">
           <div class="hero-photo-box">
-            <div class="frame-corner corner-tl"></div>
-            <div class="frame-corner corner-br"></div>
             <div class="photo-frame">
               <img src="me.jpg" alt="Alexius Dubem - Software Developer and Systems Architect">
             </div>
           </div>
-          <p style="color: var(--text-muted); font-family: var(--font-mono); font-size: 12px; margin-top: 20px; text-align: center;">
+          <p style="color: var(--text-muted); font-family: var(--font-mono); font-size: 12px; margin-top: 16px; text-align: center;">
             [NG // LAGOS] — FOCUSED ON SPEED & QUALITY
           </p>
-          <div class="side-code">SYS_STATUS // ONLINE</div>
         </div>
       </section>
 
@@ -216,24 +172,36 @@
         </div>
       </div>
 
-      <!-- 02 FEATURED PROJECTS SHOWCASE -->
+      <!-- 02 FEATURED PROJECTS SHOWCASE (DOTTAA STYLE) -->
       <section id="projects" data-animate aria-label="Featured Projects">
         <div class="section-head">
-          <div class="sec-num">[02]</div>
-          <div>
-            <h2 class="sec-title">Featured Projects</h2>
-            <p class="sec-desc">Selected software products and platform architectures engineered for production.</p>
+          <span class="font-hand rotate-left">Selected work</span>
+          <h2 class="sec-title">Recent Projects</h2>
+          <p class="sec-desc">A mix of web applications, mobile platforms, and system architectures.</p>
+        </div>
+
+        <!-- CATEGORY FILTER TABS -->
+        <div class="filter-tabs-wrapper">
+          <div class="filter-tabs">
+            <button class="filter-btn active" data-filter="all">All</button>
+            <button class="filter-btn" data-filter="event-tech">Event Tech</button>
+            <button class="filter-btn" data-filter="fintech">FinTech</button>
+            <button class="filter-btn" data-filter="enterprise-it">Enterprise IT</button>
+            <button class="filter-btn" data-filter="energy">Energy</button>
           </div>
         </div>
 
         <div class="projects-grid">
           <!-- Project 1: Gridless -->
-          <div class="project-card">
+          <div class="project-card" data-category="event-tech">
             <div class="project-img-box">
               <img src="images/gridless.png" alt="Gridless - Offline-First Event Ticketing Platform">
             </div>
             <div class="project-content">
-              <span class="project-badge">OFFLINE-FIRST EVENT TECH</span>
+              <div class="project-header-row">
+                <span class="project-badge">OFFLINE-FIRST EVENT TECH</span>
+                <span class="arrow-icon-btn"><i class="fa-solid fa-arrow-up-right"></i></span>
+              </div>
               <h3 class="project-title">Gridless</h3>
               <p class="project-desc">Offline-first event ticketing and attendee validation platform. Allows event organizers to create events, sell tickets, and instantly scan & validate guest QR passes — even when network connectivity goes completely down.</p>
               <div class="project-tags">
@@ -247,12 +215,15 @@
           </div>
 
           <!-- Project 2: ARK Global -->
-          <div class="project-card">
+          <div class="project-card" data-category="fintech">
             <div class="project-img-box">
               <img src="images/ark-global.png" alt="ARK Global Investment Connection UI Mockup">
             </div>
             <div class="project-content">
-              <span class="project-badge">FINTECH CONCEPT / UI MOCKUP</span>
+              <div class="project-header-row">
+                <span class="project-badge">FINTECH CONCEPT / UI MOCKUP</span>
+                <span class="arrow-icon-btn"><i class="fa-solid fa-arrow-up-right"></i></span>
+              </div>
               <h3 class="project-title">ARK Global Investment Connection</h3>
               <p class="project-desc">Global equities trading and investment connection platform mockup & interactive UI prototype. Built to explore multi-continent stock trading workflows, real-time market pricing visualization, and portfolio sector metrics.</p>
               <div class="project-tags">
@@ -266,12 +237,15 @@
           </div>
 
           <!-- Project 3: Smart-Eches -->
-          <div class="project-card">
+          <div class="project-card" data-category="enterprise-it">
             <div class="project-img-box">
               <img src="images/smart-eches.png" alt="Smart-Eches IT Solutions Platform">
             </div>
             <div class="project-content">
-              <span class="project-badge">SMART TECH & ENTERPRISE IT</span>
+              <div class="project-header-row">
+                <span class="project-badge">SMART TECH & ENTERPRISE IT</span>
+                <span class="arrow-icon-btn"><i class="fa-solid fa-arrow-up-right"></i></span>
+              </div>
               <h3 class="project-title">Smart-Eches</h3>
               <p class="project-desc">Enterprise IT solutions and home automation platform. Designed for managing residential CCTV & solar deployments, cloud computing services, and enterprise networking infrastructure with 24/7 support telemetry.</p>
               <div class="project-tags">
@@ -284,12 +258,15 @@
           </div>
 
           <!-- Project 4: Aikon Commercial -->
-          <div class="project-card">
+          <div class="project-card" data-category="energy">
             <div class="project-img-box">
               <img src="images/aikon-commercial.png" alt="Aikon Commercial Energy & Oil Sector Portal">
             </div>
             <div class="project-content">
-              <span class="project-badge">ENERGY / OIL & GAS SECTOR</span>
+              <div class="project-header-row">
+                <span class="project-badge">ENERGY / OIL & GAS SECTOR</span>
+                <span class="arrow-icon-btn"><i class="fa-solid fa-arrow-up-right"></i></span>
+              </div>
               <h3 class="project-title">Aikon Commercial Ventures</h3>
               <p class="project-desc">Upstream & downstream oil and gas sector supply operations portal. Built to streamline industrial equipment procurement, commercial energy service catalogs, and enterprise quote requests for major corporate clients.</p>
               <div class="project-tags">
@@ -301,16 +278,18 @@
             </div>
           </div>
         </div>
+
+        <div class="handwritten-callout">
+          <span class="font-hand rotate-right">still sketching & architecting first.</span>
+        </div>
       </section>
 
-      <!-- 03 WHAT I DO (EXPERTISE) -->
+      <!-- 03 SERVICES & EXPERTISE -->
       <section id="expertise" data-animate>
         <div class="section-head">
-          <div class="sec-num">[03]</div>
-          <div>
-            <h2 class="sec-title">What I Do</h2>
-            <p class="sec-desc">End-to-end engineering across the full software lifecycle.</p>
-          </div>
+          <span class="font-hand rotate-left">What I do</span>
+          <h2 class="sec-title">Services & Expertise</h2>
+          <p class="sec-desc">End-to-end engineering across the full software lifecycle.</p>
         </div>
         <div class="services-grid">
           <div class="service-card">
@@ -347,11 +326,9 @@
       <!-- 04 APPROACH -->
       <section id="approach" data-animate>
         <div class="section-head">
-          <div class="sec-num">[04]</div>
-          <div>
-            <h2 class="sec-title">Engineering Method</h2>
-            <p class="sec-desc">A disciplined process focused on long-term reliability and maintainability.</p>
-          </div>
+          <span class="font-hand rotate-right">Engineering method</span>
+          <h2 class="sec-title">Process</h2>
+          <p class="sec-desc">A disciplined process focused on long-term reliability and maintainability.</p>
         </div>
         <div class="approach-grid">
           <div class="approach-card">
@@ -380,11 +357,9 @@
       <!-- 05 TECH MATRIX -->
       <section data-animate>
         <div class="section-head">
-          <div class="sec-num">[05]</div>
-          <div>
-            <h2 class="sec-title">Tech Stack Matrix</h2>
-            <p class="sec-desc">Core tools and frameworks used in production.</p>
-          </div>
+          <span class="font-hand rotate-left">Stack & Tools</span>
+          <h2 class="sec-title">Technologies</h2>
+          <p class="sec-desc">Core tools and frameworks used in production.</p>
         </div>
         <div class="tech-matrix">
           <span class="tech-tag"><i class="fa-brands fa-js"></i> TypeScript</span>
@@ -406,14 +381,12 @@
         </div>
       </section>
 
-      <!-- 06 TESTIMONIALS & SOCIAL PROOF -->
+      <!-- 06 TESTIMONIALS -->
       <section data-animate aria-label="Testimonials">
         <div class="section-head">
-          <div class="sec-num">[06]</div>
-          <div>
-            <h2 class="sec-title">What Collaborators Say</h2>
-            <p class="sec-desc">Feedback from founders and engineering leaders.</p>
-          </div>
+          <span class="font-hand rotate-right">Social proof</span>
+          <h2 class="sec-title">What Collaborators Say</h2>
+          <p class="sec-desc">Feedback from founders and engineering leaders.</p>
         </div>
         <div class="testimonials-grid">
           <div class="testimonial-card">
@@ -437,16 +410,17 @@
             </div>
           </div>
         </div>
+        <div class="handwritten-callout">
+          <span class="font-hand rotate-left">mostly repeat clients :)</span>
+        </div>
       </section>
 
-      <!-- 07 EXPERIENCE STATS -->
+      <!-- 07 METRICS & EXPERIENCE -->
       <section id="experience" data-animate>
         <div class="section-head">
-          <div class="sec-num">[07]</div>
-          <div>
-            <h2 class="sec-title">Metrics & Experience</h2>
-            <p class="sec-desc">Tangible engineering impact.</p>
-          </div>
+          <span class="font-hand rotate-left">By the numbers</span>
+          <h2 class="sec-title">Impact</h2>
+          <p class="sec-desc">Tangible engineering metrics.</p>
         </div>
         <div class="stats-grid">
           <div class="stat-item">
@@ -468,37 +442,61 @@
         </div>
       </section>
 
-      <!-- 08 CONNECT PANEL -->
+      <!-- 08 DOTTAA CONTACT PANEL -->
       <section id="contact" data-animate aria-label="Contact Panel">
-        <div class="connect-panel">
-          <ul class="contact-links">
-            <li>
-              <a href="mailto:alexiusdubem7@gmail.com">
-                <i class="fa-solid fa-envelope"></i>
-                alexiusdubem7@gmail.com
-              </a>
-            </li>
-            <li>
-              <a href="https://wa.me/2348107516059" target="_blank">
-                <i class="fa-brands fa-whatsapp"></i>
-                WhatsApp: +234 810 751 6059
-              </a>
-            </li>
-            <li>
-              <a href="https://ng.linkedin.com/in/alexius-dubem" target="_blank">
-                <i class="fa-brands fa-linkedin-in"></i>
-                linkedin.com/in/alexiusdubem
-              </a>
-            </li>
-            <li>
-              <a href="https://github.com/AlexiusDubem" target="_blank">
-                <i class="fa-brands fa-github"></i>
-                github.com/alexiusdubem
-              </a>
-            </li>
-          </ul>
-          <div class="connect-heading">
-            <h2>Let's build something<br><span style="color:var(--accent);">extraordinary</span>.</h2>
+        <div class="contact-section-card">
+          <span class="font-hand rotate-right">Say hi</span>
+          <h2 class="sec-title" style="margin-top: 4px;">Let's talk</h2>
+          <p class="sec-desc">Got a project in mind? Pick whichever channel is easiest and say hello.</p>
+
+          <div class="contact-options">
+            <!-- Email Option -->
+            <a href="mailto:alexiusdubem7@gmail.com" class="contact-option-row">
+              <div class="contact-option-left">
+                <span class="contact-icon-pill"><i class="fa-solid fa-envelope"></i></span>
+                <div class="contact-label-title">
+                  <span class="label">Email</span>
+                  <span class="val">alexiusdubem7@gmail.com</span>
+                </div>
+              </div>
+              <i class="fa-solid fa-arrow-up-right arrow-up-right"></i>
+            </a>
+
+            <!-- WhatsApp Option -->
+            <a href="https://wa.me/2348107516059" target="_blank" class="contact-option-row">
+              <div class="contact-option-left">
+                <span class="contact-icon-pill"><i class="fa-brands fa-whatsapp"></i></span>
+                <div class="contact-label-title">
+                  <span class="label">WhatsApp</span>
+                  <span class="val">+234 810 751 6059</span>
+                </div>
+              </div>
+              <i class="fa-solid fa-arrow-up-right arrow-up-right"></i>
+            </a>
+
+            <!-- LinkedIn Option -->
+            <a href="https://ng.linkedin.com/in/alexius-dubem" target="_blank" class="contact-option-row">
+              <div class="contact-option-left">
+                <span class="contact-icon-pill"><i class="fa-brands fa-linkedin-in"></i></span>
+                <div class="contact-label-title">
+                  <span class="label">LinkedIn</span>
+                  <span class="val">linkedin.com/in/alexiusdubem</span>
+                </div>
+              </div>
+              <i class="fa-solid fa-arrow-up-right arrow-up-right"></i>
+            </a>
+
+            <!-- GitHub Option -->
+            <a href="https://github.com/AlexiusDubem" target="_blank" class="contact-option-row">
+              <div class="contact-option-left">
+                <span class="contact-icon-pill"><i class="fa-brands fa-github"></i></span>
+                <div class="contact-label-title">
+                  <span class="label">GitHub</span>
+                  <span class="val">github.com/alexiusdubem</span>
+                </div>
+              </div>
+              <i class="fa-solid fa-arrow-up-right arrow-up-right"></i>
+            </a>
           </div>
         </div>
       </section>

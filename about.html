@@ -15,98 +15,57 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   
   <link rel="stylesheet" href="css/styles.css">
 </head>
 
 <body>
-  <!-- Header Top Bar Navigation -->
+  <!-- DESKTOP TOP PILL HEADER NAVIGATION -->
   <header>
-    <div class="container">
-      <nav aria-label="Main Navigation">
-        <div class="logo">
-          <a href="index.html">
-            Alexius Dubem
-            <span class="logo-badge">DEV</span>
-          </a>
-        </div>
-        <ul class="nav-links">
-          <li><a href="about.html" class="active">About</a></li>
-          <li><a href="index.html#expertise">Expertise</a></li>
-          <li><a href="index.html#approach">Approach</a></li>
-          <li><a href="index.html#experience">Experience</a></li>
-          <li><a href="thoughts.html">Thoughts</a></li>
-          <li><a href="contact.html">Contact</a></li>
-        </ul>
-        <div class="status-pill">
-          <span class="dot"></span>
-          AVAILABLE FOR WORK
-        </div>
-        <button class="mobile-nav-toggle" aria-label="Open Navigation Menu">
-          <i class="fa-solid fa-bars-staggered"></i>
-        </button>
-      </nav>
-    </div>
-  </header>
-
-  <!-- Mobile Full-Width Sliding Drawer Navigation -->
-  <div class="mobile-drawer" aria-label="Mobile Navigation Overlay">
-    <div class="drawer-header">
+    <nav class="desktop-pill-nav" aria-label="Main Navigation">
       <div class="logo">
         <a href="index.html">
           Alexius Dubem
           <span class="logo-badge">DEV</span>
         </a>
       </div>
-      <button class="drawer-close" aria-label="Close Menu">
-        <i class="fa-solid fa-xmark"></i>
-      </button>
-    </div>
+      <ul class="nav-links">
+        <li><a href="about.html" class="active">About</a></li>
+        <li><a href="index.html#projects">Work</a></li>
+        <li><a href="index.html#expertise">Services</a></li>
+        <li><a href="index.html#approach">Process</a></li>
+        <li><a href="thoughts.html">Thoughts</a></li>
+      </ul>
+      <a href="contact.html" class="btn-say-hello">
+        Say hello <i class="fa-solid fa-arrow-up-right"></i>
+      </a>
+    </nav>
+  </header>
 
-    <div class="drawer-nav">
-      <a href="about.html" class="active">
-        <span>About</span>
-        <span class="mono-num">01 /</span>
+  <!-- MOBILE FLOATING BOTTOM CAPSULE DOCK -->
+  <nav class="mobile-floating-dock" aria-label="Mobile Bottom Navigation">
+    <div class="mobile-dock-inner">
+      <a href="index.html#home" class="mobile-dock-item" aria-label="Home">
+        <i class="fa-solid fa-house"></i>
       </a>
-      <a href="index.html#expertise">
-        <span>Expertise</span>
-        <span class="mono-num">02 /</span>
+      <a href="index.html#projects" class="mobile-dock-item" aria-label="Projects">
+        <i class="fa-solid fa-layer-group"></i>
       </a>
-      <a href="index.html#approach">
-        <span>Approach</span>
-        <span class="mono-num">03 /</span>
+      <a href="about.html" class="mobile-dock-item active" aria-label="About">
+        <i class="fa-solid fa-user"></i>
       </a>
-      <a href="index.html#experience">
-        <span>Experience</span>
-        <span class="mono-num">04 /</span>
-      </a>
-      <a href="thoughts.html">
-        <span>Thoughts</span>
-        <span class="mono-num">05 /</span>
-      </a>
-      <a href="contact.html">
-        <span>Contact</span>
-        <span class="mono-num">06 /</span>
+      <a href="contact.html" class="mobile-dock-item" aria-label="Contact">
+        <i class="fa-solid fa-envelope"></i>
       </a>
     </div>
-
-    <div class="drawer-footer">
-      <a href="contact.html" class="btn-solid" style="width: 100%; justify-content: center;">
-        Start Project <i class="fa-solid fa-arrow-right"></i>
-      </a>
-      <div class="status-pill" style="width: fit-content; margin: 0 auto;">
-        <span class="dot"></span>
-        AVAILABLE FOR WORK
-      </div>
-    </div>
-  </div>
+  </nav>
 
   <div class="container">
     <main>
       <div class="page-header" data-animate>
-        <div class="mono-meta"><i class="fa-solid fa-id-card"></i> BIOGRAPHY & PHILOSOPHY</div>
+        <span class="font-hand rotate-left">Biography & Philosophy</span>
         <h1>Building software that <span style="color:var(--accent);">lasts</span>.</h1>
         <p>Software is a medium for problem solving. The focus is always clarity, speed, and reliability.</p>
       </div>
@@ -132,17 +91,15 @@
 
       <section data-animate>
         <div class="section-head">
-          <div class="sec-num">[01]</div>
-          <div>
-            <h2 class="sec-title">Core Principles</h2>
-            <p class="sec-desc">Guiding standards for every project I engineer.</p>
-          </div>
+          <span class="font-hand rotate-right">Standards</span>
+          <h2 class="sec-title">Core Principles</h2>
+          <p class="sec-desc">Guiding standards for every project I engineer.</p>
         </div>
 
         <div class="approach-grid">
           <div class="approach-card">
             <h3>Clarity Over Cleverness</h3>
-            <p>Readable code and predictable structure beat fragile, overly complex setups every time.</p>
+            <p>Readable codeBeat fragile, overly complex setups every single time.</p>
           </div>
           <div class="approach-card">
             <h3>Ship & Refine</h3>

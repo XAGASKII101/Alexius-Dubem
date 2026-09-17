@@ -15,140 +15,112 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   
   <link rel="stylesheet" href="css/styles.css">
 </head>
 
 <body>
-  <!-- Header Top Bar Navigation -->
+  <!-- DESKTOP TOP PILL HEADER NAVIGATION -->
   <header>
-    <div class="container">
-      <nav aria-label="Main Navigation">
-        <div class="logo">
-          <a href="index.html">
-            Alexius Dubem
-            <span class="logo-badge">DEV</span>
-          </a>
-        </div>
-        <ul class="nav-links">
-          <li><a href="about.html">About</a></li>
-          <li><a href="index.html#expertise">Expertise</a></li>
-          <li><a href="index.html#approach">Approach</a></li>
-          <li><a href="index.html#experience">Experience</a></li>
-          <li><a href="thoughts.html">Thoughts</a></li>
-          <li><a href="contact.html" class="active">Contact</a></li>
-        </ul>
-        <div class="status-pill">
-          <span class="dot"></span>
-          AVAILABLE FOR WORK
-        </div>
-        <button class="mobile-nav-toggle" aria-label="Open Navigation Menu">
-          <i class="fa-solid fa-bars-staggered"></i>
-        </button>
-      </nav>
-    </div>
-  </header>
-
-  <!-- Mobile Full-Width Sliding Drawer Navigation -->
-  <div class="mobile-drawer" aria-label="Mobile Navigation Overlay">
-    <div class="drawer-header">
+    <nav class="desktop-pill-nav" aria-label="Main Navigation">
       <div class="logo">
         <a href="index.html">
           Alexius Dubem
           <span class="logo-badge">DEV</span>
         </a>
       </div>
-      <button class="drawer-close" aria-label="Close Menu">
-        <i class="fa-solid fa-xmark"></i>
-      </button>
-    </div>
+      <ul class="nav-links">
+        <li><a href="about.html">About</a></li>
+        <li><a href="index.html#projects">Work</a></li>
+        <li><a href="index.html#expertise">Services</a></li>
+        <li><a href="index.html#approach">Process</a></li>
+        <li><a href="thoughts.html">Thoughts</a></li>
+      </ul>
+      <a href="contact.html" class="btn-say-hello active">
+        Say hello <i class="fa-solid fa-arrow-up-right"></i>
+      </a>
+    </nav>
+  </header>
 
-    <div class="drawer-nav">
-      <a href="about.html">
-        <span>About</span>
-        <span class="mono-num">01 /</span>
+  <!-- MOBILE FLOATING BOTTOM CAPSULE DOCK -->
+  <nav class="mobile-floating-dock" aria-label="Mobile Bottom Navigation">
+    <div class="mobile-dock-inner">
+      <a href="index.html#home" class="mobile-dock-item" aria-label="Home">
+        <i class="fa-solid fa-house"></i>
       </a>
-      <a href="index.html#expertise">
-        <span>Expertise</span>
-        <span class="mono-num">02 /</span>
+      <a href="index.html#projects" class="mobile-dock-item" aria-label="Projects">
+        <i class="fa-solid fa-layer-group"></i>
       </a>
-      <a href="index.html#approach">
-        <span>Approach</span>
-        <span class="mono-num">03 /</span>
+      <a href="about.html" class="mobile-dock-item" aria-label="About">
+        <i class="fa-solid fa-user"></i>
       </a>
-      <a href="index.html#experience">
-        <span>Experience</span>
-        <span class="mono-num">04 /</span>
-      </a>
-      <a href="thoughts.html">
-        <span>Thoughts</span>
-        <span class="mono-num">05 /</span>
-      </a>
-      <a href="contact.html" class="active">
-        <span>Contact</span>
-        <span class="mono-num">06 /</span>
+      <a href="contact.html" class="mobile-dock-item active" aria-label="Contact">
+        <i class="fa-solid fa-envelope"></i>
       </a>
     </div>
-
-    <div class="drawer-footer">
-      <a href="contact.html" class="btn-solid" style="width: 100%; justify-content: center;">
-        Start Project <i class="fa-solid fa-arrow-right"></i>
-      </a>
-      <div class="status-pill" style="width: fit-content; margin: 0 auto;">
-        <span class="dot"></span>
-        AVAILABLE FOR WORK
-      </div>
-    </div>
-  </div>
+  </nav>
 
   <div class="container">
     <main>
-      <div class="page-header" data-animate>
-        <div class="mono-meta"><i class="fa-solid fa-paper-plane"></i> INITIATE CONTACT</div>
-        <h1>Let's build something <span style="color:var(--accent);">great</span>.</h1>
-        <p>Whether you have a product to launch, a backend to scale, or an engineering role — send a direct message.</p>
-      </div>
+      <section id="contact" data-animate aria-label="Contact Panel" style="margin-top: 40px;">
+        <div class="contact-section-card">
+          <span class="font-hand rotate-right">Say hi</span>
+          <h2 class="sec-title" style="margin-top: 4px;">Let's talk</h2>
+          <p class="sec-desc">Got a project in mind? Pick whichever channel is easiest and say hello.</p>
 
-      <div class="contact-grid" data-animate>
-        <div class="contact-meta">
-          <h3>// DIRECT CHANNELS</h3>
-          <a href="mailto:alexiusdubem7@gmail.com"><i class="fa-solid fa-envelope" style="color:var(--accent);"></i> alexiusdubem7@gmail.com</a>
-          <a href="https://wa.me/2348107516059" target="_blank"><i class="fa-brands fa-whatsapp" style="color:var(--accent);"></i> WhatsApp: +234 810 751 6059</a>
-          <a href="https://ng.linkedin.com/in/alexius-dubem" target="_blank"><i class="fa-brands fa-linkedin-in" style="color:var(--accent);"></i> linkedin.com/in/alexiusdubem</a>
-          <a href="https://github.com/AlexiusDubem" target="_blank"><i class="fa-brands fa-github" style="color:var(--accent);"></i> github.com/alexiusdubem</a>
+          <div class="contact-options">
+            <!-- Email Option -->
+            <a href="mailto:alexiusdubem7@gmail.com" class="contact-option-row">
+              <div class="contact-option-left">
+                <span class="contact-icon-pill"><i class="fa-solid fa-envelope"></i></span>
+                <div class="contact-label-title">
+                  <span class="label">Email</span>
+                  <span class="val">alexiusdubem7@gmail.com</span>
+                </div>
+              </div>
+              <i class="fa-solid fa-arrow-up-right arrow-up-right"></i>
+            </a>
 
-          <div style="margin-top: 32px; padding: 20px; background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-sm);">
-            <p style="color: var(--text); font-family: var(--font-mono); font-size: 12px; font-weight: 700; margin-bottom: 6px;">
-              <i class="fa-solid fa-shield-halved" style="color:var(--accent);"></i> 24-HOUR RESPONSE GUARANTEE
-            </p>
-            <p style="color: var(--text-muted); font-size: 13px; line-height: 1.55;">
-              All inquiries receive a direct response within 24 hours. Confidentiality assured.
-            </p>
+            <!-- WhatsApp Option -->
+            <a href="https://wa.me/2348107516059" target="_blank" class="contact-option-row">
+              <div class="contact-option-left">
+                <span class="contact-icon-pill"><i class="fa-brands fa-whatsapp"></i></span>
+                <div class="contact-label-title">
+                  <span class="label">WhatsApp</span>
+                  <span class="val">+234 810 751 6059</span>
+                </div>
+              </div>
+              <i class="fa-solid fa-arrow-up-right arrow-up-right"></i>
+            </a>
+
+            <!-- LinkedIn Option -->
+            <a href="https://ng.linkedin.com/in/alexius-dubem" target="_blank" class="contact-option-row">
+              <div class="contact-option-left">
+                <span class="contact-icon-pill"><i class="fa-brands fa-linkedin-in"></i></span>
+                <div class="contact-label-title">
+                  <span class="label">LinkedIn</span>
+                  <span class="val">linkedin.com/in/alexiusdubem</span>
+                </div>
+              </div>
+              <i class="fa-solid fa-arrow-up-right arrow-up-right"></i>
+            </a>
+
+            <!-- GitHub Option -->
+            <a href="https://github.com/AlexiusDubem" target="_blank" class="contact-option-row">
+              <div class="contact-option-left">
+                <span class="contact-icon-pill"><i class="fa-brands fa-github"></i></span>
+                <div class="contact-label-title">
+                  <span class="label">GitHub</span>
+                  <span class="val">github.com/alexiusdubem</span>
+                </div>
+              </div>
+              <i class="fa-solid fa-arrow-up-right arrow-up-right"></i>
+            </a>
           </div>
         </div>
-
-        <form action="#" method="post" onsubmit="event.preventDefault(); alert('Message dispatched! Connect this to your preferred email API endpoint.');" aria-label="Contact Form">
-          <div class="form-field">
-            <label for="name">FULL NAME</label>
-            <input type="text" id="name" name="name" required placeholder="Jane Doe">
-          </div>
-          <div class="form-field">
-            <label for="email">EMAIL ADDRESS</label>
-            <input type="email" id="email" name="email" required placeholder="jane@example.com">
-          </div>
-          <div class="form-field">
-            <label for="subject">SUBJECT</label>
-            <input type="text" id="subject" name="subject" placeholder="Project Inquiry / Role">
-          </div>
-          <div class="form-field">
-            <label for="message">MESSAGE SCOPE</label>
-            <textarea id="message" name="message" required placeholder="Outline what you are building..."></textarea>
-          </div>
-          <button type="submit">SEND MESSAGE <i class="fa-solid fa-arrow-right"></i></button>
-        </form>
-      </div>
+      </section>
     </main>
 
     <footer>
