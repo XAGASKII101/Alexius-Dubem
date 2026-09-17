@@ -1,7 +1,7 @@
 /* =========================================
    ALEXIUS DUBEM — FIREBASE FIRESTORE REAL-TIME NOTES & X ENGINE
-   Real-Time Cloud Firestore Sync for Articles & X (@Xagaskii) Embeds
-   With X Embed HTML Auto-Parsing & Image Media Rendering
+   Articles with Cover Images, Unique Shareable URLs, WhatsApp Share,
+   Direct Slug Router & Clean X Cards ("Explore more on X")
    ========================================= */
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
@@ -41,6 +41,7 @@ class FirestoreNotesEngine {
   init() {
     this.listenToRealtimePosts();
     this.setupModalHandlers();
+    this.checkUrlForDirectArticle();
   }
 
   // Real-time Firestore Sync with instant local fallback
@@ -64,11 +65,11 @@ class FirestoreNotesEngine {
         } else {
           this.renderFeeds();
           this.notifyAdminUI();
+          this.checkUrlForDirectArticle();
         }
       }, (error) => {
         console.warn("Firestore ordered query failed, trying un-ordered query:", error);
         
-        // Fallback query without orderBy
         onSnapshot(postsCollection, (snap) => {
           this.posts = [];
           snap.forEach(docSnap => {
@@ -83,6 +84,7 @@ class FirestoreNotesEngine {
           } else {
             this.renderFeeds();
             this.notifyAdminUI();
+            this.checkUrlForDirectArticle();
           }
         }, (err2) => {
           console.error("Firestore un-ordered query error, loading fallback JSON:", err2);
@@ -111,17 +113,19 @@ class FirestoreNotesEngine {
 
   async loadFallbackPosts() {
     try {
-      const res = await fetch('posts.json');
+      const res = await fetch('/posts.json');
       if (res.ok) {
         const jsonPosts = await res.json();
         this.posts = jsonPosts;
         this.mergeLocalPosts();
         this.renderFeeds();
+        this.checkUrlForDirectArticle();
       }
     } catch (e) {
       console.error('Fallback fetch error:', e);
       this.mergeLocalPosts();
       this.renderFeeds();
+      this.checkUrlForDirectArticle();
     }
   }
 
@@ -149,7 +153,17 @@ class FirestoreNotesEngine {
     });
 
     this.setupFilterTabs();
-    this.ensureXWidgetScript();
+  }
+
+  generateSlug(title) {
+    if (!title) return 'note';
+    return title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+  }
+
+  getArticleShareUrl(post) {
+    const slug = post.slug || this.generateSlug(post.title);
+    const baseUrl = window.location.origin;
+    return `${baseUrl}/thoughts?article=${slug}`;
   }
 
   createArticleElement(post) {
@@ -162,17 +176,28 @@ class FirestoreNotesEngine {
       ? post.tags.map(t => `<span class="note-tag">${t}</span>`).join('') 
       : '';
 
+    let coverHTML = '';
+    if (post.coverImage) {
+      coverHTML = `<div class="note-cover-wrapper" style="width:100%; height:200px; border-radius:16px; overflow:hidden; margin-bottom:16px; border:1px solid var(--border);"><img src="${post.coverImage}" alt="${post.title}" style="width:100%; height:100%; object-fit:cover;"></div>`;
+    }
+
+    const shareUrl = this.getArticleShareUrl(post);
+
     article.innerHTML = `
-      <div class="note-article-card" onclick="window.notesEngine.openReaderModal('${post.id}')">
-        <div class="note-article-meta">
+      <div class="note-article-card">
+        ${coverHTML}
+        <div class="note-article-meta" onclick="window.notesEngine.openReaderModal('${post.id}')" style="cursor:pointer;">
           <span class="note-date">${post.date || 'RECENT'}</span>
           <span class="note-readtime">${post.readTime || '3 min read'}</span>
         </div>
-        <h2 class="note-article-title">${post.title}</h2>
-        <p class="note-article-excerpt">${post.excerpt}</p>
+        <h2 class="note-article-title" onclick="window.notesEngine.openReaderModal('${post.id}')" style="cursor:pointer;">${post.title}</h2>
+        <p class="note-article-excerpt" onclick="window.notesEngine.openReaderModal('${post.id}')" style="cursor:pointer;">${post.excerpt}</p>
         <div class="note-article-footer">
           <div class="note-tags-list">${tagsHTML}</div>
-          <span class="btn-expand-read">Read Note <i class="fa-solid fa-arrow-right"></i></span>
+          <div style="display:flex; align-items:center; gap:10px;">
+            <button class="btn-icon-share" onclick="event.stopPropagation(); window.notesEngine.shareWhatsApp('${post.id}')" title="Share on WhatsApp" style="background:rgba(37,211,102,0.15); color:#25D366; border:1px solid rgba(37,211,102,0.3); padding:6px 12px; border-radius:var(--radius-pill); cursor:pointer; font-size:12px; font-weight:600;"><i class="fa-brands fa-whatsapp"></i> Share</button>
+            <span class="btn-expand-read" onclick="window.notesEngine.openReaderModal('${post.id}')" style="cursor:pointer;">Read Note <i class="fa-solid fa-arrow-right"></i></span>
+          </div>
         </div>
       </div>
     `;
@@ -193,10 +218,10 @@ class FirestoreNotesEngine {
       mediaHTML = `<div class="x-post-media" style="margin-top: 14px; border-radius: 16px; overflow: hidden; border: 1px solid var(--border);"><img src="${post.imageUrl}" alt="Attached media" style="width: 100%; display: block; max-height: 420px; object-fit: cover;"></div>`;
     }
 
-    let embedHTML = '';
-    if (post.embedHtml) {
-      embedHTML = `<div class="x-embed-container" style="margin-top: 14px; width: 100%;">${post.embedHtml}</div>`;
-    }
+    // "Explore more on X" link - defaults to user profile if no tweetUrl provided
+    const xTargetUrl = (post.tweetUrl && post.tweetUrl.trim() !== '') 
+      ? post.tweetUrl 
+      : 'https://x.com/Xagaskii';
 
     container.innerHTML = `
       <div class="x-post-card">
@@ -211,15 +236,14 @@ class FirestoreNotesEngine {
               <span class="x-author-handle">${post.authorHandle || '@Xagaskii'}</span>
             </div>
           </div>
-          <a href="${post.tweetUrl || 'https://x.com/Xagaskii'}" target="_blank" class="x-logo-link" aria-label="View on X">
-            <i class="fa-brands fa-x-twitter"></i>
+          <a href="${xTargetUrl}" target="_blank" class="btn-explore-x" style="display:inline-flex; align-items:center; gap:6px; background:rgba(255,255,255,0.06); border:1px solid var(--border); color:var(--text); padding:6px 14px; border-radius:var(--radius-pill); font-family:var(--font-display); font-size:12px; font-weight:700; text-decoration:none; transition:all var(--transition);">
+            Explore more on X <i class="fa-brands fa-x-twitter" style="color:var(--accent);"></i>
           </a>
         </div>
         <div class="x-post-body">
           <p>${this.formatXText(post.content)}</p>
           ${mediaHTML}
         </div>
-        ${embedHTML}
         <div class="x-post-timestamp">
           <span>${post.time || '12:00 PM'}</span> · <span>${post.date || 'Today'}</span> · <span style="color: var(--text); font-weight: 600;">${post.views || '1.8K'}</span> Views
         </div>
@@ -228,7 +252,7 @@ class FirestoreNotesEngine {
           <div class="x-action-btn"><i class="fa-solid fa-retweet"></i> <span>${post.reposts || 24}</span></div>
           <div class="x-action-btn"><i class="fa-regular fa-heart"></i> <span>${post.likes || 148}</span></div>
           <div class="x-action-btn"><i class="fa-regular fa-bookmark"></i></div>
-          <div class="x-action-btn" onclick="window.notesEngine.copyXLink('${post.tweetUrl || 'https://x.com/Xagaskii'}')"><i class="fa-solid fa-share-nodes"></i></div>
+          <a href="${xTargetUrl}" target="_blank" class="x-action-btn" style="text-decoration:none; color:inherit;" title="Explore on X"><i class="fa-solid fa-arrow-up-right-from-square"></i></a>
         </div>
       </div>
     `;
@@ -236,31 +260,49 @@ class FirestoreNotesEngine {
     return container;
   }
 
-  ensureXWidgetScript() {
-    if (!document.getElementById('twitter-wjs')) {
-      const script = document.createElement('script');
-      script.id = 'twitter-wjs';
-      script.src = 'https://platform.x.com/widgets.js';
-      script.async = true;
-      script.charset = 'utf-8';
-      document.head.appendChild(script);
-    } else if (window.twttr && window.twttr.widgets) {
-      window.twttr.widgets.load();
-    }
-  }
-
   formatXText(text) {
     if (!text) return '';
-    // Format links and hashtags cleanly
-    let formatted = text
+    return text
       .replace(/#(\w+)/g, '<span class="x-hashtag">#$1</span>')
       .replace(/(https?:\/\/[^\s<]+)/g, '<a href="$1" target="_blank" style="color:var(--accent); text-decoration:none;">$1</a>');
-    return formatted;
   }
 
-  copyXLink(url) {
-    navigator.clipboard.writeText(url);
-    alert('X post link copied to clipboard!');
+  shareWhatsApp(postId) {
+    const post = this.posts.find(p => p.id === postId);
+    if (!post) return;
+
+    const shareUrl = this.getArticleShareUrl(post);
+    const text = `Read "${post.title}" by Alexius Dubem:\n\n${shareUrl}`;
+    window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`, '_blank');
+  }
+
+  copyArticleLink(postId) {
+    const post = this.posts.find(p => p.id === postId);
+    if (!post) return;
+    const shareUrl = this.getArticleShareUrl(post);
+    navigator.clipboard.writeText(shareUrl);
+    alert('✨ Article unique link copied to clipboard!\n' + shareUrl);
+  }
+
+  checkUrlForDirectArticle() {
+    const urlParams = new URLSearchParams(window.location.search);
+    let articleQuery = urlParams.get('article');
+
+    if (!articleQuery && window.location.hash) {
+      articleQuery = window.location.hash.replace('#', '');
+    }
+
+    if (articleQuery && this.posts.length > 0) {
+      const matchedPost = this.posts.find(p => 
+        p.id === articleQuery || 
+        p.slug === articleQuery || 
+        this.generateSlug(p.title) === articleQuery
+      );
+
+      if (matchedPost && matchedPost.type === 'article') {
+        this.openReaderModal(matchedPost.id);
+      }
+    }
   }
 
   setupFilterTabs() {
@@ -291,6 +333,11 @@ class FirestoreNotesEngine {
     const post = this.posts.find(p => p.id === postId);
     if (!post) return;
 
+    // Update URL query string without reloading page
+    const slug = post.slug || this.generateSlug(post.title);
+    const newUrl = `${window.location.pathname}?article=${slug}`;
+    window.history.pushState({ articleId: postId }, '', newUrl);
+
     let modal = document.querySelector('.article-reader-modal');
     if (!modal) {
       modal = document.createElement('div');
@@ -306,10 +353,18 @@ class FirestoreNotesEngine {
       ? post.tags.map(t => `<span class="note-tag">${t}</span>`).join('') 
       : '';
 
+    let coverHTML = '';
+    if (post.coverImage) {
+      coverHTML = `<div style="width:100%; max-height:340px; border-radius:20px; overflow:hidden; margin-bottom:24px; border:1px solid var(--border);"><img src="${post.coverImage}" alt="${post.title}" style="width:100%; height:100%; object-fit:cover;"></div>`;
+    }
+
+    const shareUrl = this.getArticleShareUrl(post);
+
     modal.innerHTML = `
       <div class="reader-modal-overlay" onclick="window.notesEngine.closeReaderModal()"></div>
       <div class="reader-modal-card">
         <button class="reader-modal-close" onclick="window.notesEngine.closeReaderModal()" aria-label="Close reader"><i class="fa-solid fa-xmark"></i></button>
+        ${coverHTML}
         <div class="reader-header">
           <div class="reader-meta">
             <span>${post.date || 'RECENT'}</span> · <span>${post.readTime || '3 min read'}</span>
@@ -321,8 +376,11 @@ class FirestoreNotesEngine {
           <p>${formattedContent}</p>
         </div>
         <div class="reader-footer">
-          <div class="font-hand rotate-left" style="font-size: 1.6rem;">written by Alexius Dubem</div>
-          <button class="btn-solid" onclick="window.notesEngine.closeReaderModal()">Done Reading</button>
+          <div class="font-hand rotate-left" style="font-size: 1.5rem;">written by Alexius Dubem</div>
+          <div style="display:flex; gap:10px; align-items:center;">
+            <button class="btn-solid" onclick="window.notesEngine.shareWhatsApp('${post.id}')" style="background:#25D366; color:#fff; font-size:13px; padding:8px 16px;"><i class="fa-brands fa-whatsapp"></i> WhatsApp</button>
+            <button class="btn-solid" onclick="window.notesEngine.copyArticleLink('${post.id}')" style="background:var(--bg-soft); color:var(--text); border:1px solid var(--border); font-size:13px; padding:8px 16px;"><i class="fa-solid fa-link"></i> Copy Link</button>
+          </div>
         </div>
       </div>
     `;
@@ -336,6 +394,8 @@ class FirestoreNotesEngine {
     if (modal) {
       modal.classList.remove('is-open');
       document.body.style.overflow = '';
+      // Reset URL to base pathname
+      window.history.pushState({}, '', window.location.pathname);
     }
   }
 
@@ -345,20 +405,29 @@ class FirestoreNotesEngine {
         this.closeReaderModal();
       }
     });
+
+    window.addEventListener('popstate', (e) => {
+      if (!e.state || !e.state.articleId) {
+        this.closeReaderModal();
+      }
+    });
   }
 
   // --- FIRESTORE CREATOR OPERATIONS ---
-  async addArticle(title, excerpt, content, tagsStr) {
+  async addArticle(title, excerpt, content, tagsStr, coverImage = '') {
     const tags = tagsStr ? tagsStr.split(',').map(s => s.trim()).filter(Boolean) : ['Engineering'];
     const now = new Date();
+    const slug = this.generateSlug(title);
     const generatedId = 'art_' + Date.now();
     
     const articleDoc = {
       id: generatedId,
+      slug,
       type: 'article',
       title,
       excerpt,
       content,
+      coverImage: coverImage || '',
       date: now.toLocaleDateString('en-US', { month: 'short', year: 'numeric' }).toUpperCase(),
       readTime: Math.max(2, Math.ceil(content.split(' ').length / 150)) + ' min read',
       tags,
@@ -379,24 +448,9 @@ class FirestoreNotesEngine {
     this.notifyAdminUI();
   }
 
-  async addXPost(content, tweetUrl = '', likes = 148, reposts = 24, imageUrl = '', embedHtml = '') {
+  async addXPost(content, tweetUrl = '', likes = 148, reposts = 24, imageUrl = '') {
     const now = new Date();
     const generatedId = 'xpost_' + Date.now();
-    
-    // Auto-parse embed HTML if user pasted raw blockquote into content
-    if (!embedHtml && content.includes('<blockquote')) {
-      embedHtml = content;
-      // Extract tweet text from <p>...</p>
-      const pMatch = content.match(/<p[^>]*>([\s\S]*?)<\/p>/i);
-      if (pMatch) {
-        content = pMatch[1].replace(/<br\s*\/?>/gi, '\n').replace(/<[^>]+>/g, '').trim();
-      }
-      // Extract tweet URL
-      const urlMatch = embedHtml.match(/href="(https:\/\/(?:x|twitter)\.com\/[^"]+)"/i);
-      if (urlMatch) {
-        tweetUrl = urlMatch[1];
-      }
-    }
 
     const xPostDoc = {
       id: generatedId,
@@ -406,9 +460,8 @@ class FirestoreNotesEngine {
       authorAvatar: 'me.jpg',
       isVerified: true,
       content,
-      tweetUrl: tweetUrl || 'https://x.com/Xagaskii',
+      tweetUrl: (tweetUrl && tweetUrl.trim()) ? tweetUrl.trim() : 'https://x.com/Xagaskii',
       imageUrl: imageUrl || '',
-      embedHtml: embedHtml || '',
       date: now.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
       time: now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }),
       replies: 14,
@@ -441,7 +494,6 @@ class FirestoreNotesEngine {
   }
 
   async deletePost(postId) {
-    // Remove from local cache
     try {
       let existing = JSON.parse(localStorage.getItem('alexius_local_posts') || '[]');
       existing = existing.filter(p => p.id !== postId);

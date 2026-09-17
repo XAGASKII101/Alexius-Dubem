@@ -22,17 +22,17 @@
   <header>
     <nav class="desktop-pill-nav" aria-label="Main Navigation">
       <div class="logo">
-        <a href="../index.html">
+        <a href="/">
           Alexius Dubem
           <span class="logo-badge">ADMIN</span>
         </a>
       </div>
       <ul class="nav-links">
-        <li><a href="../index.html">Portfolio</a></li>
-        <li><a href="../thoughts.html">Notes Feed</a></li>
-        <li><a href="index.html" class="active">Studio</a></li>
+        <li><a href="/">Portfolio</a></li>
+        <li><a href="/thoughts">Notes Feed</a></li>
+        <li><a href="/admin" class="active">Studio</a></li>
       </ul>
-      <a href="../index.html" class="btn-say-hello">
+      <a href="/" class="btn-say-hello">
         View Site <i class="fa-solid fa-arrow-up-right"></i>
       </a>
     </nav>
@@ -41,19 +41,19 @@
   <!-- MOBILE FLOATING BOTTOM CAPSULE DOCK WITH NOTES LINK -->
   <nav class="mobile-floating-dock" aria-label="Mobile Bottom Navigation">
     <div class="mobile-dock-inner">
-      <a href="../index.html#home" class="mobile-dock-item" aria-label="Home">
+      <a href="/#home" class="mobile-dock-item" aria-label="Home">
         <i class="fa-solid fa-house"></i>
       </a>
-      <a href="../index.html#projects" class="mobile-dock-item" aria-label="Projects">
+      <a href="/#projects" class="mobile-dock-item" aria-label="Projects">
         <i class="fa-solid fa-layer-group"></i>
       </a>
-      <a href="../thoughts.html" class="mobile-dock-item" aria-label="Notes">
+      <a href="/thoughts" class="mobile-dock-item" aria-label="Notes">
         <i class="fa-solid fa-pen-nib"></i>
       </a>
-      <a href="../about.html" class="mobile-dock-item" aria-label="About">
+      <a href="/about" class="mobile-dock-item" aria-label="About">
         <i class="fa-solid fa-user"></i>
       </a>
-      <a href="../contact.html" class="mobile-dock-item" aria-label="Contact">
+      <a href="/contact" class="mobile-dock-item" aria-label="Contact">
         <i class="fa-solid fa-envelope"></i>
       </a>
     </div>
@@ -107,8 +107,12 @@
               <input type="text" id="art-excerpt" placeholder="Brief 1-2 sentence summary..." required>
             </div>
             <div class="form-group">
+              <label>Cover Image URL (Optional)</label>
+              <input type="url" id="art-cover" placeholder="https://images.unsplash.com/... or https://domain.com/cover.jpg">
+            </div>
+            <div class="form-group">
               <label>Full Content (Markdown / Text)</label>
-              <textarea id="art-content" placeholder="Write your full essay here..." required></textarea>
+              <textarea id="art-content" placeholder="Write your full essay here..." required style="min-height: 160px;"></textarea>
             </div>
             <div class="form-group">
               <label>Tags (Comma Separated)</label>
@@ -203,14 +207,16 @@
       const excerpt = document.getElementById('art-excerpt').value;
       const content = document.getElementById('art-content').value;
       const tags = document.getElementById('art-tags').value;
+      const coverImage = document.getElementById('art-cover') ? document.getElementById('art-cover').value : '';
 
       try {
-        await window.notesEngine.addArticle(title, excerpt, content, tags);
+        await window.notesEngine.addArticle(title, excerpt, content, tags, coverImage);
         alert('✨ Article note published live to Firestore!');
         document.getElementById('art-title').value = '';
         document.getElementById('art-excerpt').value = '';
         document.getElementById('art-content').value = '';
         document.getElementById('art-tags').value = '';
+        if (document.getElementById('art-cover')) document.getElementById('art-cover').value = '';
       } catch (err) {
         alert('Error publishing to Firestore: ' + err.message);
       } finally {

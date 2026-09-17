@@ -1,9 +1,11 @@
 [
   {
     "id": "post-1",
+    "slug": "why-clean-architecture-accelerates-engineering-teams",
     "type": "article",
     "title": "Why Clean Architecture Accelerates Engineering Teams",
     "excerpt": "Decoupling business logic from infrastructure frameworks ensures systems remain testable, modular, and resilient as scale demands grow.",
+    "coverImage": "https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=1200&q=80",
     "content": "### Introduction to Clean Architecture\n\nWhen building software systems that endure, the initial choices regarding module separation dictate long-term maintenance velocity. Decoupling core domain rules from database clients, HTTP frameworks, and UI layers prevents framework lock-in.\n\n### Core Layers\n1. **Entities & Domain Models**: Pure business rules with zero external dependencies.\n2. **Use Cases / Interactors**: Orchestrate data flow to and from entities.\n3. **Interface Adapters**: Convert data between web/database schemas and domain models.\n4. **Frameworks & Drivers**: Technical infrastructure (React, Express, PostgreSQL).\n\n### Key Benefits\n- Independent of Frameworks\n- Easily Testable without Mocks\n- Independent of UI and Database",
     "date": "AUG 2026",
     "readTime": "4 min read",
@@ -27,9 +29,11 @@
   },
   {
     "id": "post-3",
+    "slug": "shipping-code-is-a-primary-technical-metric",
     "type": "article",
     "title": "Shipping Code is a Primary Technical Metric",
     "excerpt": "Perfect unreleased code carries zero value. A practical approach to balancing rigorous code quality with product delivery velocity.",
+    "coverImage": "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&w=1200&q=80",
     "content": "### The Velocity vs Quality Dilemma\n\nEngineers often fall into the trap of over-engineering solutions for problems that may never occur. While clean architecture and automated testing are essential, shipping functional software to users early provides empirical feedback that no design doc can match.\n\n### Key Takeaways\n- Focus on MVP core functionality first.\n- Validate hypotheses with real user interaction.\n- Refine and refactor continuously based on production metrics.",
     "date": "JUL 2026",
     "readTime": "3 min read",
