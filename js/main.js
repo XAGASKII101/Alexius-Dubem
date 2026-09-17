@@ -1,9 +1,24 @@
-/* =========================================
-   ALEXIUS DUBEM — DOTTAA-INSPIRED JS ENGINE
-   Pill Nav, Project Filter Switcher, Mobile Floating Dock & Micro-Interactions
-   ========================================= */
+/* ----------------------------------------------------
+   0. LIGHT / DARK THEME INITIALIZATION (INSTANT PAINT)
+   ---------------------------------------------------- */
+const savedTheme = localStorage.getItem('alexius_theme');
+if (savedTheme === 'light') {
+  document.body.classList.add('light-theme');
+}
 
 document.addEventListener('DOMContentLoaded', () => {
+
+  /* ----------------------------------------------------
+     THEME TOGGLE LISTENER
+     ---------------------------------------------------- */
+  const themeBtns = document.querySelectorAll('.theme-toggle-pill, #theme-toggle-btn');
+  themeBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.body.classList.toggle('light-theme');
+      const isLight = document.body.classList.contains('light-theme');
+      localStorage.setItem('alexius_theme', isLight ? 'light' : 'dark');
+    });
+  });
 
   /* ----------------------------------------------------
      1. PROJECT CATEGORY FILTER SWITCHER

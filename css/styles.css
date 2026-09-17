@@ -38,6 +38,81 @@
   --transition: 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
+/* ---------- LIGHT THEME OVERRIDES (Pristine Warm Paper Dottaa Aesthetic) ---------- */
+body.light-theme {
+  --bg: #f6f5f0;
+  --bg-card: #ffffff;
+  --bg-card-hover: #faf8f3;
+  --bg-surface: #eae9e2;
+  --bg-soft: rgba(0, 0, 0, 0.04);
+  --text: #08090a;
+  --text-muted: #525660;
+  --text-dim: #858a96;
+  --accent: #5e8000;
+  --accent-glow: rgba(94, 128, 0, 0.25);
+  --accent-soft: rgba(94, 128, 0, 0.12);
+  --border: rgba(0, 0, 0, 0.09);
+  --border-active: rgba(94, 128, 0, 0.45);
+  
+  --shadow-sm: 0 4px 15px rgba(0, 0, 0, 0.05);
+  --shadow-glow: 0 8px 24px rgba(94, 128, 0, 0.18);
+  --shadow-card: 0 16px 40px rgba(0, 0, 0, 0.08);
+}
+
+body.light-theme::before {
+  background-image: radial-gradient(rgba(0, 0, 0, 0.05) 1px, transparent 1px);
+}
+
+body.light-theme nav.desktop-pill-nav {
+  background: rgba(255, 255, 255, 0.88);
+  border-color: rgba(0, 0, 0, 0.1);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+}
+
+body.light-theme nav.mobile-floating-dock .mobile-dock-inner {
+  background: rgba(255, 255, 255, 0.94);
+  border-color: rgba(0, 0, 0, 0.12);
+  box-shadow: 0 10px 36px rgba(0, 0, 0, 0.15);
+}
+
+/* ---------- THEME TOGGLE PILL BUTTON ---------- */
+.theme-toggle-pill {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--bg-soft);
+  border: 1px solid var(--border);
+  color: var(--accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all var(--transition);
+}
+
+.theme-toggle-pill:hover {
+  background: var(--accent-soft);
+  border-color: var(--accent);
+  transform: scale(1.06);
+}
+
+body.light-theme .theme-toggle-pill .icon-moon {
+  display: block;
+}
+
+body.light-theme .theme-toggle-pill .icon-sun {
+  display: none;
+}
+
+body:not(.light-theme) .theme-toggle-pill .icon-moon {
+  display: none;
+}
+
+body:not(.light-theme) .theme-toggle-pill .icon-sun {
+  display: block;
+}
+
 /* ---------- RESET & BASE ---------- */
 *,
 *::before,
@@ -1551,7 +1626,28 @@ footer .accent-dot {
 
 @media (max-width: 640px) {
   .container {
-    padding: 0 18px;
+    padding: 0 16px;
+  }
+
+  .admin-card {
+    padding: 24px 16px;
+    width: 100%;
+  }
+
+  .admin-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .admin-tabs {
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .admin-tab-btn {
+    width: 100%;
+    text-align: center;
   }
 
   .projects-grid,
@@ -1563,7 +1659,7 @@ footer .accent-dot {
   }
 
   .contact-section-card {
-    padding: 36px 20px;
+    padding: 36px 18px;
   }
 
   .trust-bar {
@@ -1573,26 +1669,31 @@ footer .accent-dot {
   }
 
   .reader-modal-card {
-    padding: 24px 16px;
-    width: 95%;
+    padding: 20px 14px;
+    width: 96%;
+    max-height: 90vh;
   }
 
   .project-card-image {
-    height: 220px;
+    height: 210px;
   }
 
   .project-card-content {
-    padding: 24px 20px;
+    padding: 20px 16px;
   }
 }
 
 @media (max-width: 480px) {
   .container {
-    padding: 0 14px;
+    padding: 0 12px;
   }
 
   .hero h1 {
-    font-size: clamp(30px, 8vw, 42px);
+    font-size: clamp(28px, 8vw, 40px);
+  }
+
+  .hero-subtitle {
+    font-size: 15px;
   }
 
   .btn-solid,
@@ -1602,14 +1703,29 @@ footer .accent-dot {
   }
 
   .mobile-dock-inner {
-    padding: 5px;
-    gap: 6px;
+    padding: 4px;
+    gap: 4px;
+    max-width: 95vw;
   }
 
   .mobile-dock-item {
-    width: 40px;
-    height: 40px;
-    font-size: 16px;
+    width: 38px;
+    height: 38px;
+    font-size: 15px;
+  }
+
+  .filter-tabs {
+    gap: 6px;
+    overflow-x: auto;
+    padding-bottom: 6px;
+    justify-content: flex-start;
+  }
+
+  .filter-btn,
+  .notes-filter-btn {
+    padding: 8px 16px;
+    font-size: 12px;
+    white-space: nowrap;
   }
 
   footer {

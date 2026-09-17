@@ -38,9 +38,15 @@
         <li><a href="/#approach">Process</a></li>
         <li><a href="/thoughts" class="active">Thoughts</a></li>
       </ul>
-      <a href="/contact" class="btn-say-hello">
-        Say hello <i class="fa-solid fa-arrow-up-right"></i>
-      </a>
+      <div style="display:flex; align-items:center; gap:10px;">
+        <button class="theme-toggle-pill" aria-label="Toggle Light/Dark Theme">
+          <i class="fa-solid fa-sun icon-sun"></i>
+          <i class="fa-solid fa-moon icon-moon"></i>
+        </button>
+        <a href="/contact" class="btn-say-hello">
+          Say hello <i class="fa-solid fa-arrow-up-right"></i>
+        </a>
+      </div>
     </nav>
   </header>
 
@@ -62,6 +68,10 @@
       <a href="/contact" class="mobile-dock-item" aria-label="Contact">
         <i class="fa-solid fa-envelope"></i>
       </a>
+      <button class="mobile-dock-item theme-toggle-pill" style="border:none; background:transparent;" aria-label="Toggle Theme">
+        <i class="fa-solid fa-sun icon-sun"></i>
+        <i class="fa-solid fa-moon icon-moon"></i>
+      </button>
     </div>
   </nav>
 
