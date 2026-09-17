@@ -1,58 +1,79 @@
 /* =========================================
-   ALEXIUS DUBEM — NOTES & X POST ENGINE
-   Posts Data Store, X (@Xagaskii) Card Renderer, Expandable Article Reader Modal & Admin CRUD
+   ALEXIUS DUBEM — FIREBASE FIRESTORE REAL-TIME NOTES & X ENGINE
+   Real-Time Cloud Firestore Sync for Articles & X (@Xagaskii) Embeds
    ========================================= */
 
-const NOTES_STORAGE_KEY = 'alexius_portfolio_posts_v1';
-const DEFAULT_POSTS_PATH = 'posts.json';
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+import { 
+  getFirestore, 
+  collection, 
+  addDoc, 
+  deleteDoc, 
+  doc, 
+  onSnapshot, 
+  query, 
+  orderBy, 
+  serverTimestamp 
+} from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-class NotesEngine {
+// Firebase App Configuration provided by user
+const firebaseConfig = {
+  apiKey: "AIzaSyCR8BkJKfxS5TMigOmlZ0BDWHz-jFCok7Q",
+  authDomain: "alexius-portfolio.firebaseapp.com",
+  projectId: "alexius-portfolio",
+  storageBucket: "alexius-portfolio.firebasestorage.app",
+  messagingSenderId: "566487354244",
+  appId: "1:566487354244:web:049821448e162f3c14abd1"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+const postsCollection = collection(db, "posts");
+
+class FirestoreNotesEngine {
   constructor() {
     this.posts = [];
     this.init();
   }
 
-  async init() {
-    await this.loadPosts();
-    this.renderFeeds();
+  init() {
+    this.listenToRealtimePosts();
     this.setupModalHandlers();
   }
 
-  async loadPosts() {
-    const localData = localStorage.getItem(NOTES_STORAGE_KEY);
-    if (localData) {
-      try {
-        this.posts = JSON.parse(localData);
-        return;
-      } catch (e) {
-        console.error('Error parsing local posts data:', e);
-      }
-    }
+  // Real-time Firestore Sync for all visitors
+  listenToRealtimePosts() {
+    const q = query(postsCollection, orderBy("timestamp", "desc"));
+    
+    onSnapshot(q, (snapshot) => {
+      this.posts = [];
+      snapshot.forEach((doc) => {
+        const data = doc.data();
+        this.posts.push({
+          id: doc.id,
+          ...data
+        });
+      });
 
+      this.renderFeeds();
+      this.notifyAdminUI();
+    }, (error) => {
+      console.error("Firestore listener error, falling back to local posts:", error);
+      this.loadFallbackPosts();
+    });
+  }
+
+  async loadFallbackPosts() {
     try {
-      const res = await fetch(DEFAULT_POSTS_PATH);
+      const res = await fetch('/posts.json');
       if (res.ok) {
         this.posts = await res.json();
-        localStorage.setItem(NOTES_STORAGE_KEY, JSON.stringify(this.posts));
+        this.renderFeeds();
       }
-    } catch (err) {
-      console.warn('Could not fetch posts.json, using fallback empty list:', err);
-      this.posts = [];
+    } catch (e) {
+      console.error('Fallback fetch error:', e);
     }
-  }
-
-  savePosts() {
-    localStorage.setItem(NOTES_STORAGE_KEY, JSON.stringify(this.posts));
-  }
-
-  exportJSON() {
-    const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(this.posts, null, 2));
-    const downloadAnchor = document.createElement('a');
-    downloadAnchor.setAttribute("href", dataStr);
-    downloadAnchor.setAttribute("download", "posts.json");
-    document.body.appendChild(downloadAnchor);
-    downloadAnchor.click();
-    downloadAnchor.remove();
   }
 
   renderFeeds() {
@@ -62,7 +83,7 @@ class NotesEngine {
     feedContainer.innerHTML = '';
 
     if (this.posts.length === 0) {
-      feedContainer.innerHTML = `<p style="color: var(--text-muted); text-align: center; padding: 40px 0;">No notes or posts published yet.</p>`;
+      feedContainer.innerHTML = `<p style="color: var(--text-muted); text-align: center; padding: 40px 0;">No notes or X posts published yet.</p>`;
       return;
     }
 
@@ -85,12 +106,14 @@ class NotesEngine {
     article.setAttribute('data-post-type', 'article');
     article.setAttribute('data-post-id', post.id);
 
-    const tagsHTML = post.tags ? post.tags.map(t => `<span class="note-tag">${t}</span>`).join('') : '';
+    const tagsHTML = post.tags && Array.isArray(post.tags) 
+      ? post.tags.map(t => `<span class="note-tag">${t}</span>`).join('') 
+      : '';
 
     article.innerHTML = `
       <div class="note-article-card" onclick="window.notesEngine.openReaderModal('${post.id}')">
         <div class="note-article-meta">
-          <span class="note-date">${post.date}</span>
+          <span class="note-date">${post.date || 'RECENT'}</span>
           <span class="note-readtime">${post.readTime || '3 min read'}</span>
         </div>
         <h2 class="note-article-title">${post.title}</h2>
@@ -111,13 +134,13 @@ class NotesEngine {
     container.setAttribute('data-post-type', 'x-post');
     container.setAttribute('data-post-id', post.id);
 
-    const verifiedBadge = post.isVerified ? `<i class="fa-solid fa-circle-check x-verified-badge"></i>` : '';
+    const verifiedBadge = post.isVerified !== false ? `<i class="fa-solid fa-circle-check x-verified-badge"></i>` : '';
 
     container.innerHTML = `
       <div class="x-post-card">
         <div class="x-post-header">
           <div class="x-post-author">
-            <img src="${post.authorAvatar || 'me.jpg'}" alt="${post.authorName}" class="x-author-avatar">
+            <img src="${post.authorAvatar || 'me.jpg'}" alt="${post.authorName || 'Alexius Dubem'}" class="x-author-avatar">
             <div class="x-author-info">
               <div class="x-author-name-row">
                 <span class="x-author-name">${post.authorName || 'Alexius Dubem'}</span>
@@ -134,14 +157,14 @@ class NotesEngine {
           <p>${this.formatXText(post.content)}</p>
         </div>
         <div class="x-post-timestamp">
-          <span>${post.time || '12:00 PM'}</span> · <span>${post.date || 'Today'}</span> · <span style="color: var(--text); font-weight: 600;">${post.views || '1.2K'}</span> Views
+          <span>${post.time || '12:00 PM'}</span> · <span>${post.date || 'Today'}</span> · <span style="color: var(--text); font-weight: 600;">${post.views || '1.4K'}</span> Views
         </div>
         <div class="x-post-actions">
-          <div class="x-action-btn"><i class="fa-regular fa-comment"></i> <span>${post.replies || 0}</span></div>
-          <div class="x-action-btn"><i class="fa-solid fa-retweet"></i> <span>${post.reposts || 0}</span></div>
-          <div class="x-action-btn"><i class="fa-regular fa-heart"></i> <span>${post.likes || 0}</span></div>
+          <div class="x-action-btn"><i class="fa-regular fa-comment"></i> <span>${post.replies || 12}</span></div>
+          <div class="x-action-btn"><i class="fa-solid fa-retweet"></i> <span>${post.reposts || 24}</span></div>
+          <div class="x-action-btn"><i class="fa-regular fa-heart"></i> <span>${post.likes || 148}</span></div>
           <div class="x-action-btn"><i class="fa-regular fa-bookmark"></i></div>
-          <div class="x-action-btn" onclick="navigator.clipboard.writeText('${post.tweetUrl || 'https://x.com/Xagaskii'}'); alert('Post link copied to clipboard!');"><i class="fa-solid fa-share-nodes"></i></div>
+          <div class="x-action-btn" onclick="window.notesEngine.copyXLink('${post.tweetUrl || 'https://x.com/Xagaskii'}')"><i class="fa-solid fa-share-nodes"></i></div>
         </div>
       </div>
     `;
@@ -152,6 +175,11 @@ class NotesEngine {
   formatXText(text) {
     if (!text) return '';
     return text.replace(/#(\w+)/g, '<span class="x-hashtag">#$1</span>');
+  }
+
+  copyXLink(url) {
+    navigator.clipboard.writeText(url);
+    alert('X post link copied to clipboard!');
   }
 
   setupFilterTabs() {
@@ -193,7 +221,9 @@ class NotesEngine {
       ? post.content.replace(/\n\n/g, '</p><p>').replace(/\n/g, '<br>')
       : post.excerpt;
 
-    const tagsHTML = post.tags ? post.tags.map(t => `<span class="note-tag">${t}</span>`).join('') : '';
+    const tagsHTML = post.tags && Array.isArray(post.tags) 
+      ? post.tags.map(t => `<span class="note-tag">${t}</span>`).join('') 
+      : '';
 
     modal.innerHTML = `
       <div class="reader-modal-overlay" onclick="window.notesEngine.closeReaderModal()"></div>
@@ -201,7 +231,7 @@ class NotesEngine {
         <button class="reader-modal-close" onclick="window.notesEngine.closeReaderModal()" aria-label="Close reader"><i class="fa-solid fa-xmark"></i></button>
         <div class="reader-header">
           <div class="reader-meta">
-            <span>${post.date}</span> · <span>${post.readTime || '3 min read'}</span>
+            <span>${post.date || 'RECENT'}</span> · <span>${post.readTime || '3 min read'}</span>
           </div>
           <h1 class="reader-title">${post.title}</h1>
           <div class="reader-tags">${tagsHTML}</div>
@@ -236,30 +266,29 @@ class NotesEngine {
     });
   }
 
-  /* ---------- ADMIN CRUD OPERATIONS ---------- */
-  addArticle(title, excerpt, content, tagsStr) {
-    const tags = tagsStr ? tagsStr.split(',').map(s => s.trim()).filter(Boolean) : ['Writing'];
-    const newArticle = {
-      id: 'post-' + Date.now(),
+  // --- FIRESTORE CREATOR OPERATIONS ---
+  async addArticle(title, excerpt, content, tagsStr) {
+    const tags = tagsStr ? tagsStr.split(',').map(s => s.trim()).filter(Boolean) : ['Engineering'];
+    const now = new Date();
+    
+    const articleDoc = {
       type: 'article',
       title,
       excerpt,
       content,
-      date: new Date().toLocaleDateString('en-US', { month: 'SHORT', year: 'numeric' }).toUpperCase(),
+      date: now.toLocaleDateString('en-US', { month: 'short', year: 'numeric' }).toUpperCase(),
       readTime: Math.max(2, Math.ceil(content.split(' ').length / 150)) + ' min read',
-      tags
+      tags,
+      timestamp: serverTimestamp()
     };
 
-    this.posts.unshift(newArticle);
-    this.savePosts();
-    this.renderFeeds();
-    return newArticle;
+    await addDoc(postsCollection, articleDoc);
   }
 
-  addXPost(content, tweetUrl, likes = 120, reposts = 15, replies = 8) {
+  async addXPost(content, tweetUrl, likes = 148, reposts = 24) {
     const now = new Date();
-    const newXPost = {
-      id: 'post-' + Date.now(),
+    
+    const xPostDoc = {
       type: 'x-post',
       authorName: 'Alexius Dubem',
       authorHandle: '@Xagaskii',
@@ -268,26 +297,28 @@ class NotesEngine {
       content,
       date: now.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
       time: now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }),
-      replies,
-      reposts,
-      likes,
-      views: (Math.random() * 2 + 1).toFixed(1) + 'K',
-      tweetUrl: tweetUrl || 'https://x.com/Xagaskii'
+      replies: 14,
+      reposts: parseInt(reposts) || 24,
+      likes: parseInt(likes) || 148,
+      views: '1.8K',
+      tweetUrl: tweetUrl || 'https://x.com/Xagaskii',
+      timestamp: serverTimestamp()
     };
 
-    this.posts.unshift(newXPost);
-    this.savePosts();
-    this.renderFeeds();
-    return newXPost;
+    await addDoc(postsCollection, xPostDoc);
   }
 
-  deletePost(postId) {
-    this.posts = this.posts.filter(p => p.id !== postId);
-    this.savePosts();
-    this.renderFeeds();
+  async deletePost(postId) {
+    const postRef = doc(db, "posts", postId);
+    await deleteDoc(postRef);
+  }
+
+  notifyAdminUI() {
+    if (typeof window.renderManageList === 'function') {
+      window.renderManageList();
+    }
   }
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-  window.notesEngine = new NotesEngine();
-});
+// Global initialization
+window.notesEngine = new FirestoreNotesEngine();
