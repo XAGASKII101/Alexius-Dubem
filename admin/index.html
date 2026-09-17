@@ -324,6 +324,15 @@
               <label>Tags <span style="font-weight:400; text-transform:none; letter-spacing:0;">(comma separated)</span></label>
               <input type="text" id="art-tags" placeholder="Architecture, System Design, Best Practices">
             </div>
+            <div class="form-group" style="background:var(--bg-soft); border:1px solid var(--border); border-radius:var(--radius-sm); padding:14px 16px;">
+              <label style="display:flex; align-items:center; gap:10px; cursor:pointer; font-weight:700; text-transform:none; margin-bottom:4px;">
+                <input type="checkbox" id="art-featured" checked style="width:18px; height:18px; accent-color:var(--accent); cursor:pointer;">
+                <span>⭐ Feature on Homepage (Index)</span>
+              </label>
+              <span style="font-size:11.5px; color:var(--text-dim); display:block; margin-left:28px;">
+                When checked, this article appears in the homepage feed AND the Thoughts page. Uncheck to only list it on the Thoughts page.
+              </span>
+            </div>
             <button type="submit" id="btn-pub-art" class="btn-solid" style="width: 100%; margin-top: 6px;">
               <i class="fa-solid fa-paper-plane"></i> Publish Live to Site
             </button>
@@ -444,10 +453,11 @@
       const content    = document.getElementById('art-content').value;
       const tags       = document.getElementById('art-tags').value.trim();
       const coverImage = document.getElementById('art-cover').value.trim();
+      const isFeatured = document.getElementById('art-featured') ? document.getElementById('art-featured').checked : true;
 
       try {
         await waitForEngineAsync();
-        await window.notesEngine.addArticle(title, excerpt, content, tags, coverImage);
+        await window.notesEngine.addArticle(title, excerpt, content, tags, coverImage, isFeatured);
         showBanner('✨ Article published live!', 'success');
         document.getElementById('art-title').value   = '';
         document.getElementById('art-excerpt').value = '';
@@ -521,15 +531,22 @@
       }
 
       posts.forEach(p => {
-        const displayTitle = p.title || (p.content ? p.content.substring(0, 60) + '…' : 'X Post');
+        const displayTitle = p.title || (p.content ? p.content.substring(0, 50) + '…' : 'X Post');
+        const isFeat = p.isFeatured !== false;
         const item = document.createElement('div');
         item.className = 'admin-manage-item';
         item.innerHTML = `
           <div class="admin-manage-info">
-            <div class="admin-manage-type">[${p.type}]</div>
+            <div style="display:flex; align-items:center; gap:8px;">
+              <span class="admin-manage-type">[${p.type}]</span>
+              ${isFeat ? '<span style="font-size:10px; color:var(--accent); font-family:var(--font-mono); font-weight:700;"><i class="fa-solid fa-star"></i> Home</span>' : '<span style="font-size:10px; color:var(--text-dim); font-family:var(--font-mono);">Thoughts Only</span>'}
+            </div>
             <div class="admin-manage-title">${displayTitle}</div>
           </div>
           <div class="admin-manage-actions">
+            <button class="btn-toggle-featured ${isFeat ? 'is-feat' : ''}" onclick="toggleFeaturePostLive('${p.id}')" title="Toggle appearance on Homepage">
+              <i class="${isFeat ? 'fa-solid fa-star' : 'fa-regular fa-star'}"></i> ${isFeat ? 'Featured' : 'Not on Home'}
+            </button>
             <button class="btn-edit-post" onclick="openEditModal('${p.id}')">
               <i class="fa-solid fa-pen-to-square"></i> Edit
             </button>
@@ -540,6 +557,16 @@
         `;
         container.appendChild(item);
       });
+    };
+
+    window.toggleFeaturePostLive = async function(id) {
+      try {
+        await window.notesEngine.toggleFeatured(id);
+        showBanner('✨ Homepage featured status updated!', 'success');
+        window.renderManageList();
+      } catch (err) {
+        showBanner('Error: ' + err.message, 'error');
+      }
     };
 
     window.deletePostLive = async function(id) {
@@ -558,6 +585,7 @@
 
       let formHTML = '';
       if (post.type === 'article') {
+        const isFeat = post.isFeatured !== false;
         formHTML = `
           <div class="form-group">
             <label>Article Title</label>
@@ -572,8 +600,14 @@
             <input type="url" id="edit-cover" value="${escapeAttr(post.coverImage || '')}">
           </div>
           <div class="form-group">
-            <label>Full Content</label>
+            <label>Full Content (Supports Markdown, image links, headings, etc.)</label>
             <textarea id="edit-content" required style="min-height:160px;">${escapeHTML(post.content || '')}</textarea>
+          </div>
+          <div class="form-group" style="background:var(--bg-soft); border:1px solid var(--border); border-radius:var(--radius-sm); padding:12px 14px;">
+            <label style="display:flex; align-items:center; gap:8px; cursor:pointer; font-weight:700; text-transform:none; margin:0;">
+              <input type="checkbox" id="edit-featured" ${isFeat ? 'checked' : ''} style="width:16px; height:16px; accent-color:var(--accent); cursor:pointer;">
+              <span>⭐ Feature on Homepage (Index)</span>
+            </label>
           </div>
         `;
       } else {
@@ -621,6 +655,7 @@
           excerpt:    document.getElementById('edit-excerpt').value.trim(),
           coverImage: document.getElementById('edit-cover').value.trim(),
           content:    document.getElementById('edit-content').value,
+          isFeatured: document.getElementById('edit-featured') ? document.getElementById('edit-featured').checked : true
         };
       } else {
         updatedFields = {

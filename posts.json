@@ -3,6 +3,7 @@
     "id": "post-1",
     "slug": "why-clean-architecture-accelerates-engineering-teams",
     "type": "article",
+    "isFeatured": true,
     "title": "Why Clean Architecture Accelerates Engineering Teams",
     "excerpt": "Decoupling business logic from infrastructure frameworks ensures systems remain testable, modular, and resilient as scale demands grow.",
     "coverImage": "https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=1200&q=80",
@@ -14,6 +15,7 @@
   {
     "id": "post-2",
     "type": "x-post",
+    "isFeatured": true,
     "authorName": "Alexius Dubem",
     "authorHandle": "@Xagaskii",
     "authorAvatar": "me.jpg",
