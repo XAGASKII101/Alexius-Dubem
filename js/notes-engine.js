@@ -286,10 +286,11 @@ class FirestoreNotesEngine {
       coverHTML = `<div class="note-cover-img"><img src="${post.coverImage.trim()}" alt="${this.escapeHtml(post.title)}" loading="lazy" onerror="this.parentElement.style.display='none'"></div>`;
     }
 
+    const shareUrl = this.getArticleShareUrl(post);
     const featuredBadge = post.isFeatured ? `<span class="note-featured-pill"><i class="fa-solid fa-star"></i> Featured</span>` : '';
 
     article.innerHTML = `
-      <div class="note-article-card" onclick="window.notesEngine.openReaderModal('${post.id}')" style="cursor:pointer;">
+      <div class="note-article-card" onclick="window.location.href='${shareUrl}'" style="cursor:pointer;">
         ${coverHTML}
         <div class="note-article-inner">
           <div class="note-article-meta">
@@ -312,9 +313,9 @@ class FirestoreNotesEngine {
               <button class="btn-share-icon more" onclick="event.stopPropagation(); window.notesEngine.shareNative('${post.id}')" title="More share options">
                 <i class="fa-solid fa-share-nodes"></i>
               </button>
-              <span class="btn-read-more" onclick="window.notesEngine.openReaderModal('${post.id}')">
+              <a href="${shareUrl}" class="btn-read-more" onclick="event.stopPropagation();">
                 Read <i class="fa-solid fa-arrow-right"></i>
-              </span>
+              </a>
             </div>
           </div>
         </div>

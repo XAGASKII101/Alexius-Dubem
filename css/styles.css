@@ -1696,6 +1696,117 @@ section {
   margin-top: 36px;
 }
 
+/* ---------- DEDICATED ARTICLE STANDALONE PAGE ---------- */
+.article-page-layout {
+  padding-top: 16px;
+  margin-bottom: 80px;
+}
+
+.article-page-nav {
+  margin-bottom: 32px;
+}
+
+.article-page-header {
+  margin-bottom: 36px;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 28px;
+}
+
+.article-page-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--accent);
+  margin-bottom: 14px;
+  font-weight: 600;
+}
+
+.article-page-title {
+  font-family: var(--font-display);
+  font-size: clamp(34px, 5.5vw, 54px);
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+  color: var(--text);
+  margin-bottom: 24px;
+}
+
+.article-page-author-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.article-author-info {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.article-author-avatar {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--accent);
+}
+
+.article-author-name {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 15px;
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.article-author-handle a {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--text-dim);
+  text-decoration: none;
+  transition: color var(--transition);
+}
+
+.article-author-handle a:hover {
+  color: var(--accent);
+}
+
+.article-page-cover-wrap {
+  width: 100%;
+  max-height: 460px;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  margin-bottom: 40px;
+  border: 1px solid var(--border);
+  background: #000;
+}
+
+.article-page-cover-img {
+  width: 100%;
+  height: 100%;
+  max-height: 460px;
+  object-fit: cover;
+  display: block;
+}
+
+.article-page-content {
+  color: var(--text-muted);
+  font-size: 17px;
+  line-height: 1.8;
+  margin-bottom: 56px;
+}
+
+.article-page-footer {
+  border-top: 1px solid var(--border);
+  padding-top: 36px;
+}
+
 /* ---------- DOTTAA CONTACT SECTION ---------- */
 .contact-section-card {
   position: relative;
