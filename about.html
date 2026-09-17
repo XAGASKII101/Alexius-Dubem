@@ -50,28 +50,35 @@
     </nav>
   </header>
 
-  <!-- MOBILE FLOATING BOTTOM CAPSULE DOCK -->
+  <!-- FLOATING TOP-RIGHT THEME BUTTON (MOBILE) -->
+  <button class="mobile-top-theme-btn" aria-label="Toggle Light/Dark Theme">
+    <i class="fa-solid fa-sun icon-sun"></i>
+    <i class="fa-solid fa-moon icon-moon"></i>
+  </button>
+
+  <!-- MOBILE FLOATING BOTTOM CAPSULE DOCK WITH LABELS -->
   <nav class="mobile-floating-dock" aria-label="Mobile Bottom Navigation">
     <div class="mobile-dock-inner">
       <a href="/#home" class="mobile-dock-item" aria-label="Home">
         <i class="fa-solid fa-house"></i>
+        <span class="dock-label">Home</span>
       </a>
       <a href="/#projects" class="mobile-dock-item" aria-label="Projects">
         <i class="fa-solid fa-layer-group"></i>
+        <span class="dock-label">Work</span>
       </a>
       <a href="/thoughts" class="mobile-dock-item" aria-label="Notes">
         <i class="fa-solid fa-pen-nib"></i>
+        <span class="dock-label">Notes</span>
       </a>
       <a href="/about" class="mobile-dock-item active" aria-label="About">
         <i class="fa-solid fa-user"></i>
+        <span class="dock-label">About</span>
       </a>
       <a href="/contact" class="mobile-dock-item" aria-label="Contact">
         <i class="fa-solid fa-envelope"></i>
+        <span class="dock-label">Contact</span>
       </a>
-      <button class="mobile-dock-item theme-toggle-pill" style="border:none; background:transparent;" aria-label="Toggle Theme">
-        <i class="fa-solid fa-sun icon-sun"></i>
-        <i class="fa-solid fa-moon icon-moon"></i>
-      </button>
     </div>
   </nav>
 

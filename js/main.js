@@ -8,17 +8,34 @@ if (savedTheme === 'light') {
 
 document.addEventListener('DOMContentLoaded', () => {
 
-  /* ----------------------------------------------------
-     THEME TOGGLE LISTENER
-     ---------------------------------------------------- */
-  const themeBtns = document.querySelectorAll('.theme-toggle-pill, #theme-toggle-btn');
-  themeBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-      document.body.classList.toggle('light-theme');
-      const isLight = document.body.classList.contains('light-theme');
-      localStorage.setItem('alexius_theme', isLight ? 'light' : 'dark');
-    });
+/* ----------------------------------------------------
+   THEME TOGGLE LISTENER
+   ---------------------------------------------------- */
+const themeBtns = document.querySelectorAll('.theme-toggle-pill, #theme-toggle-btn, .mobile-top-theme-btn');
+themeBtns.forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.body.classList.toggle('light-theme');
+    const isLight = document.body.classList.contains('light-theme');
+    localStorage.setItem('alexius_theme', isLight ? 'light' : 'dark');
   });
+});
+
+/* ----------------------------------------------------
+   TOP SCROLL PROGRESS BAR
+   ---------------------------------------------------- */
+let progressBar = document.getElementById('scroll-progress-bar');
+if (!progressBar) {
+  progressBar = document.createElement('div');
+  progressBar.id = 'scroll-progress-bar';
+  document.body.prepend(progressBar);
+}
+
+window.addEventListener('scroll', () => {
+  const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+  const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+  const scrolled = (winScroll / height) * 100;
+  if (progressBar) progressBar.style.width = scrolled + '%';
+});
 
   /* ----------------------------------------------------
      1. PROJECT CATEGORY FILTER SWITCHER
