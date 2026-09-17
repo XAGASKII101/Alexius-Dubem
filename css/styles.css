@@ -143,9 +143,9 @@ body::before {
 }
 
 .container {
-  max-width: 1080px;
+  max-width: 1140px;
   margin: 0 auto;
-  padding: 0 28px;
+  padding: 0 32px;
   position: relative;
   z-index: 2;
 }
@@ -1671,14 +1671,13 @@ footer a:hover { color: var(--text-muted); }
 }
 
 /* ---------- DATA ANIMATION ---------- */
+/* Scroll reveal — sections ALWAYS visible, just add gentle slide-up on first enter */
 [data-animate] {
-  opacity: 0;
-  transform: translateY(22px);
-  transition: opacity 0.55s var(--ease), transform 0.55s var(--ease);
+  transform: translateY(18px);
+  transition: opacity 0.5s var(--ease), transform 0.5s var(--ease);
 }
 
 [data-animate].is-visible {
-  opacity: 1;
   transform: translateY(0);
 }
 
@@ -1869,24 +1868,31 @@ footer a:hover { color: var(--text-muted); }
 }
 
 /* ---------- RESPONSIVE ---------- */
+
+/* Laptop / large tablet — keep desktop feel, just tighten spacing */
+@media (max-width: 1100px) {
+  .container { padding: 0 24px; }
+  .hero { gap: 44px; }
+  .approach-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+/* Tablet — stack hero, keep 2-col grids */
 @media (max-width: 900px) {
   .container { padding: 0 20px; }
+
   .hero {
     grid-template-columns: 1fr;
-    gap: 40px;
+    gap: 36px;
     text-align: center;
   }
   .hero-cta-group { justify-content: center; }
   .handwritten-callout { justify-content: center; }
   .hero-subtitle { max-width: 100%; }
   .hero-photo-box { justify-content: center; }
-  .photo-frame img { max-width: 220px; height: 280px; }
-  .projects-grid { grid-template-columns: 1fr; }
-  .services-grid  { grid-template-columns: 1fr; }
-  .approach-grid  { grid-template-columns: repeat(2, 1fr); }
-  .stats-grid     { grid-template-columns: repeat(2, 1fr); }
+  .photo-frame img { max-width: 200px; height: 260px; }
+
   .testimonials-grid { grid-template-columns: 1fr; }
-  .notes-feed-list { grid-template-columns: 1fr; }
+
   .reader-modal-card {
     top: auto;
     left: 0;
@@ -1906,9 +1912,13 @@ footer a:hover { color: var(--text-muted); }
   .admin-card { padding: 20px; }
 }
 
-@media (max-width: 600px) {
-  .approach-grid { grid-template-columns: 1fr; }
-  .stats-grid { grid-template-columns: repeat(2, 1fr); }
+/* Mobile — stack everything */
+@media (max-width: 640px) {
+  .projects-grid { grid-template-columns: 1fr; }
+  .services-grid  { grid-template-columns: 1fr; }
+  .approach-grid  { grid-template-columns: 1fr; }
+  .stats-grid     { grid-template-columns: repeat(2, 1fr); }
+  .notes-feed-list { grid-template-columns: 1fr; }
   .trust-bar { gap: 6px; }
   .trust-badge-item { font-size: 10px; padding: 5px 10px; }
   .sec-title { font-size: 24px; }
@@ -1926,4 +1936,5 @@ footer a:hover { color: var(--text-muted); }
   .mobile-dock-item .dock-label { font-size: 7.5px; }
   .contact-label-title .val { font-size: 12px; }
   .admin-tab-btn { font-size: 10.5px; padding: 7px 10px; }
+  .stats-grid { grid-template-columns: repeat(2, 1fr); }
 }
