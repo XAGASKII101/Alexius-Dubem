@@ -5,12 +5,12 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Thoughts & Technical Writing — Alexius Dubem</title>
-  <meta name="description" content="Technical essays and architecture notes by Alexius Dubem on software engineering, system design, and pragmatic technology choices.">
+  <title>Thoughts & X Posts — Alexius Dubem (@Xagaskii)</title>
+  <meta name="description" content="Technical essays, architecture notes, and X posts by Alexius Dubem (@Xagaskii) on software engineering, system design, and pragmatic technology choices.">
   <link rel="canonical" href="https://github.com/XAGASKII101/Alexius-Dubem/thoughts.html">
 
-  <meta property="og:title" content="Thoughts & Technical Writing — Alexius Dubem">
-  <meta property="og:description" content="Technical essays and architecture notes on software engineering and system design.">
+  <meta property="og:title" content="Thoughts & X Posts — Alexius Dubem (@Xagaskii)">
+  <meta property="og:description" content="Technical essays and X posts on software engineering and system design.">
   <meta property="og:image" content="me.jpg">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -65,52 +65,36 @@
   <div class="container">
     <main>
       <div class="page-header" data-animate>
-        <span class="font-hand rotate-left">Essays & Notes</span>
-        <h1>Thoughts & Technical Writing.</h1>
-        <p>Occasional essays on software engineering, system design, and building maintainable products.</p>
+        <span class="font-hand rotate-left">Essays & X Posts</span>
+        <h1>Thoughts & Notes.</h1>
+        <p>Occasional essays on software engineering, system design, and posts from <a href="https://x.com/Xagaskii" target="_blank" style="color:var(--accent); text-decoration:none;">@Xagaskii</a>.</p>
       </div>
 
-      <div class="posts-list" data-animate>
-        <article>
-          <a href="#" class="post-row">
-            <div class="post-date">AUG 2026</div>
-            <div>
-              <h2 class="post-title">Why Clean Architecture Accelerates Engineering Teams</h2>
-              <p class="post-desc">Decoupling business logic from infrastructure frameworks ensures systems remain testable and resilient as scale demands grow.</p>
-            </div>
-          </a>
-        </article>
+      <!-- FILTER TABS FOR NOTES & X POSTS -->
+      <div class="filter-tabs-wrapper" data-animate>
+        <div class="filter-tabs">
+          <button class="notes-filter-btn active" data-filter="all">All Feed</button>
+          <button class="notes-filter-btn" data-filter="article">Long Essays</button>
+          <button class="notes-filter-btn" data-filter="x-post">X Posts (@Xagaskii)</button>
+        </div>
+      </div>
 
-        <article>
-          <a href="#" class="post-row">
-            <div class="post-date">JUL 2026</div>
-            <div>
-              <h2 class="post-title">Shipping Code is a Primary Technical Metric</h2>
-              <p class="post-desc">Perfect unreleased code carries zero value. A practical approach to balancing rigorous code quality with product delivery velocity.</p>
-            </div>
-          </a>
-        </article>
-
-        <article>
-          <a href="#" class="post-row">
-            <div class="post-date">JUN 2026</div>
-            <div>
-              <h2 class="post-title">Pragmatic Tech Choices Over Unproven Hype</h2>
-              <p class="post-desc">Why battle-tested technologies are almost always the optimal foundation when engineering reliable production software.</p>
-            </div>
-          </a>
-        </article>
+      <!-- DYNAMIC NOTES & X POST FEED CONTAINER -->
+      <div class="notes-feed-list" data-animate>
+        <!-- Rendered by js/notes-engine.js -->
       </div>
     </main>
 
     <footer>
       <div>© 2026 ALEXIUS DUBEM // ALL RIGHTS RESERVED</div>
       <div>
+        <a href="admin.html" style="color: var(--text-dim); text-decoration: none; margin-right: 12px;">[ADMIN STUDIO]</a>
         ENGINEERED WITH PRECISION <span class="accent-dot"></span>
       </div>
     </footer>
   </div>
 
+  <script src="js/notes-engine.js"></script>
   <script src="js/main.js"></script>
 </body>
 

@@ -1,0 +1,54 @@
+[
+  {
+    "id": "post-1",
+    "type": "article",
+    "title": "Why Clean Architecture Accelerates Engineering Teams",
+    "excerpt": "Decoupling business logic from infrastructure frameworks ensures systems remain testable, modular, and resilient as scale demands grow.",
+    "content": "### Introduction to Clean Architecture\n\nWhen building software systems that endure, the initial choices regarding module separation dictate long-term maintenance velocity. Decoupling core domain rules from database clients, HTTP frameworks, and UI layers prevents framework lock-in.\n\n### Core Layers\n1. **Entities & Domain Models**: Pure business rules with zero external dependencies.\n2. **Use Cases / Interactors**: Orchestrate data flow to and from entities.\n3. **Interface Adapters**: Convert data between web/database schemas and domain models.\n4. **Frameworks & Drivers**: Technical infrastructure (React, Express, PostgreSQL).\n\n### Key Benefits\n- Independent of Frameworks\n- Easily Testable without Mocks\n- Independent of UI and Database",
+    "date": "AUG 2026",
+    "readTime": "4 min read",
+    "tags": ["Architecture", "System Design", "Best Practices"]
+  },
+  {
+    "id": "post-2",
+    "type": "x-post",
+    "authorName": "Alexius Dubem",
+    "authorHandle": "@Xagaskii",
+    "authorAvatar": "me.jpg",
+    "isVerified": true,
+    "content": "Good software engineering isn't about writing the most lines of code. It's about solving real-world problems with minimal complexity and maximum reliability. #BuildInPublic #DevLife",
+    "date": "Sep 15, 2026",
+    "time": "4:32 PM",
+    "replies": 14,
+    "reposts": 28,
+    "likes": 184,
+    "views": "2.4K",
+    "tweetUrl": "https://x.com/Xagaskii"
+  },
+  {
+    "id": "post-3",
+    "type": "article",
+    "title": "Shipping Code is a Primary Technical Metric",
+    "excerpt": "Perfect unreleased code carries zero value. A practical approach to balancing rigorous code quality with product delivery velocity.",
+    "content": "### The Velocity vs Quality Dilemma\n\nEngineers often fall into the trap of over-engineering solutions for problems that may never occur. While clean architecture and automated testing are essential, shipping functional software to users early provides empirical feedback that no design doc can match.\n\n### Key Takeaways\n- Focus on MVP core functionality first.\n- Validate hypotheses with real user interaction.\n- Refine and refactor continuously based on production metrics.",
+    "date": "JUL 2026",
+    "readTime": "3 min read",
+    "tags": ["Product Delivery", "Engineering Leadership"]
+  },
+  {
+    "id": "post-4",
+    "type": "x-post",
+    "authorName": "Alexius Dubem",
+    "authorHandle": "@Xagaskii",
+    "authorAvatar": "me.jpg",
+    "isVerified": true,
+    "content": "Offline-first application architecture is super underrated. Users shouldn't lose their data or progress just because network coverage drops for 30 seconds. #WebDev #PWA #UX",
+    "date": "Aug 28, 2026",
+    "time": "11:15 AM",
+    "replies": 9,
+    "reposts": 19,
+    "likes": 142,
+    "views": "1.8K",
+    "tweetUrl": "https://x.com/Xagaskii"
+  }
+]
