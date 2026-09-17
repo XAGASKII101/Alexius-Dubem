@@ -245,8 +245,14 @@ class FirestoreNotesEngine {
 
     // 8. Bullet lists
     text = text.replace(/^[*-] (.*$)/gim, '<li class="article-li">$1</li>');
-    text = text.replace(/(<li class="article-li">[\s\S]*?<\/li>)/gi, (match) => {
-      return `<ul class="article-ul">${match}</ul>`;
+    text = text.replace(/((?:<li class="article-li">[\s\S]*?<\/li>\s*)+)/gi, (match) => {
+      return `<ul class="article-ul">${match.trim()}</ul>`;
+    });
+
+    // 8b. Numbered lists
+    text = text.replace(/^\d+\.\s+(.*$)/gim, '<li class="article-oli">$1</li>');
+    text = text.replace(/((?:<li class="article-oli">[\s\S]*?<\/li>\s*)+)/gi, (match) => {
+      return `<ol class="article-ol">${match.trim()}</ol>`;
     });
 
     // 9. Auto-link standalone URLs (not already part of an <a> or <img> tag)

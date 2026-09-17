@@ -110,8 +110,14 @@ function formatArticleContent(raw) {
 
   // 8. Bullet lists
   text = text.replace(/^[*-] (.*$)/gim, '<li class="article-li">$1</li>');
-  text = text.replace(/(<li class="article-li">[\s\S]*?<\/li>)/gi, (match) => {
-    return `<ul class="article-ul">${match}</ul>`;
+  text = text.replace(/((?:<li class="article-li">[\s\S]*?<\/li>\s*)+)/gi, (match) => {
+    return `<ul class="article-ul">${match.trim()}</ul>`;
+  });
+
+  // 8b. Numbered lists
+  text = text.replace(/^\d+\.\s+(.*$)/gim, '<li class="article-oli">$1</li>');
+  text = text.replace(/((?:<li class="article-oli">[\s\S]*?<\/li>\s*)+)/gi, (match) => {
+    return `<ol class="article-ol">${match.trim()}</ol>`;
   });
 
   // 9. Auto-link standalone URLs
@@ -233,11 +239,546 @@ module.exports = async (req, res) => {
 
   <!-- Main Stylesheet (Absolute Path) -->
   <link rel="stylesheet" href="/css/styles.css">
+
+  <!-- Embedded Critical Article Reader Styles -->
+  <style id="article-reader-styles">
+    .article-page-layout {
+      max-width: 740px;
+      margin: 32px auto 80px;
+      width: 100%;
+    }
+
+    .article-page-nav {
+      margin-bottom: 32px;
+    }
+
+    .btn-back-thoughts {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-family: var(--font-mono, 'JetBrains Mono', monospace);
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-muted, #8e94a0);
+      background: var(--bg-soft, rgba(255, 255, 255, 0.04));
+      border: 1px solid var(--border, rgba(255, 255, 255, 0.08));
+      padding: 10px 20px;
+      border-radius: 999px;
+      text-decoration: none;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .btn-back-thoughts:hover {
+      color: var(--accent, #c8ff00);
+      border-color: var(--border-active, rgba(200, 255, 0, 0.45));
+      background: var(--accent-soft, rgba(200, 255, 0, 0.1));
+      transform: translateX(-4px);
+    }
+
+    .article-page-header {
+      margin-bottom: 36px;
+      position: static !important;
+      display: block !important;
+      pointer-events: auto !important;
+    }
+
+    .article-page-meta {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-family: var(--font-mono, 'JetBrains Mono', monospace);
+      font-size: 13px;
+      color: var(--accent, #c8ff00);
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      margin-bottom: 18px;
+    }
+
+    .article-page-meta .note-sep {
+      color: var(--text-dim, #555b68);
+    }
+
+    .article-page-title {
+      font-family: var(--font-display, 'Space Grotesk', sans-serif);
+      font-size: 2.85rem;
+      font-weight: 800;
+      line-height: 1.2;
+      letter-spacing: -0.025em;
+      color: var(--text, #f4f3ee);
+      margin: 0 0 26px 0;
+      word-break: break-word;
+    }
+
+    .article-page-author-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+      padding: 18px 24px;
+      background: var(--bg-card, #14171d);
+      border: 1px solid var(--border, rgba(255, 255, 255, 0.08));
+      border-radius: 14px;
+      margin-top: 12px;
+    }
+
+    .article-author-info {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .article-author-avatar {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid var(--border, rgba(255, 255, 255, 0.08));
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+      flex-shrink: 0;
+    }
+
+    .article-author-name {
+      font-family: var(--font-display, 'Space Grotesk', sans-serif);
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text, #f4f3ee);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .author-verified-badge {
+      color: var(--accent, #c8ff00);
+      font-size: 13px;
+    }
+
+    .article-author-handle {
+      font-family: var(--font-mono, 'JetBrains Mono', monospace);
+      font-size: 12px;
+      color: var(--text-muted, #8e94a0);
+      margin-top: 2px;
+    }
+
+    .article-author-handle a {
+      color: var(--text-muted, #8e94a0);
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+
+    .article-author-handle a:hover {
+      color: var(--accent, #c8ff00);
+      text-decoration: underline;
+    }
+
+    .article-tags-wrap {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .article-tags-wrap .note-tag {
+      font-family: var(--font-mono, 'JetBrains Mono', monospace);
+      font-size: 11.5px;
+      font-weight: 600;
+      padding: 5px 12px;
+      border-radius: 999px;
+      background: var(--accent-soft, rgba(200, 255, 0, 0.1));
+      color: var(--accent, #c8ff00);
+      border: 1px solid rgba(200, 255, 0, 0.25);
+    }
+
+    body.light-theme .article-tags-wrap .note-tag {
+      background: rgba(94, 128, 0, 0.1);
+      color: #5e8000;
+      border-color: rgba(94, 128, 0, 0.25);
+    }
+
+    .article-page-cover-wrap {
+      width: 100%;
+      border-radius: 18px;
+      overflow: hidden;
+      border: 1px solid var(--border, rgba(255, 255, 255, 0.08));
+      box-shadow: 0 20px 48px rgba(0, 0, 0, 0.5);
+      margin-bottom: 42px;
+      background: var(--bg-card, #14171d);
+    }
+
+    .article-page-cover-img {
+      width: 100%;
+      max-height: 460px;
+      object-fit: cover;
+      display: block;
+    }
+
+    /* Reading Typography */
+    .article-page-content {
+      font-family: 'Inter', sans-serif;
+      font-size: 1.125rem;
+      line-height: 1.85;
+      color: #cfd4dc;
+      margin-bottom: 56px;
+    }
+
+    body.light-theme .article-page-content {
+      color: #24292f;
+    }
+
+    .article-p {
+      margin-bottom: 24px;
+      font-size: 1.125rem;
+      line-height: 1.85;
+      word-break: break-word;
+    }
+
+    body.light-theme .article-p {
+      color: #24292f;
+    }
+
+    .article-h2 {
+      font-family: var(--font-display, 'Space Grotesk', sans-serif);
+      font-size: 1.85rem;
+      font-weight: 800;
+      color: var(--text, #f4f3ee);
+      margin-top: 52px;
+      margin-bottom: 18px;
+      letter-spacing: -0.02em;
+      border-bottom: 1px solid var(--border, rgba(255, 255, 255, 0.08));
+      padding-bottom: 10px;
+      line-height: 1.3;
+    }
+
+    .article-h3 {
+      font-family: var(--font-display, 'Space Grotesk', sans-serif);
+      font-size: 1.45rem;
+      font-weight: 750;
+      color: var(--text, #f4f3ee);
+      margin-top: 40px;
+      margin-bottom: 16px;
+      letter-spacing: -0.015em;
+      line-height: 1.35;
+    }
+
+    .article-h4 {
+      font-family: var(--font-display, 'Space Grotesk', sans-serif);
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--text, #f4f3ee);
+      margin-top: 30px;
+      margin-bottom: 12px;
+      line-height: 1.4;
+    }
+
+    .article-quote {
+      border-left: 3.5px solid var(--accent, #c8ff00);
+      background: var(--bg-card, #14171d);
+      padding: 20px 26px;
+      margin: 36px 0;
+      border-radius: 0 8px 8px 0;
+      font-style: italic;
+      font-size: 1.15rem;
+      line-height: 1.75;
+      color: var(--text, #f4f3ee);
+      border-top: 1px solid var(--border, rgba(255, 255, 255, 0.08));
+      border-right: 1px solid var(--border, rgba(255, 255, 255, 0.08));
+      border-bottom: 1px solid var(--border, rgba(255, 255, 255, 0.08));
+    }
+
+    .article-code-block {
+      background: #0d1117;
+      border: 1px solid var(--border, rgba(255, 255, 255, 0.08));
+      border-radius: 14px;
+      padding: 22px 24px;
+      margin: 32px 0;
+      overflow-x: auto;
+      position: relative;
+      font-family: var(--font-mono, 'JetBrains Mono', monospace);
+      font-size: 13.5px;
+      line-height: 1.65;
+      color: #e6edf3;
+      box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.4);
+    }
+
+    .article-code-block code {
+      font-family: var(--font-mono, 'JetBrains Mono', monospace);
+      font-size: inherit;
+      color: inherit;
+      background: transparent;
+      padding: 0;
+      white-space: pre;
+    }
+
+    .code-lang-tag {
+      position: absolute;
+      top: 10px;
+      right: 14px;
+      font-family: var(--font-mono, 'JetBrains Mono', monospace);
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: var(--text-dim, #555b68);
+      background: rgba(255, 255, 255, 0.08);
+      padding: 3px 8px;
+      border-radius: 4px;
+      letter-spacing: 0.06em;
+    }
+
+    .article-inline-code {
+      font-family: var(--font-mono, 'JetBrains Mono', monospace);
+      font-size: 0.88em;
+      background: var(--bg-soft, rgba(255, 255, 255, 0.04));
+      border: 1px solid var(--border, rgba(255, 255, 255, 0.08));
+      color: var(--accent, #c8ff00);
+      padding: 2px 6px;
+      border-radius: 4px;
+    }
+
+    .article-ul,
+    .article-ol {
+      padding-left: 28px;
+      margin-bottom: 26px;
+      color: #cfd4dc;
+    }
+
+    body.light-theme .article-ul,
+    body.light-theme .article-ol {
+      color: #24292f;
+    }
+
+    .article-li,
+    .article-oli {
+      margin-bottom: 10px;
+      line-height: 1.75;
+    }
+
+    .article-inline-media {
+      margin: 36px 0;
+      text-align: center;
+    }
+
+    .article-inline-media img {
+      max-width: 100%;
+      border-radius: 14px;
+      border: 1px solid var(--border, rgba(255, 255, 255, 0.08));
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+      display: inline-block;
+    }
+
+    .article-inline-media figcaption {
+      font-family: var(--font-mono, 'JetBrains Mono', monospace);
+      font-size: 12px;
+      color: var(--text-dim, #555b68);
+      margin-top: 10px;
+      font-style: italic;
+    }
+
+    .article-link {
+      color: var(--accent, #c8ff00);
+      text-decoration: underline;
+      text-underline-offset: 4px;
+      font-weight: 500;
+      transition: opacity 0.3s;
+    }
+
+    .article-link:hover {
+      opacity: 0.8;
+    }
+
+    /* Article Footer & Sharing */
+    .article-page-footer {
+      border-top: 1px solid var(--border, rgba(255, 255, 255, 0.08));
+      padding-top: 44px;
+      margin-top: 52px;
+      display: block !important;
+      position: static !important;
+    }
+
+    .reader-author-sign {
+      margin-bottom: 34px;
+    }
+
+    .reader-author-sign span {
+      font-family: var(--font-hand, 'Caveat', cursive);
+      font-size: 2.2rem;
+      color: var(--accent, #c8ff00);
+      display: inline-block;
+      transform: rotate(-2deg);
+    }
+
+    .reader-share-block {
+      background: var(--bg-card, #14171d);
+      border: 1px solid var(--border, rgba(255, 255, 255, 0.08));
+      border-radius: 14px;
+      padding: 24px;
+      margin-bottom: 36px;
+    }
+
+    .reader-share-label {
+      display: block;
+      font-family: var(--font-mono, 'JetBrains Mono', monospace);
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-dim, #555b68);
+      margin-bottom: 16px;
+    }
+
+    .reader-share-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .share-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--font-display, 'Space Grotesk', sans-serif);
+      font-size: 12.5px;
+      font-weight: 700;
+      padding: 10px 18px;
+      border-radius: 999px;
+      text-decoration: none;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      border: 1px solid transparent;
+    }
+
+    .share-btn.share-wa {
+      background: rgba(37, 211, 102, 0.12);
+      color: #25D366;
+      border-color: rgba(37, 211, 102, 0.3);
+    }
+
+    .share-btn.share-wa:hover {
+      background: #25D366;
+      color: #000;
+      transform: translateY(-2px);
+    }
+
+    .share-btn.share-x {
+      background: rgba(255, 255, 255, 0.08);
+      color: #ffffff;
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+
+    body.light-theme .share-btn.share-x {
+      background: #000000;
+      color: #ffffff;
+    }
+
+    .share-btn.share-x:hover {
+      background: #ffffff;
+      color: #000;
+      transform: translateY(-2px);
+    }
+
+    .share-btn.share-li {
+      background: rgba(10, 102, 194, 0.12);
+      color: #388bfd;
+      border-color: rgba(10, 102, 194, 0.3);
+    }
+
+    .share-btn.share-li:hover {
+      background: #0A66C2;
+      color: #fff;
+      transform: translateY(-2px);
+    }
+
+    .share-btn.share-mail {
+      background: var(--bg-soft, rgba(255, 255, 255, 0.04));
+      color: var(--text-muted, #8e94a0);
+      border-color: var(--border, rgba(255, 255, 255, 0.08));
+    }
+
+    .share-btn.share-mail:hover {
+      background: var(--text, #f4f3ee);
+      color: var(--bg, #0b0d11);
+      transform: translateY(-2px);
+    }
+
+    .share-btn.share-copy {
+      background: var(--accent-soft, rgba(200, 255, 0, 0.1));
+      color: var(--accent, #c8ff00);
+      border-color: rgba(200, 255, 0, 0.3);
+    }
+
+    .share-btn.share-copy:hover {
+      background: var(--accent, #c8ff00);
+      color: #000;
+      transform: translateY(-2px);
+    }
+
+    .article-page-cta-row {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+      align-items: center;
+      margin-top: 36px;
+    }
+
+    /* Mobile Responsive */
+    @media (max-width: 640px) {
+      .article-page-layout {
+        margin: 16px auto 60px;
+      }
+
+      .article-page-title {
+        font-size: 1.85rem;
+        line-height: 1.25;
+        margin-bottom: 18px;
+      }
+
+      .article-page-author-bar {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 14px;
+        padding: 16px 18px;
+      }
+
+      .article-p {
+        font-size: 1.05rem;
+        line-height: 1.78;
+      }
+
+      .article-h2 {
+        font-size: 1.5rem;
+        margin-top: 36px;
+      }
+
+      .article-h3 {
+        font-size: 1.25rem;
+        margin-top: 28px;
+      }
+
+      .reader-share-buttons {
+        flex-direction: column;
+      }
+
+      .reader-share-buttons .share-btn {
+        width: 100%;
+        justify-content: center;
+      }
+
+      .article-page-cta-row {
+        flex-direction: column;
+      }
+
+      .article-page-cta-row .btn-solid,
+      .article-page-cta-row .btn-outline {
+        width: 100%;
+        justify-content: center;
+        text-align: center;
+      }
+    }
+  </style>
 </head>
 
 <body>
   <!-- TOP PILL HEADER -->
-  <header>
+  <header class="site-header">
     <nav class="desktop-pill-nav" aria-label="Main Navigation">
       <div class="logo">
         <a href="/">
@@ -282,17 +823,17 @@ module.exports = async (req, res) => {
   </nav>
 
   <!-- DEDICATED ARTICLE CONTAINER -->
-  <div class="container" style="max-width: 820px;">
+  <div class="container" style="max-width: 800px; padding: 0 20px;">
     <main class="article-page-layout">
       <!-- Back Navigation -->
       <div class="article-page-nav">
-        <a href="/thoughts" class="btn-outline" style="padding: 9px 20px; font-size: 13px;">
+        <a href="/thoughts" class="btn-back-thoughts">
           <i class="fa-solid fa-arrow-left"></i> Back to all thoughts
         </a>
       </div>
 
       <!-- Article Header -->
-      <header class="article-page-header">
+      <div class="article-page-header">
         <div class="article-page-meta">
           <span class="note-date">${escapeHtml(post.date || 'RECENT')}</span>
           <span class="note-sep">·</span>
@@ -303,30 +844,30 @@ module.exports = async (req, res) => {
           <div class="article-author-info">
             <img src="/me.jpg" alt="Alexius Dubem" class="article-author-avatar">
             <div>
-              <div class="article-author-name">Alexius Dubem <i class="fa-solid fa-circle-check" style="color:var(--accent); font-size:13px;"></i></div>
+              <div class="article-author-name">Alexius Dubem <i class="fa-solid fa-circle-check author-verified-badge"></i></div>
               <div class="article-author-handle"><a href="https://x.com/Xagaskii" target="_blank">@Xagaskii</a></div>
             </div>
           </div>
           <div class="article-tags-wrap">${tagsHTML}</div>
         </div>
-      </header>
+      </div>
 
       <!-- Cover Image -->
       ${coverHTML}
 
       <!-- Article Content Body -->
-      <article class="article-page-content reader-body">
+      <article class="article-page-content">
         ${formattedContent}
       </article>
 
       <!-- Article Footer & Sharing -->
-      <footer class="article-page-footer">
-        <div class="reader-author-sign" style="margin-bottom: 24px;">
-          <span class="font-hand rotate-left" style="font-size: 1.6rem;">— Alexius Dubem</span>
+      <div class="article-page-footer">
+        <div class="reader-author-sign">
+          <span>— Alexius Dubem</span>
         </div>
 
         <div class="reader-share-block">
-          <span class="reader-share-label">Share this essay:</span>
+          <span class="reader-share-label">Share this essay</span>
           <div class="reader-share-buttons">
             <a href="${waShareUrl}" target="_blank" class="share-btn share-wa" title="Share on WhatsApp">
               <i class="fa-brands fa-whatsapp"></i> WhatsApp
@@ -347,7 +888,7 @@ module.exports = async (req, res) => {
         </div>
 
         <!-- Next Actions -->
-        <div class="article-page-cta-row" style="margin-top: 48px; display: flex; gap: 16px; flex-wrap: wrap;">
+        <div class="article-page-cta-row">
           <a href="/thoughts" class="btn-solid">
             <i class="fa-solid fa-arrow-left"></i> All Thoughts & Notes
           </a>
@@ -355,10 +896,10 @@ module.exports = async (req, res) => {
             Let's Talk <i class="fa-solid fa-arrow-up-right"></i>
           </a>
         </div>
-      </footer>
+      </div>
     </main>
 
-    <footer style="margin-top: 64px;">
+    <footer class="site-footer" style="margin-top: 64px;">
       <div>© 2026 ALEXIUS DUBEM // ALL RIGHTS RESERVED</div>
       <div>ENGINEERED WITH PRECISION <span class="accent-dot"></span></div>
     </footer>
