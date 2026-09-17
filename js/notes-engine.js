@@ -1,7 +1,7 @@
 /* =========================================
    ALEXIUS DUBEM — FIREBASE FIRESTORE REAL-TIME NOTES & X ENGINE
    Real-Time Cloud Firestore Sync for Articles & X (@Xagaskii) Embeds
-   With Instant Local Storage Caching & Multi-Query Fallback
+   With X Embed HTML Auto-Parsing & Image Media Rendering
    ========================================= */
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
@@ -149,6 +149,7 @@ class FirestoreNotesEngine {
     });
 
     this.setupFilterTabs();
+    this.ensureXWidgetScript();
   }
 
   createArticleElement(post) {
@@ -187,6 +188,16 @@ class FirestoreNotesEngine {
 
     const verifiedBadge = post.isVerified !== false ? `<i class="fa-solid fa-circle-check x-verified-badge"></i>` : '';
 
+    let mediaHTML = '';
+    if (post.imageUrl) {
+      mediaHTML = `<div class="x-post-media" style="margin-top: 14px; border-radius: 16px; overflow: hidden; border: 1px solid var(--border);"><img src="${post.imageUrl}" alt="Attached media" style="width: 100%; display: block; max-height: 420px; object-fit: cover;"></div>`;
+    }
+
+    let embedHTML = '';
+    if (post.embedHtml) {
+      embedHTML = `<div class="x-embed-container" style="margin-top: 14px; width: 100%;">${post.embedHtml}</div>`;
+    }
+
     container.innerHTML = `
       <div class="x-post-card">
         <div class="x-post-header">
@@ -206,12 +217,14 @@ class FirestoreNotesEngine {
         </div>
         <div class="x-post-body">
           <p>${this.formatXText(post.content)}</p>
+          ${mediaHTML}
         </div>
+        ${embedHTML}
         <div class="x-post-timestamp">
-          <span>${post.time || '12:00 PM'}</span> · <span>${post.date || 'Today'}</span> · <span style="color: var(--text); font-weight: 600;">${post.views || '1.4K'}</span> Views
+          <span>${post.time || '12:00 PM'}</span> · <span>${post.date || 'Today'}</span> · <span style="color: var(--text); font-weight: 600;">${post.views || '1.8K'}</span> Views
         </div>
         <div class="x-post-actions">
-          <div class="x-action-btn"><i class="fa-regular fa-comment"></i> <span>${post.replies || 12}</span></div>
+          <div class="x-action-btn"><i class="fa-regular fa-comment"></i> <span>${post.replies || 14}</span></div>
           <div class="x-action-btn"><i class="fa-solid fa-retweet"></i> <span>${post.reposts || 24}</span></div>
           <div class="x-action-btn"><i class="fa-regular fa-heart"></i> <span>${post.likes || 148}</span></div>
           <div class="x-action-btn"><i class="fa-regular fa-bookmark"></i></div>
@@ -223,9 +236,26 @@ class FirestoreNotesEngine {
     return container;
   }
 
+  ensureXWidgetScript() {
+    if (!document.getElementById('twitter-wjs')) {
+      const script = document.createElement('script');
+      script.id = 'twitter-wjs';
+      script.src = 'https://platform.x.com/widgets.js';
+      script.async = true;
+      script.charset = 'utf-8';
+      document.head.appendChild(script);
+    } else if (window.twttr && window.twttr.widgets) {
+      window.twttr.widgets.load();
+    }
+  }
+
   formatXText(text) {
     if (!text) return '';
-    return text.replace(/#(\w+)/g, '<span class="x-hashtag">#$1</span>');
+    // Format links and hashtags cleanly
+    let formatted = text
+      .replace(/#(\w+)/g, '<span class="x-hashtag">#$1</span>')
+      .replace(/(https?:\/\/[^\s<]+)/g, '<a href="$1" target="_blank" style="color:var(--accent); text-decoration:none;">$1</a>');
+    return formatted;
   }
 
   copyXLink(url) {
@@ -349,10 +379,25 @@ class FirestoreNotesEngine {
     this.notifyAdminUI();
   }
 
-  async addXPost(content, tweetUrl, likes = 148, reposts = 24) {
+  async addXPost(content, tweetUrl = '', likes = 148, reposts = 24, imageUrl = '', embedHtml = '') {
     const now = new Date();
     const generatedId = 'xpost_' + Date.now();
     
+    // Auto-parse embed HTML if user pasted raw blockquote into content
+    if (!embedHtml && content.includes('<blockquote')) {
+      embedHtml = content;
+      // Extract tweet text from <p>...</p>
+      const pMatch = content.match(/<p[^>]*>([\s\S]*?)<\/p>/i);
+      if (pMatch) {
+        content = pMatch[1].replace(/<br\s*\/?>/gi, '\n').replace(/<[^>]+>/g, '').trim();
+      }
+      // Extract tweet URL
+      const urlMatch = embedHtml.match(/href="(https:\/\/(?:x|twitter)\.com\/[^"]+)"/i);
+      if (urlMatch) {
+        tweetUrl = urlMatch[1];
+      }
+    }
+
     const xPostDoc = {
       id: generatedId,
       type: 'x-post',
@@ -361,13 +406,15 @@ class FirestoreNotesEngine {
       authorAvatar: 'me.jpg',
       isVerified: true,
       content,
+      tweetUrl: tweetUrl || 'https://x.com/Xagaskii',
+      imageUrl: imageUrl || '',
+      embedHtml: embedHtml || '',
       date: now.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
       time: now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }),
       replies: 14,
       reposts: parseInt(reposts) || 24,
       likes: parseInt(likes) || 148,
       views: '1.8K',
-      tweetUrl: tweetUrl || 'https://x.com/Xagaskii',
       createdAt: Date.now(),
       timestamp: serverTimestamp()
     };

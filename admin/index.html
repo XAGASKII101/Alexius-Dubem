@@ -122,8 +122,12 @@
         <div id="admin-tab-x-post" style="display: none;">
           <form onsubmit="event.preventDefault(); window.submitXPost();">
             <div class="form-group">
-              <label>X Post Content (@Xagaskii)</label>
-              <textarea id="x-content" placeholder="Type your thought or paste your X post text..." required style="min-height: 120px;"></textarea>
+              <label>X Post Content or Embed HTML (<blockquote class="twitter-tweet">...</blockquote>)</label>
+              <textarea id="x-content" placeholder="Paste your raw X post text OR official X <blockquote class='twitter-tweet'> HTML embed code..." required style="min-height: 140px;"></textarea>
+            </div>
+            <div class="form-group">
+              <label>Attached Image / Media URL (Optional)</label>
+              <input type="url" id="x-image" placeholder="https://pbs.twimg.com/media/... or https://domain.com/photo.jpg">
             </div>
             <div class="form-group">
               <label>Original X Post Link (Optional)</label>
@@ -224,12 +228,14 @@
       const url = document.getElementById('x-url').value;
       const likes = document.getElementById('x-likes').value;
       const reposts = document.getElementById('x-reposts').value;
+      const imageUrl = document.getElementById('x-image') ? document.getElementById('x-image').value : '';
 
       try {
-        await window.notesEngine.addXPost(content, url, likes, reposts);
+        await window.notesEngine.addXPost(content, url, likes, reposts, imageUrl);
         alert('✨ X Post Card published live to Firestore!');
         document.getElementById('x-content').value = '';
         document.getElementById('x-url').value = '';
+        if (document.getElementById('x-image')) document.getElementById('x-image').value = '';
       } catch (err) {
         alert('Error publishing X Card: ' + err.message);
       } finally {
