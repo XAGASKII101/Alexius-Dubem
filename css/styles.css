@@ -1414,13 +1414,14 @@ section {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 16px 24px;
+  padding: 16px 20px;
   background: var(--bg-soft);
   border: 1px solid var(--border);
   border-radius: var(--radius-md);
   text-decoration: none;
   color: var(--text);
   transition: all var(--transition);
+  gap: 12px;
 }
 
 .contact-option-row:hover {
@@ -1432,6 +1433,8 @@ section {
   display: flex;
   align-items: center;
   gap: 14px;
+  min-width: 0;
+  flex: 1;
 }
 
 .contact-icon-pill {
@@ -1446,6 +1449,7 @@ section {
   color: var(--accent);
   font-size: 16px;
   transition: all var(--transition);
+  flex-shrink: 0;
 }
 
 .contact-option-row:hover .contact-icon-pill {
@@ -1458,6 +1462,8 @@ section {
   display: flex;
   flex-direction: column;
   text-align: left;
+  min-width: 0;
+  flex: 1;
 }
 
 .contact-label-title .label {
@@ -1467,8 +1473,11 @@ section {
 }
 
 .contact-label-title .val {
-  font-size: 15px;
+  font-size: clamp(12px, 3.8vw, 15px);
   font-weight: 600;
+  word-break: break-all;
+  overflow-wrap: anywhere;
+  white-space: normal;
 }
 
 .contact-option-row i.arrow-up-right {
