@@ -2,10 +2,10 @@
   "cleanUrls": true,
   "trailingSlash": false,
   "rewrites": [
-    { "source": "/thoughts/:slug", "destination": "/thoughts.html?article=:slug" },
+    { "source": "/thoughts/:slug", "destination": "/api/article?slug=:slug" },
+    { "source": "/thoughts", "destination": "/api/article" },
     { "source": "/about", "destination": "/about.html" },
     { "source": "/contact", "destination": "/contact.html" },
-    { "source": "/thoughts", "destination": "/thoughts.html" },
     { "source": "/admin", "destination": "/admin/index.html" }
   ]
 }

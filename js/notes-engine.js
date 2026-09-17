@@ -191,7 +191,7 @@ class FirestoreNotesEngine {
   getArticleShareUrl(post) {
     const slug = post.slug || this.generateSlug(post.title);
     const baseUrl = window.location.origin;
-    return `${baseUrl}/thoughts?article=${slug}`;
+    return `${baseUrl}/thoughts/${slug}`;
   }
 
   escapeHtml(str) {
@@ -475,11 +475,19 @@ class FirestoreNotesEngine {
       articleQuery = window.location.hash.replace('#', '');
     }
 
+    if (!articleQuery) {
+      const parts = window.location.pathname.split('/').filter(Boolean);
+      if (parts.length >= 2 && parts[0] === 'thoughts') {
+        articleQuery = parts[1];
+      }
+    }
+
     if (articleQuery && this.posts.length > 0) {
+      const cleanQ = articleQuery.toLowerCase().trim();
       const matchedPost = this.posts.find(p => 
-        p.id === articleQuery || 
-        p.slug === articleQuery || 
-        this.generateSlug(p.title) === articleQuery
+        (p.id && p.id.toLowerCase() === cleanQ) || 
+        (p.slug && p.slug.toLowerCase() === cleanQ) || 
+        (this.generateSlug(p.title) === cleanQ)
       );
 
       if (matchedPost && matchedPost.type === 'article') {
@@ -517,7 +525,7 @@ class FirestoreNotesEngine {
     if (!post) return;
 
     const slug = post.slug || this.generateSlug(post.title);
-    const newUrl = `${window.location.pathname}?article=${slug}`;
+    const newUrl = `/thoughts/${slug}`;
     window.history.pushState({ articleId: postId }, '', newUrl);
 
     let modal = document.querySelector('.article-reader-modal');
