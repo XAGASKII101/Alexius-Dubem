@@ -1518,7 +1518,7 @@ footer .accent-dot {
   transform: translateY(0);
 }
 
-/* ---------- RESPONSIVE PHONE RULES ---------- */
+/* ---------- RESPONSIVE PHONE & FOLD RULES ---------- */
 @media (max-width: 900px) {
   .hero {
     grid-template-columns: 1fr;
@@ -1551,7 +1551,7 @@ footer .accent-dot {
 
 @media (max-width: 640px) {
   .container {
-    padding: 0 20px;
+    padding: 0 18px;
   }
 
   .projects-grid,
@@ -1563,7 +1563,7 @@ footer .accent-dot {
   }
 
   .contact-section-card {
-    padding: 40px 24px;
+    padding: 36px 20px;
   }
 
   .trust-bar {
@@ -1573,27 +1573,123 @@ footer .accent-dot {
   }
 
   .reader-modal-card {
-    padding: 28px 20px;
+    padding: 24px 16px;
+    width: 95%;
+  }
+
+  .project-card-image {
+    height: 220px;
+  }
+
+  .project-card-content {
+    padding: 24px 20px;
   }
 }
 
 @media (max-width: 480px) {
   .container {
-    padding: 0 16px;
+    padding: 0 14px;
   }
 
   .hero h1 {
-    font-size: 34px;
+    font-size: clamp(30px, 8vw, 42px);
   }
 
   .btn-solid,
   .btn-outline {
     width: 100%;
+    justify-content: center;
+  }
+
+  .mobile-dock-inner {
+    padding: 5px;
+    gap: 6px;
+  }
+
+  .mobile-dock-item {
+    width: 40px;
+    height: 40px;
+    font-size: 16px;
   }
 
   footer {
     flex-direction: column;
     gap: 12px;
     text-align: center;
+  }
+}
+
+/* GALAXY FOLD & ULTRA-SMALL MOBILE DEVICES (280px - 350px) */
+@media (max-width: 350px) {
+  .container {
+    padding: 0 10px;
+  }
+
+  header {
+    margin-bottom: 24px;
+    padding: 0 8px;
+  }
+
+  .hero h1 {
+    font-size: 26px;
+    letter-spacing: -0.02em;
+  }
+
+  .hero-subtitle {
+    font-size: 14px;
+  }
+
+  .avail-badge {
+    font-size: 11px;
+    padding: 4px 10px;
+  }
+
+  .btn-solid,
+  .btn-outline {
+    padding: 10px 14px;
+    font-size: 12.5px;
+  }
+
+  .font-hand {
+    font-size: 1.15rem;
+  }
+
+  .project-card-image {
+    height: 180px;
+  }
+
+  .project-card-content {
+    padding: 18px 14px;
+  }
+
+  .project-title {
+    font-size: 18px;
+  }
+
+  .mobile-dock-inner {
+    padding: 3px;
+    gap: 3px;
+  }
+
+  .mobile-dock-item {
+    width: 35px;
+    height: 35px;
+    font-size: 14px;
+  }
+
+  .contact-section-card {
+    padding: 24px 14px;
+  }
+
+  .contact-option-row {
+    padding: 14px 10px;
+  }
+
+  .contact-label-title .label {
+    font-size: 10px;
+  }
+
+  .contact-label-title .val {
+    font-size: 12.5px;
   }
 }
