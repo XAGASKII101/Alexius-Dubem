@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://github.com/XAGASKII101/Alexius-Dubem/sitemap.xml
+Sitemap: https://alexiusdubemdev.vercel.app/sitemap.xml

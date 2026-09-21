@@ -206,6 +206,7 @@ module.exports = async (req, res) => {
   <meta name="title" content="${escapeHtml(pageTitle)}">
   <meta name="description" content="${escapeHtml(pageDesc)}">
   <link rel="canonical" href="${canonicalUrl}">
+  <meta name="google-site-verification" content="google6d2485a3d43f2b9c">
 
   <!-- Favicons & Website App Icons -->
   <link rel="icon" type="image/jpeg" href="/me.jpg">
