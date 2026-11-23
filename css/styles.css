@@ -3149,188 +3149,121 @@ body.light-theme .share-btn.share-x {
 }
 
 /* ====================================================
-   3D CYBERNETIC WEBGL STAGE & PERSPECTIVE ENGINE
+   FULL-PAGE 3D CINEMATIC WORLD & CAMERA TRANSITIONS
    ==================================================== */
 
-.hero-3d-stage-wrapper {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  position: relative;
-  width: 100%;
-  max-width: 360px;
-}
-
-.hero-3d-stage {
-  position: relative;
-  width: 340px;
-  height: 380px;
-  border-radius: var(--radius-xl);
-  background: radial-gradient(circle at 50% 30%, rgba(200, 255, 0, 0.08), rgba(11, 13, 17, 0.9) 75%);
-  border: 1px solid var(--border);
-  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.6), 0 0 40px rgba(200, 255, 0, 0.08);
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: border-color var(--transition), box-shadow var(--transition);
-  user-select: none;
-}
-
-.hero-3d-stage:hover {
-  border-color: rgba(200, 255, 0, 0.35);
-  box-shadow: 0 30px 70px rgba(0, 0, 0, 0.7), 0 0 50px rgba(200, 255, 0, 0.16);
-}
-
-.hero-3d-webgl-canvas {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100% !important;
-  height: 100% !important;
-  z-index: 2;
-  touch-action: none;
-  transition: opacity 0.5s ease;
-}
-
-.photo-frame-fallback {
-  position: absolute;
-  width: 220px;
-  height: 220px;
-  border-radius: var(--radius-lg);
-  overflow: hidden;
-  border: 1px solid var(--border);
-  z-index: 1;
-  transition: opacity 0.6s ease;
-  pointer-events: none;
-}
-
-.photo-frame-fallback img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center top;
-}
-
-.canvas-3d-badge {
-  position: absolute;
-  top: 14px;
-  left: 14px;
-  z-index: 10;
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 6px 14px;
-  background: rgba(14, 17, 23, 0.78);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: var(--radius-pill);
-  font-family: var(--font-mono);
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 0.06em;
-  color: var(--accent);
-  pointer-events: none;
-  opacity: 0;
-  transform: translateY(-4px);
-  transition: opacity 0.4s ease, transform 0.4s ease;
-}
-
-.canvas-3d-badge.active {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-.dot-3d {
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: var(--accent);
-  box-shadow: 0 0 8px var(--accent);
-}
-
-.dot-3d.pulse {
-  animation: dotPulse 1.8s infinite ease-in-out;
-}
-
-@keyframes dotPulse {
-  0%, 100% { transform: scale(1); opacity: 1; }
-  50% { transform: scale(1.4); opacity: 0.4; }
-}
-
-.canvas-3d-controls {
-  position: absolute;
-  bottom: 14px;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 10;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  background: rgba(14, 17, 23, 0.82);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-pill);
-  padding: 4px 6px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-}
-
-.btn-3d-ctrl {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  background: transparent;
-  border: 1px solid transparent;
-  color: var(--text-muted);
-  font-family: var(--font-mono);
-  font-size: 11px;
-  font-weight: 600;
-  padding: 6px 11px;
-  border-radius: var(--radius-pill);
-  cursor: pointer;
-  transition: all var(--transition);
-}
-
-.btn-3d-ctrl:hover {
-  color: var(--text);
-  background: rgba(255, 255, 255, 0.08);
-}
-
-.btn-3d-ctrl.active {
-  color: var(--accent);
-  background: var(--accent-soft);
-  border-color: rgba(200, 255, 0, 0.3);
-}
-
-.hero-3d-caption {
-  font-family: var(--font-mono);
-  font-size: 11px;
-  letter-spacing: 0.04em;
-  color: var(--text-muted);
-  margin-top: 14px;
-  text-align: center;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-}
-
-.hero-3d-caption i {
-  color: var(--accent);
-}
-
-/* Ambient 3D Background Canvas */
-.ambient-3d-bg {
+.cinematic-3d-canvas {
   position: fixed;
   top: 0;
   left: 0;
   width: 100vw;
   height: 100vh;
   pointer-events: none;
-  z-index: -1;
-  opacity: 0.65;
+  z-index: 0;
+}
+
+.container {
+  position: relative;
+  z-index: 2;
+}
+
+/* 3D HUD CARD & WAYPOINT CONTROLS */
+.hero-hud-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  width: 100%;
+  max-width: 320px;
+}
+
+.photo-3d-sheen {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(200, 255, 0, 0.12) 0%, transparent 60%);
+  pointer-events: none;
+}
+
+.hud-status-badge {
+  position: absolute;
+  top: 10px;
+  right: -10px;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 5px 12px;
+  background: rgba(14, 17, 23, 0.88);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(200, 255, 0, 0.3);
+  border-radius: var(--radius-pill);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: var(--accent);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+  pointer-events: none;
+}
+
+.hud-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 8px var(--accent);
+}
+
+.hud-dot.pulse {
+  animation: hudPulse 1.8s infinite ease-in-out;
+}
+
+@keyframes hudPulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.4); opacity: 0.4; }
+}
+
+.hud-3d-waypoints {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 18px;
+  width: 100%;
+}
+
+.btn-waypoint {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(20, 24, 32, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  padding: 7px 12px;
+  border-radius: var(--radius-pill);
+  cursor: pointer;
+  transition: all var(--transition);
+}
+
+.btn-waypoint:hover {
+  color: var(--accent);
+  border-color: rgba(200, 255, 0, 0.35);
+  background: rgba(200, 255, 0, 0.08);
+  transform: translateY(-2px);
+}
+
+.btn-waypoint.active {
+  color: var(--accent);
+  border-color: var(--accent);
+  background: var(--accent-soft);
 }
 
 /* 3D Perspective Project Cards */
@@ -3338,30 +3271,15 @@ body.light-theme .share-btn.share-x {
   transform-style: preserve-3d;
   will-change: transform;
   transition: transform 0.15s ease-out, border-color var(--transition), box-shadow var(--transition);
+  background: rgba(20, 23, 29, 0.82) !important;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
 }
 
 .project-card .project-img-box {
   transform: translateZ(16px);
   transform-style: preserve-3d;
   position: relative;
-}
-
-/* High-tech Cyber Scanline Overlays on Project Media */
-.project-card .project-img-box::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(200, 255, 0, 0.03) 4px);
-  pointer-events: none;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-}
-
-.project-card:hover .project-img-box::after {
-  opacity: 1;
 }
 
 .project-card .project-badge {
@@ -3380,7 +3298,6 @@ body.light-theme .share-btn.share-x {
   transform: translateZ(18px);
 }
 
-/* Specular 3D Glare Light */
 .card-3d-glare {
   position: absolute;
   top: 0;
@@ -3394,36 +3311,16 @@ body.light-theme .share-btn.share-x {
   z-index: 5;
 }
 
-/* Mobile Responsiveness for 3D Stage */
-@media (max-width: 900px) {
-  .hero-3d-stage {
-    width: 320px;
-    height: 350px;
-  }
-}
-
+/* Mobile Responsiveness for 3D HUD */
 @media (max-width: 640px) {
-  .hero-3d-stage {
-    width: 285px;
-    height: 325px;
-  }
-
-  .photo-frame-fallback {
-    width: 175px;
-    height: 175px;
-  }
-
-  .btn-3d-ctrl {
-    padding: 5px 8px;
-    font-size: 10px;
-  }
-
-  .canvas-3d-badge {
+  .hud-status-badge {
+    right: 0;
+    top: -12px;
     font-size: 9px;
-    padding: 4px 10px;
   }
 
-  .hero-3d-caption {
+  .btn-waypoint {
     font-size: 10px;
+    padding: 6px 10px;
   }
 }

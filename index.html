@@ -84,8 +84,8 @@
 </head>
 
 <body>
-  <!-- AMBIENT 3D CYBER FIBER BACKGROUND -->
-  <div id="ambient-3d-bg" class="ambient-3d-bg"></div>
+  <!-- FULL-PAGE 3D CINEMATIC WEBGL CANVAS (REAL OBJECTS & SCROLL TRANSITIONS) -->
+  <canvas id="cinematic-3d-canvas" class="cinematic-3d-canvas"></canvas>
 
   <!-- DESKTOP TOP PILL HEADER NAVIGATION -->
   <header>
@@ -175,30 +175,29 @@
           </div>
         </div>
 
-        <div class="hero-3d-stage-wrapper">
-          <div id="hero-3d-stage" class="hero-3d-stage" title="Click & drag to rotate 3D holographic face">
-            <!-- Fallback crisp photo frame (fades smoothly when 3D WebGL initiates) -->
-            <div class="photo-frame photo-frame-fallback">
+        <div class="hero-hud-wrapper">
+          <div class="hero-photo-box">
+            <div class="photo-frame">
               <img src="me.jpg" alt="Alexius Dubem - Software Developer and Systems Architect">
+              <div class="photo-3d-sheen"></div>
             </div>
-
-            <!-- Top Floating Holographic 3D Badge -->
-            <div class="canvas-3d-badge">
-              <span class="dot-3d pulse"></span>
-              <span>3D HOLOGRAPHIC FIBER CORE</span>
-            </div>
-
-            <!-- Floating 3D Control Bar -->
-            <div class="canvas-3d-controls">
-              <button id="btn-spin-3d" class="btn-3d-ctrl" title="Auto-spin in 3D"><i class="fa-solid fa-rotate"></i> Spin</button>
-              <button id="btn-fibers-3d" class="btn-3d-ctrl active" title="Toggle fiber matrix lines"><i class="fa-solid fa-network-wired"></i> Fibers</button>
-              <button id="btn-mode-3d" class="btn-3d-ctrl" title="Switch between 3D hologram and HD photo"><i class="fa-solid fa-cube"></i> 3D</button>
-              <button id="btn-reset-3d" class="btn-3d-ctrl" title="Reset angle"><i class="fa-solid fa-crosshairs"></i></button>
+            <!-- Floating Holographic Status -->
+            <div class="hud-status-badge">
+              <span class="hud-dot pulse"></span>
+              <span>CINEMATIC 3D ENGINE ACTIVE</span>
             </div>
           </div>
 
-          <p class="hero-3d-caption">
-            <i class="fa-solid fa-hand-pointer"></i> DRAG / SWIPE TO ROTATE IN 3D · SCROLL TO DISPERSE FIBERS
+          <!-- 3D Camera Tour Waypoints -->
+          <div class="hud-3d-waypoints">
+            <button class="btn-waypoint active" onclick="Cinematic3D.jumpToSection(0)"><i class="fa-solid fa-laptop-code"></i> 01 Rig</button>
+            <button class="btn-waypoint" onclick="Cinematic3D.jumpToSection(1)"><i class="fa-solid fa-layer-group"></i> 02 Monoliths</button>
+            <button class="btn-waypoint" onclick="Cinematic3D.jumpToSection(2)"><i class="fa-solid fa-server"></i> 03 Core</button>
+            <button class="btn-waypoint" onclick="Cinematic3D.jumpToSection(3)"><i class="fa-solid fa-satellite-dish"></i> 04 Beacon</button>
+          </div>
+
+          <p style="color: var(--text-muted); font-family: var(--font-mono); font-size: 11px; margin-top: 14px; text-align: center;">
+            [SCROLL TO FLY 3D CAMERA · DRAG TO TILT]
           </p>
         </div>
       </section>
