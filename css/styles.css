@@ -8,10 +8,10 @@
 /* ---------- DESIGN TOKENS ---------- */
 :root {
   --bg: #0b0d11;
-  --bg-card: #14171d;
-  --bg-card-hover: #191c24;
-  --bg-surface: #1a1d26;
-  --bg-soft: rgba(255, 255, 255, 0.04);
+  --bg-card: rgba(18, 22, 30, 0.72);
+  --bg-card-hover: rgba(26, 32, 44, 0.88);
+  --bg-surface: rgba(22, 26, 36, 0.75);
+  --bg-soft: rgba(255, 255, 255, 0.05);
   --text: #f4f3ee;
   --text-muted: #8e94a0;
   --text-dim: #555b68;
@@ -140,7 +140,7 @@ body::before {
   content: "";
   position: fixed;
   inset: 0;
-  background-image: radial-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+  background-image: radial-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px);
   background-size: 32px 32px;
   pointer-events: none;
   z-index: 0;
@@ -151,7 +151,19 @@ body::before {
   margin: 0 auto;
   padding: 0 32px;
   position: relative;
-  z-index: 2;
+  z-index: 5;
+}
+
+/* Glassmorphic 3D Card Backdrop Blur across all components */
+.project-card,
+.service-card,
+.approach-card,
+.trust-bar,
+.note-article-card,
+.x-post-card,
+.contact-direct-card {
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
 }
 
 /* ---------- HANDWRITTEN ANNOTATIONS (DOTTAA STYLE) ---------- */
@@ -3159,12 +3171,12 @@ body.light-theme .share-btn.share-x {
   width: 100vw;
   height: 100vh;
   pointer-events: none;
-  z-index: 0;
+  z-index: 1;
 }
 
 .container {
   position: relative;
-  z-index: 2;
+  z-index: 5;
 }
 
 /* 3D HUD CARD & WAYPOINT CONTROLS */

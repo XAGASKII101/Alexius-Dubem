@@ -778,6 +778,8 @@ module.exports = async (req, res) => {
 </head>
 
 <body>
+  <!-- FULL-PAGE 3D CINEMATIC WEBGL CANVAS (REAL OBJECTS & SCROLL TRANSITIONS) -->
+  <canvas id="cinematic-3d-canvas" class="cinematic-3d-canvas"></canvas>
   <!-- TOP PILL HEADER -->
   <header class="site-header">
     <nav class="desktop-pill-nav" aria-label="Main Navigation">
@@ -907,6 +909,9 @@ module.exports = async (req, res) => {
   </div>
 
   <script src="/js/main.js"></script>
+  <!-- 3D CINEMATIC WEBGL ENGINE -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="/js/scene-3d.js"></script>
 </body>
 </html>`;
 
